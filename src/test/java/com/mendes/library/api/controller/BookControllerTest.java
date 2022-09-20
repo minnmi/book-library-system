@@ -31,6 +31,7 @@ public class BookControllerTest {
     @DisplayName("Deve criar um livro com sucesso.")
     public void createBookTest() throws Exception {
 
+//        BookDTO dto = BookDTO.builder()
         String json = new ObjectMapper().writeValueAsString(null);
 
        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
