@@ -1,7 +1,91 @@
 package com.mendes.library.service;
 
+import com.mendes.library.model.Author;
+import com.mendes.library.model.DTO.AuthorDTO;
+import com.mendes.library.repository.AuthorRepository;
+import com.mendes.library.service.exception.BusinessException;
+import com.mendes.library.service.exception.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorService {
+
+    private final AuthorRepository authorRepository;
+
+    private final ModelMapper modelMapper;
+
+
+    @Autowired
+    public AuthorService(AuthorRepository authorRepository, ModelMapper modelMapper) {
+        this.authorRepository = authorRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    public List<Author> findAllAuthors() {
+        return authorRepository.findAll();
+    }
+
+    public Author findById(Long id) {
+        Optional<Author> author = authorRepository.findById(id);
+        if (author.isPresent()) {
+            return author.get();
+        } else {
+            throw new ObjectNotFoundException("Object not found: " + id + " type " + Author.class.getName());
+        }
+    }
+
+    public Author insertAuthor(Author object) {
+        object.setId(null);
+        return authorRepository.save(object);
+    }
+
+    public Author updateAuthor(Long id, Author object) {
+        if (object == null || object.getId() == null) {
+            throw new IllegalArgumentException("Author can't be null.");
+        }
+        Author newObject = findById(id);
+        toUpdateAuthor(newObject, object);
+        return authorRepository.save(newObject);
+    }
+
+    public void deleteAuthor(Long id) {
+        findById(id);
+        if (id == null) {
+            throw new IllegalArgumentException("Author can't be null.");
+        }
+        this.authorRepository.deleteById(id);
+    }
+
+//    public void delete(Long id) {
+//        authorRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+//        this.authorRepository.deleteById(id);
+//    }
+
+    /**
+     * Update object with new informations
+     *
+     * @param newObject
+     * @param object
+     */
+
+    private void toUpdateAuthor(Author newObject, Author object) {
+        newObject.setName(object.getName());
+        newObject.setBooks(object.getBooks());
+    }
+
+
+
+    public Author convertDtoToEntity(AuthorDTO objectDTO) {
+        return modelMapper.map(objectDTO, Author.class);
+    }
+
+    public AuthorDTO convertEntityToDto(Author object) {
+        return modelMapper.map(object, AuthorDTO.class);
+    }
 }
