@@ -45,7 +45,7 @@ public class AuthorController {
         log.info(" inserting a new author: {} ", objectDTO.getName());
         Author objectRequest = authorService.convertDtoToEntity(objectDTO);
         Author object = authorService.insertAuthor(objectRequest);
-                return authorService.convertEntityToDto(object);
+        return authorService.convertEntityToDto(object);
     }
 
 

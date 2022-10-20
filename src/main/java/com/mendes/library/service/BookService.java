@@ -7,6 +7,7 @@ import com.mendes.library.repository.BookRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,10 +39,17 @@ public class BookService {
         }
     }
 
+    public Optional<Book> getBookByIsbn(String isbn) {
+        return bookRepository.findByIsbn(isbn);
+    }
+
     public Book insertBook(Book object) {
         object.setId(null);
+
         return bookRepository.save(object);
     }
+
+
 
     public Book updateBook(Long id, Book object) {
         if (object == null || object.getId() == null) {
