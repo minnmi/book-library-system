@@ -25,4 +25,7 @@ public class Book {
     private List<Author> authors;
 
 
+    @JoinColumn(name = "publisher_id", nullable = false)
+    @ManyToOne
+    private Publisher publisher;
 }

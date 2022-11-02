@@ -2,6 +2,7 @@ package com.mendes.library.model.DTO;
 
 
 import com.mendes.library.model.Author;
+import com.mendes.library.model.Publisher;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,7 @@ public class BookDTO {
     private Long id;
     private String name;
     private String isbn;
-    private List<Author> authors;
+    private List<AuthorIdDTO> authors;
+    private PublisherIdDTO publisher;
+
 }
