@@ -1,0 +1,14 @@
+.logo {
+    text-align: center;
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+}
+
+.prefix {
+    color: #cf2f4c;
+}
+
+.suffix {
+    font-style: italic;
+}

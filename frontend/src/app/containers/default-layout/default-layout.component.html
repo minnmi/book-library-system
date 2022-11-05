@@ -5,24 +5,11 @@
   id="sidebar"
   visible
 >
-  <c-sidebar-brand
-    [brandFull]="{
-      src: 'assets/img/brand/coreui-angular.svg',
-      width: 200,
-      height: 46,
-      alt: 'CoreUI Logo'
-    }"
-    [brandNarrow]="{
-      src: 'assets/img/brand/coreui-signet-white.svg',
-      width: 46,
-      height: 46,
-      alt: 'CoreUI Logo'
-    }"
-    routerLink="./"
-  >
-  </c-sidebar-brand>
+  <div class="logo">
+      <div class="prefix">minnmi</div>
+      <div class="suffix">Lib</div>
+  </div>
     <perfect-scrollbar [config]="perfectScrollbarConfig">
-  <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
   <c-sidebar-nav
     [navItems]="navItems"
   >
