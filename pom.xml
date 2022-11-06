@@ -57,7 +57,19 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>2.0.2</version>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>9.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+			<version>9.7.0</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -73,6 +85,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.flywaydb</groupId>-->
+<!--				<artifactId>flyway-maven-plugin</artifactId>-->
+<!--				<version>9.7.0</version>-->
+<!--				<configuration>-->
+<!--					<url>jdbc:mysql://localhost:3306/library</url>-->
+<!--					<user>dev</user>-->
+<!--					<password>lib@java</password>-->
+<!--					<schemas>-->
+<!--						<schema>library</schema>-->
+<!--					</schemas>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
