@@ -1,4 +1,4 @@
-package com.mendes.library.model.DTO;
+package com.mendes.library.model.DTO.LoanedDTO;
 
 
 import com.mendes.library.model.Book;

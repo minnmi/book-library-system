@@ -1,4 +1,4 @@
-package com.mendes.library.model.DTO;
+package com.mendes.library.model.DTO.PublisherDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

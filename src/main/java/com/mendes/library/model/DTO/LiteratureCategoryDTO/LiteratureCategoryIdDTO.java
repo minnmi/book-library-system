@@ -1,4 +1,4 @@
-package com.mendes.library.model.DTO;
+package com.mendes.library.model.DTO.LiteratureCategoryDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PublisherIdDTO {
+public class LiteratureCategoryIdDTO {
 
     private Long id;
 }

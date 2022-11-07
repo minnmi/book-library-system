@@ -1,8 +1,7 @@
-package com.mendes.library.model.DTO;
+package com.mendes.library.model.DTO.AuthorDTO;
 
-
-import com.mendes.library.model.Author;
-import com.mendes.library.model.Publisher;
+import com.mendes.library.model.Book;
+import com.mendes.library.model.DTO.BookDTO.BookIdDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +13,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDTO {
+public class AuthorDTO {
 
     private Long id;
     private String name;
-    private String isbn;
-    private List<AuthorIdDTO> authors;
-    private PublisherIdDTO publisher;
-
+    private List<BookIdDTO> books;
 }

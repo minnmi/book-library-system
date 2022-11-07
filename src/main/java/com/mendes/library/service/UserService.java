@@ -1,7 +1,7 @@
 package com.mendes.library.service;
 
-import com.mendes.library.model.DTO.User.UserDTO;
-import com.mendes.library.model.DTO.User.UserUpdateDTO;
+import com.mendes.library.model.DTO.UserDTO.UserDTO;
+import com.mendes.library.model.DTO.UserDTO.UserUpdateDTO;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
 import com.mendes.library.service.exception.BusinessException;

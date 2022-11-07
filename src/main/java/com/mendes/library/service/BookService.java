@@ -3,10 +3,11 @@ package com.mendes.library.service;
 
 import com.mendes.library.model.Author;
 import com.mendes.library.model.Book;
-import com.mendes.library.model.DTO.BookDTO;
-import com.mendes.library.model.Publisher;
+import com.mendes.library.model.DTO.BookDTO.BookDTO;
+import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.repository.AuthorRepository;
 import com.mendes.library.repository.BookRepository;
+import com.mendes.library.repository.LiteratureCategoryRepository;
 import com.mendes.library.repository.PublisherRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,12 +30,15 @@ public class BookService {
 
     private final PublisherRepository publisherRepository;
 
+    private final LiteratureCategoryRepository literatureCategoryRepository;
+
     @Autowired
-    public BookService(BookRepository bookRepository, ModelMapper modelMapper, AuthorRepository authorRepository, PublisherRepository publisherRepository) {
+    public BookService(BookRepository bookRepository, ModelMapper modelMapper, AuthorRepository authorRepository, PublisherRepository publisherRepository, LiteratureCategoryRepository literatureCategoryRepository) {
         this.bookRepository = bookRepository;
         this.modelMapper = modelMapper;
         this.authorRepository = authorRepository;
         this.publisherRepository = publisherRepository;
+        this.literatureCategoryRepository = literatureCategoryRepository;
     }
 
     public List<Book> findAllBooks() {
@@ -68,13 +73,15 @@ public class BookService {
 
         final var publisher = this.publisherRepository.findById(object.getPublisher().getId()).get();
         object.setPublisher(publisher);
+        final var literatureCategory = this.literatureCategoryRepository.findById(object.getLiteratureCategory().getId()).get();
+        object.setLiteratureCategory(literatureCategory);
 
         return bookRepository.save(object);
     }
 
 
     public Book updateBook(Long id, Book object) {
-        if (object == null || object.getId() == null) {
+        if (id == null) {
             throw new IllegalArgumentException("Book can't be null.");
         }
         Book newObject = findById(id);
@@ -101,7 +108,14 @@ public class BookService {
     private void toUpdateBook(Book newObject, Book object) {
         newObject.setName(object.getName());
         newObject.setIsbn(object.getIsbn());
-        newObject.setAuthors(object.getAuthors());
+        if (Objects.isNull(newObject.getAuthors())) {
+            newObject.setAuthors(object.getAuthors());
+        } else {
+            newObject.getAuthors().clear();
+            newObject.getAuthors().addAll(object.getAuthors());
+        }
+        newObject.setPublisher(object.getPublisher());
+        newObject.setLiteratureCategory(object.getLiteratureCategory());
     }
 
     public Book convertDtoToEntity(BookDTO objectDTO) {

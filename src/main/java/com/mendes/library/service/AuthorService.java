@@ -1,16 +1,18 @@
 package com.mendes.library.service;
 
 import com.mendes.library.model.Author;
-import com.mendes.library.model.DTO.AuthorDTO;
+import com.mendes.library.model.Book;
+import com.mendes.library.model.DTO.AuthorDTO.AuthorDTO;
 import com.mendes.library.repository.AuthorRepository;
-import com.mendes.library.service.exception.BusinessException;
+import com.mendes.library.repository.BookRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -20,11 +22,14 @@ public class AuthorService {
 
     private final ModelMapper modelMapper;
 
+    private final BookRepository bookRepository;
+
 
     @Autowired
-    public AuthorService(AuthorRepository authorRepository, ModelMapper modelMapper) {
+    public AuthorService(AuthorRepository authorRepository, ModelMapper modelMapper, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
         this.modelMapper = modelMapper;
+        this.bookRepository = bookRepository;
     }
 
     public List<Author> findAllAuthors() {
@@ -42,11 +47,20 @@ public class AuthorService {
 
     public Author insertAuthor(Author object) {
         object.setId(null);
+
+        List<Book> books = new ArrayList<>();
+
+        for (Book book : object.getBooks()) {
+            Book b = bookRepository.findById(book.getId()).get();
+            books.add(b);
+        }
+
+        object.setBooks(books);
         return authorRepository.save(object);
     }
 
     public Author updateAuthor(Long id, Author object) {
-        if (object == null || object.getId() == null) {
+        if (id == null) {
             throw new IllegalArgumentException("Author can't be null.");
         }
         Author newObject = findById(id);
@@ -76,7 +90,12 @@ public class AuthorService {
 
     private void toUpdateAuthor(Author newObject, Author object) {
         newObject.setName(object.getName());
-        newObject.setBooks(object.getBooks());
+        if (Objects.isNull(newObject.getBooks())) {
+            newObject.setBooks(object.getBooks());
+        } else {
+            newObject.getBooks().clear();
+            newObject.getBooks().addAll(object.getBooks());
+        }
     }
 
 

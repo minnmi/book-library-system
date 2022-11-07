@@ -1,5 +1,4 @@
-package com.mendes.library.model.DTO.User;
-
+package com.mendes.library.model.DTO.PublisherDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,11 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdateDTO {
+@NoArgsConstructor
+public class PublisherIdDTO {
 
     private Long id;
-    private String name;
-    private String email;
 }

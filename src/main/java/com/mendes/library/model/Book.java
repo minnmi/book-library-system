@@ -28,4 +28,8 @@ public class Book {
     @JoinColumn(name = "publisher_id", nullable = false)
     @ManyToOne
     private Publisher publisher;
+
+    @JoinColumn(name = "literature_category_id", nullable = false)
+    @ManyToOne
+    private LiteratureCategory literatureCategory;
 }

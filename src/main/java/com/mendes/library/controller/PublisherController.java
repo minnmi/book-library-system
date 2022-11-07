@@ -1,6 +1,6 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.PublisherDTO;
+import com.mendes.library.model.DTO.PublisherDTO.PublisherDTO;
 import com.mendes.library.model.Publisher;
 import com.mendes.library.service.PublisherService;
 import lombok.extern.slf4j.Slf4j;

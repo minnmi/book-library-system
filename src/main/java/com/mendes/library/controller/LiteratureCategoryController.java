@@ -1,6 +1,6 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.LiteratureCategoryDTO;
+import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryDTO;
 import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.service.LiteratureCategoryService;
 import lombok.extern.slf4j.Slf4j;

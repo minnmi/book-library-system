@@ -1,4 +1,4 @@
-package com.mendes.library.model.DTO.User;
+package com.mendes.library.model.DTO.UserDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
