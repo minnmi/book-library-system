@@ -1,0 +1,29 @@
+$height_menu: 60px;
+$width_menu: 300px;
+
+.title-bar {
+  position: relative;
+  left: 0;
+  top: 0;
+  height: $height_menu;
+  width: 100%;
+  //overflow: hidden;
+}
+
+.left-menu {
+  position: relative;
+  width: $width_menu;
+  left: -$width_menu;
+  height: calc(100% - $height_menu);
+  background-color: #eaeaea;
+  transition: left 1s ease;
+}
+
+.left-menu.visible {
+  left: 0;
+}
+
+a {
+  //color: blue;
+  text-decoration: none; /* no underline */
+}

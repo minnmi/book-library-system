@@ -1,0 +1,61 @@
+<mat-toolbar class="title-bar">
+  <button mat-icon-button [class.visible]="showNavList" aria-label="Example icon-button with menu icon" (click)="showNavList = !showNavList">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span style="padding: 15px 0">Library App</span>
+</mat-toolbar>
+
+<div class="left-menu" [class.visible]="showNavList">
+  <mat-list>
+    <mat-list-item>
+      <mat-icon matListItemIcon>bookmark</mat-icon>
+      <a href="/minhas-reservas">
+        <span>Minhas reservas</span>
+      </a>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListItemIcon>library_books</mat-icon>
+      <a href="/catalogo">
+        <span>Catálogo</span>
+      </a>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListItemIcon>history</mat-icon>
+      <a href="/historico">
+        <span>Histórico</span>
+      </a>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListItemIcon>pending_actions</mat-icon>
+      <a href="/solicitacoes">
+        <span>Solicitações</span>
+      </a>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListItemIcon>key</mat-icon>
+      <a href="/permissoes">
+        <span>Permissões</span>
+      </a>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListItemIcon>manage_accounts</mat-icon>
+      <a href="/perfil">
+        <span>Perfil</span>
+      </a>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListItemIcon>logout</mat-icon>
+      <a href="/logout">
+        <span>Sair</span>
+      </a>
+    </mat-list-item>
+
+  </mat-list>
+</div>
