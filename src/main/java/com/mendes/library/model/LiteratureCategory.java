@@ -1,7 +1,6 @@
 package com.mendes.library.model;
 
 import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
