@@ -14,6 +14,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

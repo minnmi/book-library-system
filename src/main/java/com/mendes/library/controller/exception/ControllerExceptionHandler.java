@@ -13,7 +13,6 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
 
