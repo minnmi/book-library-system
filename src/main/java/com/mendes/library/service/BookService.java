@@ -4,7 +4,6 @@ package com.mendes.library.service;
 import com.mendes.library.model.Author;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.DTO.BookDTO.BookDTO;
-import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.repository.AuthorRepository;
 import com.mendes.library.repository.BookRepository;
 import com.mendes.library.repository.LiteratureCategoryRepository;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class BookService {
@@ -60,21 +60,27 @@ public class BookService {
 
     public Book insertBook(Book object) {
         object.setId(null);
-
         List<Author> authors = new ArrayList<>();
-
-        for (Author author : object.getAuthors()) {
-            Author a = authorRepository.findById(author.getId()).get();
-
-            authors.add(a);
+        for (Author authorIt : object.getAuthors()) {
+            Long authorId = authorIt.getId();
+            if (authorId == null) { // Se autor não existe, crie
+                Author author = this.authorRepository.save(authorIt);
+                authors.add(author);
+            } else {// Senão, pegue do banco
+                Optional<Author> optAuthor = this.authorRepository.findById(authorId);
+                if (optAuthor.isPresent()) {
+                    authors.add(optAuthor.get());
+                } else {
+                    // throws...
+                }
+            }
         }
-
-        object.setAuthors(authors);
-
-        final var publisher = this.publisherRepository.findById(object.getPublisher().getId()).get();
-        object.setPublisher(publisher);
-        final var literatureCategory = this.literatureCategoryRepository.findById(object.getLiteratureCategory().getId()).get();
-        object.setLiteratureCategory(literatureCategory);
+        object.getAuthors().clear();
+        object.getAuthors().addAll(authors);
+//        final var publisher = this.publisherRepository.findById(object.getPublisher().getId()).get();
+//        object.setPublisher(publisher);
+//        final var literatureCategory = this.literatureCategoryRepository.findById(object.getLiteratureCategory().getId()).get();
+//        object.setLiteratureCategory(literatureCategory);
 
         return bookRepository.save(object);
     }

@@ -9,7 +9,6 @@ import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,16 +45,26 @@ public class AuthorService {
     }
 
     public Author insertAuthor(Author object) {
-        object.setId(null);
-
         List<Book> books = new ArrayList<>();
 
-        for (Book book : object.getBooks()) {
-            Book b = bookRepository.findById(book.getId()).get();
-            books.add(b);
+        for (Book bookIt : object.getBooks()) {
+            Long bookId = bookIt.getId();
+            if (bookId == null) {
+                Book book = this.bookRepository.save(bookIt);
+                books.add(book);
+            } else {
+                Optional<Book> optBook = this.bookRepository.findById(bookId);
+                if (optBook.isPresent()) {
+                    books.add(optBook.get());
+                } else {
+                    // throw and log
+                }
+            }
         }
 
-        object.setBooks(books);
+        object.getBooks().clear();
+        object.getBooks().addAll(books);
+
         return authorRepository.save(object);
     }
 

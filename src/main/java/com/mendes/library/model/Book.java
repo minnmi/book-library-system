@@ -18,12 +18,11 @@ public class Book {
 
     private String isbn;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authorship",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-
 
     @JoinColumn(name = "publisher_id", nullable = false)
     @ManyToOne

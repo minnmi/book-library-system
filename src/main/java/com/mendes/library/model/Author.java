@@ -16,7 +16,7 @@ public class Author {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authorship",
         joinColumns = @JoinColumn(name = "author_id"),
         inverseJoinColumns = @JoinColumn(name = "book_id"))
