@@ -6,6 +6,7 @@ import com.mendes.library.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,11 +18,15 @@ import java.util.Objects;
 @Slf4j
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/find/all")
     public List<UserDTO> findAllUsers() {
+        var f = SecurityContextHolder.getContext().getAuthentication();
         return this.userService
                 .findAllUser()
                 .stream()

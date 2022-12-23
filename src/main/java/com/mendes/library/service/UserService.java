@@ -55,7 +55,7 @@ public class UserService {
     }
 
     public void verifyUpdateUser(User newUser, User oldUser) {
-        User emailVerify = userRepository.findByEmail(newUser.getEmail());
+        User emailVerify = userRepository.findByEmail(newUser.getEmail()).get();
         if (emailVerify != null && emailVerify.getEmail() != oldUser.getEmail()) {
             throw new BusinessException("Email already exist");
         }
