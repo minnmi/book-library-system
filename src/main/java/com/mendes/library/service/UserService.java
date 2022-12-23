@@ -20,13 +20,10 @@ public class UserService {
 
     private final ModelMapper modelMapper;
 
-    private final LoanedService loanedService;
-
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, LoanedService loanedService) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.loanedService = loanedService;
     }
 
     public List<User> findAllUser() {

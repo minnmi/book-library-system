@@ -4,6 +4,7 @@ package com.mendes.library.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -16,9 +17,14 @@ public class Loaned {
     private Long id;
 
     @Column(nullable = false)
-    private Date initialDate;
+    private LocalDateTime initialDate;
 
-    private Date finalDate;
+    private LocalDateTime finalDate;
+
+    private Integer returned;
+
+    @Column(name = "returned_date")
+    private LocalDateTime returnedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

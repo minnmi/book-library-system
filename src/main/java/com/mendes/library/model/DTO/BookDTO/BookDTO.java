@@ -23,6 +23,7 @@ public class BookDTO {
     private String isbn;
     private List<AuthorDTO> authors;
     private PublisherIdDTO publisher;
+    private Integer quantity;
     private LiteratureCategoryIdDTO literatureCategory;
 
 }
