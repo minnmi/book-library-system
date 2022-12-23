@@ -1,6 +1,6 @@
 package com.mendes.library.service;
 
-import com.mendes.library.model.DTO.LiteratureCategoryDTO;
+import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryDTO;
 import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.repository.LiteratureCategoryRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;

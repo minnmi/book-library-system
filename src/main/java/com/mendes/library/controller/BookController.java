@@ -1,7 +1,7 @@
 package com.mendes.library.controller;
 
 import com.mendes.library.model.Book;
-import com.mendes.library.model.DTO.BookDTO;
+import com.mendes.library.model.DTO.BookDTO.BookDTO;
 import com.mendes.library.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

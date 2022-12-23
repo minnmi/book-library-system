@@ -1,7 +1,6 @@
 package com.mendes.library.service;
 
-import com.mendes.library.model.Author;
-import com.mendes.library.model.DTO.PublisherDTO;
+import com.mendes.library.model.DTO.PublisherDTO.PublisherDTO;
 import com.mendes.library.model.Publisher;
 import com.mendes.library.repository.PublisherRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
