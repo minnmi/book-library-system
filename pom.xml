@@ -80,6 +80,16 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.0.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.0.2.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>6.0.2.Final</version>
+		</dependency>
 
 	</dependencies>
 
