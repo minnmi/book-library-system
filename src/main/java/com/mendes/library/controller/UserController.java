@@ -20,6 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -36,30 +37,30 @@ public class UserController {
 
     @GetMapping("/find/{id}")
     public UserDTO findById(@PathVariable Long id) {
-        User user = this.userService.findById(id);
+        User user = userService.findById(id);
         return userService.convertEntityToDto(user);
     }
 
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO insertUser(@Valid @RequestBody UserDTO objectDTO) {
-        User user = this.userService.convertDtoToEntity(objectDTO);
-        user = this.userService.insertUser(user);
-        return this.userService.convertEntityToDto(user);
+        User user = userService.convertDtoToEntity(objectDTO);
+        user = userService.insertUser(user);
+        return userService.convertEntityToDto(user);
     }
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUser(@Valid @RequestBody UserDTO objectDTO, @PathVariable Long id) {
-        User user = this.userService.convertDtoToEntity(objectDTO);
-        user = this.userService.updateUser(id, user);
-        return this.userService.convertEntityToDto(user);
+        User user = userService.convertDtoToEntity(objectDTO);
+        user = userService.updateUser(id, user);
+        return userService.convertEntityToDto(user);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long id) {
         if (!Objects.isNull(id))
-            this.userService.deleteUser(id);
+            userService.deleteUser(id);
     }
 }
