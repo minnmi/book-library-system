@@ -1,5 +1,5 @@
 CREATE TABLE revinfo (
-    rev integer NOT NULL,
+    rev integer NOT NULL AUTO_INCREMENT,
     revtstmp bigint,
     CONSTRAINT revinfo_pkey PRIMARY KEY (rev)
 );
