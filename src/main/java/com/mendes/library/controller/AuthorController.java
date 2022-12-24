@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/authors")
+@RequestMapping("/authors")
 @Slf4j
 public class AuthorController {
 
