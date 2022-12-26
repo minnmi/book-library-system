@@ -1,0 +1,4 @@
+flyway.driver=jdbc:mysql://localhost:3306/library
+flyway.user=mct
+flyway.password=password
+flyway.locations=filesystem:sql
