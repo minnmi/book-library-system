@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/publishers")
+@RequestMapping("/publishers")
 @Slf4j
 public class PublisherController {
 

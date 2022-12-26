@@ -1,12 +1,14 @@
 package com.mendes.library.model;
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Audited
 @Table(name = "user")
 public class User {
 

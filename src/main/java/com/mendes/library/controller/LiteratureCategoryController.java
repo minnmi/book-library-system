@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/literatureCategories")
+@RequestMapping("/literatureCategories")
 @Slf4j
 public class LiteratureCategoryController {
 
