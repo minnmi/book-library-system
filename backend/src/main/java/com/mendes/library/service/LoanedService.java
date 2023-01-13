@@ -16,13 +16,11 @@ import java.util.Optional;
 
 @Service
 public class LoanedService {
-
-    public static final double MAX_LOANED_BY_USER = 10;
-    public static final Integer NUM_DAYS = 7;
-    public static final float tolerance = 0.3f;
     private final LoanedRepository loanedRepository;
 
     private final UserRepository userRepository;
+
+    private final ConfigurationService configurationService;
 
     private final BookService bookService;
     private final ModelMapper modelMapper;
@@ -30,14 +28,13 @@ public class LoanedService {
 
 
     @Autowired
-    public LoanedService(LoanedRepository loanedRepository, UserRepository userRepository, BookService bookService, ModelMapper modelMapper) {
+    public LoanedService(LoanedRepository loanedRepository, UserRepository userRepository, BookService bookService, ConfigurationService configurationService, ModelMapper modelMapper) {
         this.loanedRepository = loanedRepository;
         this.userRepository = userRepository;
         this.bookService = bookService;
         this.modelMapper = modelMapper;
+        this.configurationService = configurationService;
     }
-
-
 
     public List<Loaned> findAllLoanedBooks() {
         return loanedRepository.findAll();
@@ -66,7 +63,7 @@ public class LoanedService {
         return loanedRepository.getQuantityLoaned(book);
     }
 
-    private boolean canLoan(Loaned loaned) {
+    private boolean canLoan(Loaned loaned) throws Exception {
         int numCopies = loaned.getBook().getQuantity(); // num de cópias do livro
         int numLoaned = getQuantityLoaned(loaned.getBook()); // num de alugueis deste livro
         int numLoanedByUser = loanedRepository.getQuantityLoanedByUser(loaned.getUser()); // num de alugueis des te usuários
@@ -74,7 +71,9 @@ public class LoanedService {
         if (loanedRepository.checkAlreadyLoan(loaned.getUser(), loaned.getBook()))
             return false;
 
-        var expr = ((numCopies - numLoaned) > tolerance * numCopies) && (numLoanedByUser < MAX_LOANED_BY_USER);
+        final var maximumNumberBooksUser = this.configurationService.getMaximumNumberBooksUser();
+        final var proportionBooksStock = this.configurationService.getProportionBooksStock();
+        var expr = ((numCopies - numLoaned) > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
         return expr;
     }
 
@@ -82,8 +81,9 @@ public class LoanedService {
         if (!this.canLoan(object))
             throw new Exception();
 
+        final var maximumBookingPeriod = this.configurationService.getMaximumBookingPeriod();
         object.setInitialDate(LocalDateTime.now());
-        object.setFinalDate(object.getInitialDate().plusDays(NUM_DAYS));
+        object.setFinalDate(object.getInitialDate().plusDays(maximumBookingPeriod));
 
         return loanedRepository.save(object);
     }

@@ -59,7 +59,7 @@ CREATE TABLE `book`
 );
 
 
-
+-- Indica que o usuário tem intenção de alugar um livro
 CREATE TABLE `booking`
 (
     `id`           bigint    NOT NULL,
