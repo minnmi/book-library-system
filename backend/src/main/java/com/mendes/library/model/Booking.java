@@ -1,12 +1,14 @@
 package com.mendes.library.model;
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
+@Audited
 @Table(name = "booking")
 public class Booking {
 

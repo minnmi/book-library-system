@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Audited
 @Table(name = "author")
 public class Author {
 

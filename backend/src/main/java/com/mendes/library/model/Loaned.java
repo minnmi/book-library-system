@@ -2,12 +2,14 @@ package com.mendes.library.model;
 
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@Audited
 @Data
 @Table(name = "loaned")
 public class Loaned {

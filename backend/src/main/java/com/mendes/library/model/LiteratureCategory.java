@@ -1,9 +1,12 @@
 package com.mendes.library.model;
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 
 @Entity
+@Audited
 @Data
 @Table(name = "literature_category")
 public class LiteratureCategory {

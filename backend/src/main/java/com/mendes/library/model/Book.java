@@ -1,12 +1,15 @@
 package com.mendes.library.model;
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Data
+@Audited
 @Table(name = "book",
 uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "isbn"})})
 public class Book {
@@ -36,5 +39,6 @@ public class Book {
 
     @JoinColumn(name = "literature_category_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private LiteratureCategory literatureCategory;
 }

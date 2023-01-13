@@ -1,11 +1,13 @@
 package com.mendes.library.model;
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Audited
 @Table(name = "publisher")
 public class Publisher {
 
