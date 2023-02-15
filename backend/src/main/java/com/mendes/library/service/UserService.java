@@ -8,6 +8,7 @@ import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +21,13 @@ public class UserService {
 
     private final ModelMapper modelMapper;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<User> findAllUser() {
@@ -41,6 +45,7 @@ public class UserService {
 
     public User insertUser(User object) {
         object.setId(null);
+        object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
         return userRepository.save(object);
     }
 
