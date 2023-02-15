@@ -25,8 +25,6 @@ public class Book {
 
     private Integer quantity;
 
-    private Boolean returned;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authorship",
             joinColumns = @JoinColumn(name = "book_id"),
