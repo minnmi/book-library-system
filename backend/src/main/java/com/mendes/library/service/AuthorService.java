@@ -65,11 +65,6 @@ public class AuthorService {
         this.authorRepository.deleteById(id);
     }
 
-//    public void delete(Long id) {
-//        authorRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
-//        this.authorRepository.deleteById(id);
-//    }
-
     /**
      * Update object with new informations
      *

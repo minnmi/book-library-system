@@ -2,7 +2,6 @@ package com.mendes.library.controller;
 
 import com.mendes.library.model.DTO.LoanedDTO.LoanedDTO;
 import com.mendes.library.model.Loaned;
-import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.service.LoanedService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/loans")
 @Slf4j
 public class LoanedController {
-    private final LoanedRepository loanedRepository;
 
     private final LoanedService loanedService;
 
     @Autowired
-    public LoanedController(LoanedService loanedService,
-                            LoanedRepository loanedRepository) {
+    public LoanedController(LoanedService loanedService) {
         this.loanedService = loanedService;
-        this.loanedRepository = loanedRepository;
     }
 
     @GetMapping("/find/all")
