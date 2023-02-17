@@ -44,7 +44,7 @@ public class LoanedController {
         return loanedService.convertEntityToDto(object);
     }
 
-    @GetMapping("/find/{userId}/loans")
+    @GetMapping("/find/{userId}")
     public List<LoanedDTO> findLoansByUser(@PathVariable Long userId) {
         return loanedService.findLoansByUser(userId)
                 .stream()
@@ -60,7 +60,7 @@ public class LoanedController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/find/{userId}/late-loans")
+    @GetMapping("/find/late-loans/{userId}")
     public List<LoanedDTO> findLateLoansByUser(@RequestBody LocalDateTime localDateTime, @PathVariable Long userId) {
         return loanedService.findLateLoansByUser(localDateTime, userId)
                 .stream()
@@ -70,7 +70,7 @@ public class LoanedController {
 
     @GetMapping("/find/initial-date")
     public List<LoanedDTO> findByInitialDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime from,
-                                             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
+                                             @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
         return loanedService.findByInitialDate(from, to)
                 .stream()
                 .map(object -> loanedService.convertEntityToDto(object))
@@ -79,9 +79,9 @@ public class LoanedController {
     }
 
 
-    @GetMapping("/find/end-date")
+    @GetMapping("/find/final-date")
     public List<LoanedDTO> findByFinalDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime from,
-                                             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
+                                             @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
         return loanedService.findByFinalDate(from, to)
                 .stream()
                 .map(object -> loanedService.convertEntityToDto(object))
