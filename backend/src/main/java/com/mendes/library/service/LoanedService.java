@@ -25,6 +25,7 @@ public class LoanedService {
     private final ConfigurationService configurationService;
 
     private final BookService bookService;
+
     private final ModelMapper modelMapper;
 
 
@@ -81,7 +82,7 @@ public class LoanedService {
 
     public Loaned insertLoaned(Loaned object) throws Exception {
         if (!this.canLoan(object))
-            throw new BusinessException("Book can't be loan!");
+            throw new Exception("Book can't be loan!");
 
         final var maximumBookingPeriod = this.configurationService.getMaximumBookingPeriod();
         object.setInitialDate(LocalDateTime.now());
@@ -104,8 +105,8 @@ public class LoanedService {
         return this.loanedRepository.findByFinalDate(from, to);
     }
 
-    public List<Loaned> findHistory(User user) {
-        return this.loanedRepository.findHistoryByUser(user);
+    public List<Loaned> findHistory(Long userId) {
+        return this.loanedRepository.findHistoryByUser(userId);
     }
 
     public Loaned convertDtoToEntity(LoanedDTO objectDTO) {

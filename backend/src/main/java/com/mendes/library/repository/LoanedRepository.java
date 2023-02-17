@@ -30,8 +30,8 @@ public interface LoanedRepository extends JpaRepository<Loaned, Long> {
     @Query("SELECT l FROM Loaned l where l.finalDate > :from and l.finalDate < :to")
     List<Loaned> findByFinalDate(LocalDateTime from, LocalDateTime to);
 
-    @Query("SELECT l FROM Loaned l WHERE l.user = :user ORDER BY l.id DESC")
-    List<Loaned> findHistoryByUser(User user);
+    @Query("SELECT l FROM Loaned l WHERE l.user.id = :userId ORDER BY l.id DESC")
+    List<Loaned> findHistoryByUser(Long userId);
 
     @Query("SELECT count(l.id) FROM Loaned l WHERE l.user = :user and l.returned = 0")
     public int getQuantityLoanedByUser(User user);
