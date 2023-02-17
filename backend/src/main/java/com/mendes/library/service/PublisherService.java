@@ -39,7 +39,6 @@ public class PublisherService {
 
     public Publisher insertPublisher(Publisher object) {
         object.setId(null);
-
         return publisherRepository.save(object);
     }
 

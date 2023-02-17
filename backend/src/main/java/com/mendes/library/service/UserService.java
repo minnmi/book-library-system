@@ -99,7 +99,7 @@ public class UserService {
         return modelMapper.map(objectDTO, User.class);
     }
 
-    public UserUpdateDTO convertEntityToUpdateDTO(User object) {
+    public UserUpdateDTO convertEntityToUpdateDto(User object) {
         return modelMapper.map(object, UserUpdateDTO.class);
     }
 

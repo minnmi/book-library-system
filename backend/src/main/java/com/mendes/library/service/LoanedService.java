@@ -1,10 +1,12 @@
 package com.mendes.library.service;
 
 import com.mendes.library.model.Book;
+import com.mendes.library.model.DTO.LoanedDTO.LoanedDTO;
 import com.mendes.library.model.Loaned;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.repository.UserRepository;
+import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,7 @@ public class LoanedService {
 
     public Loaned insertLoaned(Loaned object) throws Exception {
         if (!this.canLoan(object))
-            throw new Exception();
+            throw new BusinessException("Book can't be loan!");
 
         final var maximumBookingPeriod = this.configurationService.getMaximumBookingPeriod();
         object.setInitialDate(LocalDateTime.now());
@@ -104,6 +106,14 @@ public class LoanedService {
 
     public List<Loaned> findHistory(User user) {
         return this.loanedRepository.findHistoryByUser(user);
+    }
+
+    public Loaned convertDtoToEntity(LoanedDTO objectDTO) {
+        return modelMapper.map(objectDTO, Loaned.class);
+    }
+
+    public LoanedDTO convertEntityToDto(Loaned object) {
+        return modelMapper.map(object, LoanedDTO.class);
     }
 
 

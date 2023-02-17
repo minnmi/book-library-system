@@ -71,7 +71,7 @@ public class BookService {
                 if (optAuthor.isPresent()) {
                     authors.add(optAuthor.get());
                 } else {
-                    // throws...
+                    throw new ObjectNotFoundException("Object not found: " + optAuthor + " type " + Author.class.getName());
                 }
             }
         }

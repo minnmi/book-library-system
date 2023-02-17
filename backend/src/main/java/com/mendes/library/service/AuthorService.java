@@ -44,6 +44,7 @@ public class AuthorService {
     }
 
     public Author insertAuthor(Author object) {
+        object.setId(null);
         return authorRepository.save(object);
     }
 
