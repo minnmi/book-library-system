@@ -1,6 +1,6 @@
-package com.mendes.library.config;
+package com.mendes.library.config.security;
 
-import com.mendes.library.security.CustomUserDetailService;
+import com.mendes.library.config.security.user.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,6 +1,7 @@
-package com.mendes.library.security;
+package com.mendes.library.config.security.user;
 
 
+import com.mendes.library.config.security.user.CustomUserDetail;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

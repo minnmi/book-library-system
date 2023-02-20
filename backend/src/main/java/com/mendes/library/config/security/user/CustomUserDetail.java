@@ -1,4 +1,4 @@
-package com.mendes.library.security;
+package com.mendes.library.config.security.user;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
