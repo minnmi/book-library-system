@@ -23,7 +23,7 @@ CREATE TABLE `roles` (
 CREATE TABLE `users_roles` (
     `user_id` bigint NOT NULL,
     `role_id` bigint NOT NULL,
-     PRIMARY KEY (`user_id`, `role_id`)
+     PRIMARY KEY (`user_id`, `role_id`),
     CONSTRAINT `fk_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
     CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
@@ -56,7 +56,7 @@ CREATE TABLE `authority` (
 CREATE TABLE `role_authority` (
     `user_id` bigint NOT NULL,
     `authority_id` bigint NOT NULL,
-    PRIMARY KEY (`user_id`, authority_id)
+    PRIMARY KEY (`user_id`, authority_id),
     CONSTRAINT `fk_authority` FOREIGN KEY (`authority_id`) REFERENCES `authority` (`id`),
     CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
