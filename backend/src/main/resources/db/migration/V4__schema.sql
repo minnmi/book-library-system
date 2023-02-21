@@ -120,3 +120,10 @@ INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 21);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 22);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 23);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 24);
+
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 5);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 9);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 13);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 17);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 21);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 25);

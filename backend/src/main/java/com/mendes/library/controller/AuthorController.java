@@ -41,7 +41,7 @@ public class AuthorController {
     }
 
 
-    @PreAuthorize("hasAuthority('AUTHOR_VIEW')")
+    @PreAuthorize("hasAnyAuthority('AUTHOR_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public AuthorDTO findById(@PathVariable Long id) {
         logger.info("Consultando autor (ID = {})", id);
@@ -49,7 +49,7 @@ public class AuthorController {
         return authorService.convertEntityToDto(object);
     }
 
-    @PreAuthorize("hasAuthority('AUTHOR_INSERT')")
+    @PreAuthorize("hasAnyAuthority('AUTHOR_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthorDTO insertAuthor(@Valid @RequestBody AuthorDTO objectDTO) {
@@ -61,7 +61,7 @@ public class AuthorController {
     }
 
 
-    @PreAuthorize("hasAuthority('AUTHOR_UPDATE')")
+    @PreAuthorize("hasAnyAuthority('AUTHOR_UPDATE', 'ADMIN')")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AuthorDTO updateAuthor(@Valid @RequestBody AuthorDTO objectDTO, @PathVariable Long id) {
@@ -72,7 +72,7 @@ public class AuthorController {
         return authorService.convertEntityToDto(object);
     }
 
-    @PreAuthorize("hasAuthority('AUTHOR_DELETE')")
+    @PreAuthorize("hasAnyAuthority('AUTHOR_DELETE', 'ADMIN')")
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAuthor(@PathVariable Long id) {
