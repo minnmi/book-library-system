@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
     public List<UserDTO> findAllUsers() {
         return this.userService
@@ -38,12 +40,14 @@ public class UserController {
                 .toList();
     }
 
+    @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public UserDTO findById(@PathVariable Long id) {
         User user = userService.findById(id);
         return userService.convertEntityToDto(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('USER_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO insertUser(@Valid @RequestBody UserDTO objectDTO) {
@@ -52,6 +56,8 @@ public class UserController {
         return userService.convertEntityToDto(user);
     }
 
+
+    @PreAuthorize("hasAnyAuthority('USER_UPDATE', 'ADMIN')")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUser(@Valid @RequestBody UserDTO objectDTO, @PathVariable Long id) {
@@ -60,6 +66,7 @@ public class UserController {
         return userService.convertEntityToDto(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('USER_DELETE', 'ADMIN')")
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long id) {

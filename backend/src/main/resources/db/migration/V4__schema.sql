@@ -99,6 +99,10 @@ INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 21);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 22);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 23);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 24);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 25);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 26);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 27);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 28);
 
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 5);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 6);
@@ -120,6 +124,10 @@ INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 21);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 22);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 23);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 24);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 25);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 26);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 27);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 28);
 
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 5);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (3, 9);
