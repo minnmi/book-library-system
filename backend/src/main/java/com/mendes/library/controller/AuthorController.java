@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +30,7 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @PreAuthorize("hasAuthority('AUTHOR_VIEW')")
+    @PreAuthorize("hasAnyAuthority('AUTHOR_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
     public List<AuthorDTO> findAllAuthors() {
         logger.info("Consultando todos autores");

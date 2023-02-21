@@ -2,6 +2,8 @@ package com.mendes.library.config.security.user;
 
 
 import com.mendes.library.config.security.user.CustomUserDetail;
+import com.mendes.library.model.Authority;
+import com.mendes.library.model.Role;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,7 +39,8 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
 
         User user = userOpt.get();
-        return new CustomUserDetail(user.getEmail(), user.getPassword(), user.getAuthorities());
+        return new CustomUserDetail(user.getEmail(), user.getPassword(), user.getRoles().stream()
+                .flatMap(u -> u.getAuthorities().stream()).map(Authority::getName).collect(Collectors.toSet()));
     }
 
 }

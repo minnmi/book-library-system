@@ -21,13 +21,11 @@ public class UserService {
 
     private final ModelMapper modelMapper;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<User> findAllUser() {
@@ -45,7 +43,7 @@ public class UserService {
 
     public User insertUser(User object) {
         object.setId(null);
-        object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
+        object.setPassword(object.getPassword());
         return userRepository.save(object);
     }
 

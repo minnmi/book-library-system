@@ -11,32 +11,13 @@ CREATE TABLE `roles` (
     PRIMARY KEY (`id`)
 );
 
--- CREATE TABLE `roles_aud` (
---      id bigint NOT NULL,
---      rev integer NOT NULL,
---      revtype smallint,
---      name varchar(255) NOT NULL,
---      PRIMARY KEY (id, rev),
---      CONSTRAINT fk_roles_revinfo FOREIGN KEY (rev) REFERENCES revinfo (rev)
--- );
-
 CREATE TABLE `users_roles` (
     `user_id` bigint NOT NULL,
     `role_id` bigint NOT NULL,
      PRIMARY KEY (`user_id`, `role_id`),
     CONSTRAINT `fk_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
-    CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    CONSTRAINT `fk_users_roles_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
-
--- CREATE TABLE `users_roles_aud` (
---    id bigint NOT NULL,
---    rev integer NOT NULL,
---    revtype smallint,
---    `user_id` bigint NOT NULL,
---    `role_id` bigint NOT NULL,
---    PRIMARY KEY (id, rev),
---    CONSTRAINT fk_usro_revinfo FOREIGN KEY (rev) REFERENCES revinfo (rev)
--- );
 
 CREATE TABLE `authority` (
     `id` bigint NOT NULL AUTO_INCREMENT,
@@ -44,76 +25,55 @@ CREATE TABLE `authority` (
      PRIMARY KEY (`id`)
 );
 
--- CREATE TABLE `authority_aud` (
---     id bigint NOT NULL,
---     rev integer NOT NULL,
---     revtype smallint,
---     `name` varchar(255) NOT NULL unique,
---     PRIMARY KEY (id, rev),
---     CONSTRAINT fk_authority_revinfo FOREIGN KEY (rev) REFERENCES revinfo (rev)
--- );
 
 CREATE TABLE `role_authority` (
-    `user_id` bigint NOT NULL,
+    `role_id` bigint NOT NULL,
     `authority_id` bigint NOT NULL,
-    PRIMARY KEY (`user_id`, authority_id),
+    PRIMARY KEY (`role_id`, authority_id),
     CONSTRAINT `fk_authority` FOREIGN KEY (`authority_id`) REFERENCES `authority` (`id`),
-    CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    CONSTRAINT `fk_role_authority_user` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 );
 
--- CREATE TABLE `role_authority_aud` (
---     id bigint NOT NULL,
---     rev integer NOT NULL,
---     revtype smallint,
---     `user_id` bigint NOT NULL,
---     `role_id` bigint NOT NULL,
---     PRIMARY KEY (id, rev),
---     CONSTRAINT fk_role_authority_revinfo FOREIGN KEY (rev) REFERENCES revinfo (rev)
--- );
-
------------------------ ROLES INSERT -----------------------------------------------------------------------------------
 INSERT INTO `roles` (`name`) VALUES ('ADMIN');
 INSERT INTO `roles` (`name`) VALUES ('LIBRARIAN');
 INSERT INTO `roles` (`name`) VALUES ('USER');
 
-INSERT INTO `authority` (`name`) VALUES  (`USER_VIEW`),
-                                         (`USER_INSERT`),
-                                         (`USER_UPDATE`),
-                                         (`USER_DELETE`),
-                                         (`AUTHOR_VIEW`),
-                                         (`AUTHOR_INSERT`),
-                                         (`AUTHOR_UPDATE`),
-                                         (`AUTHOR_DELETE`),
-                                         (`BOOK_VIEW`),
-                                         (`BOOK_INSERT`),
-                                         (`BOOK_UPDATE`),
-                                         (`BOOK_DELETE`),
-                                         (`BOOKING_VIEW`),
-                                         (`BOOKING_INSERT`),
-                                         (`BOOKING_UPDATE`),
-                                         (`BOOKING_DELETE`),
-                                         (`LITERATURE_CATEGORY_VIEW`),
-                                         (`LITERATURE_CATEGORY_INSERT`),
-                                         (`LITERATURE_CATEGORY_UPDATE`),
-                                         (`LITERATURE_CATEGORY_DELETE`),
-                                         (`LOANED_VIEW`),
-                                         (`LOANED_INSERT`),
-                                         (`LOANED_UPDATE`),
-                                         (`LOANED_DELETE`),
-                                         (`PUBLISHER_VIEW`),
-                                         (`PUBLISHER_INSERT`),
-                                         (`PUBLISHER_UPDATE`),
-                                         (`PUBLISHER_DELETE`);
+INSERT INTO `authority` (`name`) VALUES ('USER_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('USER_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('USER_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('USER_DELETE');
+INSERT INTO `authority` (`name`) VALUES ('AUTHOR_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('AUTHOR_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('AUTHOR_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('AUTHOR_DELETE');
+INSERT INTO `authority` (`name`) VALUES ('BOOK_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('BOOK_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('BOOK_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('BOOK_DELETE');
+INSERT INTO `authority` (`name`) VALUES ('BOOKING_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('BOOKING_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('BOOKING_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('BOOKING_DELETE');
+INSERT INTO `authority` (`name`) VALUES ('LITERATURE_CATEGORY_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('LITERATURE_CATEGORY_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('LITERATURE_CATEGORY_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('LITERATURE_CATEGORY_DELETE');
+INSERT INTO `authority` (`name`) VALUES ('LOANED_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('LOANED_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('LOANED_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('LOANED_DELETE');
+INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_VIEW');
+INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_INSERT');
+INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_UPDATE');
+INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_DELETE');
 
+INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (2, 'admin@lib.com', 'Admin', '123456', 'admin', 1);
+INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (3, 'lib_foo@lib.com', 'Alex', '$2a$12$T0bduOIabfCuUOqTQIe7.enMuh7sYlLPZ765Zapj2xVYP4RvyfoPe', 'lib.alex', 1);
+INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (4, 'user_lib@lib.com', 'John', '$2a$12$T0bduOIabfCuUOqTQIe7.enMuh7sYlLPZ765Zapj2xVYP4RvyfoPe', 'lib.john', 1);
 
-INSERT INTO `users` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (2, 'admin@lib.com', 'Admin', '$2a$12$T0bduOIabfCuUOqTQIe7.enMuh7sYlLPZ765Zapj2xVYP4RvyfoPe', 'admin', 1);
-INSERT INTO `users` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (3, 'lib_foo@lib.com', 'Alex', '$2a$12$T0bduOIabfCuUOqTQIe7.enMuh7sYlLPZ765Zapj2xVYP4RvyfoPe', 'lib.alex', 1);
-INSERT INTO `users` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (4, 'user_lib@lib.com', 'John', '$2a$12$T0bduOIabfCuUOqTQIe7.enMuh7sYlLPZ765Zapj2xVYP4RvyfoPe', 'lib.john', 1);
-
-INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (2, 1); -- user Admin has role ADMIN
-INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (3, 2); -- user Alex has role LIBRARIAN
-INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (4, 4); -- user John has role USER
-INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (1, 2); -- user Test has role LIBRARIAN
+INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (2, 1);
+INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (3, 2);
+INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (4, 3);
 
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 1);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 2);

@@ -1,1 +1,0 @@
-insert into user(id, email, name, password) values (1, 'test@test.com', 'Test', 'password');
