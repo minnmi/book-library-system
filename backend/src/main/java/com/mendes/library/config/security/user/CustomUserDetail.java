@@ -1,6 +1,7 @@
 package com.mendes.library.config.security.user;
 
 import com.mendes.library.model.Authority;
+import com.mendes.library.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CustomUserDetail implements UserDetails {
+
     private String password;
     private String username;
 
