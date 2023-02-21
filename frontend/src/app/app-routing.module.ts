@@ -21,6 +21,38 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'author',
+        loadChildren: () =>
+          import('./business/views/author/author-routing.module').then((m) => m.AuthorRoutingModule)
+      }, {
+        path: 'book',
+        loadChildren: () =>
+          import('./business/views/book/book-routing.module').then((m) => m.BookRoutingModule)
+      }, {
+        path: 'booking',
+        loadChildren: () =>
+          import('./business/views/booking/booking-routing.module').then((m) => m.BookingRoutingModule)
+      },{
+        path: 'configuration',
+        loadChildren: () =>
+          import('./business/views/configuration/configuration-routing.module').then((m) => m.ConfigurationRoutingModule)
+      }, {
+        path: 'literature-category',
+        loadChildren: () =>
+          import('./business/views/literature-category/literature-category-routing.module').then((m) => m.LiteratureCategoryRoutingModule)
+      }, {
+        path: 'loaned',
+        loadChildren: () =>
+          import('./business/views/loaned/loaned-routing.module').then((m) => m.LoanedRoutingModule)
+      }, {
+        path: 'publisher',
+        loadChildren: () =>
+          import('./business/views/publisher/publisher-routing.module').then((m) => m.PublisherRoutingModule)
+      }, {
+        path: 'user',
+        loadChildren: () =>
+          import('./business/views/user/user-routing.module').then((m) => m.UserRoutingModule)
+      }, {
         path: 'dashboard',
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)

@@ -12,6 +12,59 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
+    name: 'Cadastros Básicos'
+  },
+  {
+    name: 'Autores',
+    url: '/author',
+    iconComponent: { name: 'cil-people' }
+  },
+  {
+    name: 'Livros',
+    url: '/book',
+    iconComponent: { name: 'cil-book' }
+  },
+  {
+    name: 'Editoras',
+    url: '/publisher',
+    iconComponent: { name: 'cil-factory' }
+  },
+  {
+    name: 'Categoria Literária',
+    url: '/literature-category',
+    iconComponent: { name: 'cil-bookmark' }
+  }, {
+    name: 'Usuários',
+    url: '/user',
+    iconComponent: { name: 'cil-user' }
+  },{
+    title: true,
+    name: 'Ações',
+  }, {
+    name: 'Reservas',
+    url: '/booking',
+    iconComponent: { name: 'cil-short-text' }
+  },{
+    name: 'Empréstimo',
+    url: '/loaned',
+    iconComponent: { name: 'cil-short-text' }
+  },
+  {
+    name: 'Relatórios',
+    url: '/reports',
+    iconComponent: { name: 'cil-spreadsheet' }
+  },
+  {
+    title: true,
+    name: 'Configuração'
+  },
+  {
+    name: 'Configuração',
+    url: '/configuration',
+    iconComponent: { name: 'cil-factory' }
+  },
+  {
+    title: true,
     name: 'Theme'
   },
   {
