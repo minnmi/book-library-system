@@ -1,25 +1,32 @@
 package com.mendes.library.config.security.user;
 
+import com.mendes.library.model.Authority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CustomUserDetail implements UserDetails {
     private String password;
-    private String useraname;
+    private String username;
 
-    private List<SimpleGrantedAuthority> authorities;
+
+    private Set<SimpleGrantedAuthority> authorities;
 
     public CustomUserDetail(String username, String password) {
-        this.useraname = username;
+        this.username = username;
         this.password = password;
     }
 
-    public CustomUserDetail(String username, String password, List<String> authorities) {
+    public CustomUserDetail(String username, String password, Set<String> authorities) {
         this(username, password);
-        this.authorities = authorities.stream().map(SimpleGrantedAuthority::new).toList();
+        this.authorities = authorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -34,7 +41,7 @@ public class CustomUserDetail implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.useraname;
+        return this.username;
     }
 
     @Override
