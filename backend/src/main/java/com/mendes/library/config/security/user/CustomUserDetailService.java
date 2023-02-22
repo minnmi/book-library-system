@@ -27,6 +27,8 @@ public class CustomUserDetailService implements UserDetailsService {
         Optional<User> userOpt = Optional.ofNullable(userRepository.findByUsername(username).orElseThrow(() -> {
             return new UsernameNotFoundException("Username: " + username + "not found");
         }));
+//        List<User> userd = userRepository.findAll();
+//        Optional<User> userOpt = this.userRepository.findByEmail(email);
 
         if (userOpt.isEmpty())
             throw new UsernameNotFoundException(username);
