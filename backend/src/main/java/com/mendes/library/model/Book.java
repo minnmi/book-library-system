@@ -26,6 +26,9 @@ public class Book {
 
     private Integer quantity;
 
+    @Column(name = "book_cover")
+    private String bookCover;
+
     @NotAudited
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authorship",

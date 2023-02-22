@@ -42,10 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
                     }
-                })
-                .and()
-                .httpBasic()
-                .and()
+                }).and()
+                .logout().and()
+                .httpBasic().and()
                 .csrf().disable();
     }
 

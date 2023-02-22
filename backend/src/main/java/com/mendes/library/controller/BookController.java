@@ -6,14 +6,19 @@ import com.mendes.library.model.DTO.BookDTO.BookDTO;
 import com.mendes.library.service.BookService;
 import com.mendes.library.service.QRCodeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,7 +70,21 @@ public class BookController {
         return bookService.convertEntityToDto(object);
     }
 
+
     @PreAuthorize("hasAnyAuthority('BOOK_DELETE', 'ADMIN')")
+    @PostMapping(value = "/{id}/book-cover/", consumes = "multipart/form-data")
+    public void updateBookCover(@PathVariable("id") Long bookId,
+                                @RequestParam("image") MultipartFile multipartFile) throws IOException, URISyntaxException {
+       this.bookService.updateBookCover(bookId, multipartFile);
+    }
+
+    @GetMapping(value = "/{id}/book-cover/")
+    public void getBookCover(@PathVariable("id") Long bookId, HttpServletResponse response) throws IOException{
+        InputStream inputStream = this.bookService.getBookCover(bookId);
+        IOUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+    }
+    
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBook(@PathVariable Long id) {
