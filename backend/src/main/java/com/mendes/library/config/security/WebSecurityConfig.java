@@ -1,52 +1,76 @@
 package com.mendes.library.config.security;
 
 import com.mendes.library.config.security.user.CustomUserDetailService;
+import com.mendes.library.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserRepository userRepository;
+
+    @Autowired
+    public WebSecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest rq, HttpServletResponse rp, Authentication a) {
+            }
+        };
+    }
+
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest rq, HttpServletResponse rp, AuthenticationException e) {
+
+            }
+        };
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .anyRequest().authenticated()
-//                .antMatchers("/api/login").permitAll()
+                .anyRequest()
+                    .authenticated()
                 .and()
-                .formLogin()
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-                    }
-                })
+                    .formLogin()
+                        .successHandler(this.authenticationSuccessHandler())
+                        .failureHandler(this.authenticationFailureHandler())
                 .and()
-                .httpBasic()
+                        .logout()
                 .and()
-                .csrf().disable();
+                        .httpBasic()
+                .and()
+                    .csrf()
+                        .disable();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomUserDetailService();
+        return new CustomUserDetailService(this.userRepository);
     }
 
     @Bean

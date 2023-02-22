@@ -103,4 +103,13 @@ public class LoanedController {
         return loanedService.convertEntityToDto(object);
     }
 
+    @PostMapping()
+    public LoanedDTO loanBook(Long bookId) {
+
+    }
+
+    public LoanedDTO returnBook(Long loanId) {
+
+    }
+
 }
