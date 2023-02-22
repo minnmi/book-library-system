@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,15 +22,13 @@ public class LoanedDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
 
-    @JsonFormat(pattern = "MM/dd/yyyy HH:mm")
     private LocalDateTime initialDate;
-    @JsonFormat(pattern = "MM/dd/yyyy HH:mm")
+
     private LocalDateTime finalDate;
     private User user;
     private Book book;
     private Integer returned;
 
-    @JsonFormat(pattern = "MM/dd/yyyy HH:mm")
     private LocalDateTime returnedDate;
 
 }

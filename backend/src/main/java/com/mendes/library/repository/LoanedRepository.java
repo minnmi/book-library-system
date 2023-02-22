@@ -36,6 +36,6 @@ public interface LoanedRepository extends JpaRepository<Loaned, Long> {
     @Query("SELECT count(l.id) FROM Loaned l WHERE l.user = :user and l.returned = 0")
     public int getQuantityLoanedByUser(User user);
 
-    @Query("SELECT CASE WHEN count(l.id) > 0 THEN true ELSE false END FROM Loaned l WHERE l.user = :user AND l.book = :book AND l.returned = 0")
-    public boolean checkAlreadyLoan(User user, Book book);
+    @Query("SELECT CASE WHEN count(l.id) > 0 THEN true ELSE false END FROM Loaned l WHERE l.user.id = :userId AND l.book.id = :bookId AND l.returned = 0")
+    public boolean checkAlreadyLoan(Long userId, Long bookId);
 }
