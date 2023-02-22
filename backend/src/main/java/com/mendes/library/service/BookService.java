@@ -9,15 +9,19 @@ import com.mendes.library.repository.BookRepository;
 import com.mendes.library.repository.LiteratureCategoryRepository;
 import com.mendes.library.repository.PublisherRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class BookService {
@@ -32,13 +36,16 @@ public class BookService {
 
     private final LiteratureCategoryRepository literatureCategoryRepository;
 
+    private final StorageService storageService;
+
     @Autowired
-    public BookService(BookRepository bookRepository, ModelMapper modelMapper, AuthorRepository authorRepository, PublisherRepository publisherRepository, LiteratureCategoryRepository literatureCategoryRepository) {
+    public BookService(BookRepository bookRepository, ModelMapper modelMapper, AuthorRepository authorRepository, PublisherRepository publisherRepository, LiteratureCategoryRepository literatureCategoryRepository, StorageService storageService) {
         this.bookRepository = bookRepository;
         this.modelMapper = modelMapper;
         this.authorRepository = authorRepository;
         this.publisherRepository = publisherRepository;
         this.literatureCategoryRepository = literatureCategoryRepository;
+        this.storageService = storageService;
     }
 
     public List<Book> findAllBooks() {
@@ -77,11 +84,6 @@ public class BookService {
         }
         object.getAuthors().clear();
         object.getAuthors().addAll(authors);
-//        final var publisher = this.publisherRepository.findById(object.getPublisher().getId()).get();
-//        object.setPublisher(publisher);
-//        final var literatureCategory = this.literatureCategoryRepository.findById(object.getLiteratureCategory().getId()).get();
-//        object.setLiteratureCategory(literatureCategory);
-
         return bookRepository.save(object);
     }
 
@@ -104,6 +106,22 @@ public class BookService {
     }
 
 
+    public void updateBookCover(Long bookId, MultipartFile file) throws IOException, URISyntaxException {
+        Book book = this.findById(bookId);
+
+        if (StringUtils.isNotBlank(book.getBookCover())) {
+            this.storageService.deleteFile(book.getBookCover());
+        }
+
+        String pathToFile = this.storageService.storeFile(file);
+        book.setBookCover(pathToFile);
+        this.bookRepository.save(book);
+    }
+
+    public InputStream getBookCover(Long bookId) throws IOException {
+        Book book = this.findById(bookId);
+        return this.storageService.readFile(book.getBookCover());
+    }
     /**
      * Update object with new informations
      *
@@ -131,5 +149,4 @@ public class BookService {
     public BookDTO convertEntityToDto(Book object) {
         return modelMapper.map(object, BookDTO.class);
     }
-
 }
