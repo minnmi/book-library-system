@@ -6,6 +6,7 @@ import com.mendes.library.service.PublisherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class PublisherController {
         this.publisherService = publisherService;
     }
 
+    @PreAuthorize("hasAnyAuthority('PUBLISHER_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
     public List<PublisherDTO> findAllPublishers() {
         return publisherService.findAllPublishers()
@@ -32,12 +34,14 @@ public class PublisherController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyAuthority('PUBLISHER_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public PublisherDTO findById(@PathVariable Long id) {
         Publisher object = publisherService.findById(id);
         return publisherService.convertEntityToDto(object);
     }
 
+    @PreAuthorize("hasAnyAuthority('PUBLISHER_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public PublisherDTO insertPublisher(@Valid @RequestBody PublisherDTO objectDTO) {
@@ -47,6 +51,7 @@ public class PublisherController {
         return publisherService.convertEntityToDto(object);
     }
 
+    @PreAuthorize("hasAnyAuthority('PUBLISHER_UPDATE', 'ADMIN')")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PublisherDTO updatePublisher(@Valid @RequestBody PublisherDTO objectDTO, @PathVariable Long id) {
@@ -56,6 +61,7 @@ public class PublisherController {
         return publisherService.convertEntityToDto(object);
     }
 
+    @PreAuthorize("hasAnyAuthority('PUBLISHER_DELETE', 'ADMIN')")
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAuthor(@PathVariable Long id) {

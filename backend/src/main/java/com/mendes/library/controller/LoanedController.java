@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class LoanedController {
         this.loanedService = loanedService;
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
     public List<LoanedDTO> findAllLoans() {
         return loanedService.findAllLoanedBooks()
@@ -34,12 +36,14 @@ public class LoanedController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public LoanedDTO findById(@PathVariable Long id) {
         Loaned object = loanedService.findById(id);
         return loanedService.convertEntityToDto(object);
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/{userId}")
     public List<LoanedDTO> findLoansByUser(@PathVariable Long userId) {
         return loanedService.findLoansByUser(userId)
@@ -48,6 +52,7 @@ public class LoanedController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/{bookId}/books")
     public List<LoanedDTO> findLoansByBook(@PathVariable Long bookId) {
         return loanedService.findLoansByBook(bookId)
@@ -56,6 +61,7 @@ public class LoanedController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/late-loans/{userId}")
     public List<LoanedDTO> findLateLoansByUser(@RequestBody LocalDateTime localDateTime, @PathVariable Long userId) {
         return loanedService.findLateLoansByUser(localDateTime, userId)
@@ -64,6 +70,7 @@ public class LoanedController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/initial-date")
     public List<LoanedDTO> findByInitialDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime from,
                                              @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
@@ -75,6 +82,7 @@ public class LoanedController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/final-date")
     public List<LoanedDTO> findByFinalDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime from,
                                              @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
@@ -85,6 +93,7 @@ public class LoanedController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find-history/{userId}")
     public List<LoanedDTO> findHistory(@PathVariable Long userId) {
         return loanedService.findHistory(userId)
@@ -93,7 +102,7 @@ public class LoanedController {
                 .collect(Collectors.toList());
     }
 
-
+    @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public LoanedDTO insertLoan(@Valid @RequestBody LoanedDTO objectDTO) throws Exception {

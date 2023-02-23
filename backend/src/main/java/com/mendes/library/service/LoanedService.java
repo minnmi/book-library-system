@@ -1,5 +1,7 @@
 package com.mendes.library.service;
 
+import com.mendes.library.config.security.user.CustomUserDetail;
+import com.mendes.library.config.security.user.CustomUserDetailService;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.DTO.LoanedDTO.LoanedDTO;
 import com.mendes.library.model.Loaned;
@@ -10,6 +12,9 @@ import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -67,18 +72,25 @@ public class LoanedService {
         return loanedRepository.getQuantityLoaned(book);
     }
 
-    private boolean canLoan(Loaned loaned) throws Exception {
-        int numCopies = loaned.getBook().getQuantity(); // num de cópias do livro
-        int numLoaned = getQuantityLoaned(loaned.getBook()); // num de alugueis deste livro
+    private void validateLoan(Loaned loaned) throws Exception {
+        var book = bookService.findById(loaned.getBook().getId());
+        var user = loaned.getUser();
+
+        int numCopies = book.getQuantity(); // num de cópias do livro
+        int numLoaned = getQuantityLoaned(book); // num de alugueis deste livro
         int numLoanedByUser = loanedRepository.getQuantityLoanedByUser(loaned.getUser()); // num de alugueis des te usuários
 
-        if (loanedRepository.checkAlreadyLoan(loaned.getUser(), loaned.getBook()))
-            return false;
+        if (loanedRepository.checkAlreadyLoan(user.getId(), book.getId()))
+            throw new BusinessException("O usuário já tem uma cópia do livro");
 
         final var maximumNumberBooksUser = this.configurationService.getMaximumNumberBooksUser();
         final var proportionBooksStock = this.configurationService.getProportionBooksStock();
-        var expr = ((numCopies - numLoaned) > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
-        return expr;
+
+        if ((numCopies - numLoaned) > proportionBooksStock * numCopies)
+            throw new BusinessException("Limite de estoque atingido");
+
+        if (numLoanedByUser < maximumNumberBooksUser)
+            throw new BusinessException("O usuário já alugou a quantidade máxima de livros permitida");
     }
 
     private boolean canLoanBook(Long bookId) throws Exception {
@@ -99,8 +111,10 @@ public class LoanedService {
     }
 
     public Loaned insertLoaned(Loaned object) throws Exception {
-        if (!this.canLoan(object))
-            throw new Exception("Book can't be loan!");
+//        var user = SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail currentPrincipalName = (CustomUserDetail) authentication.getPrincipal();
+        validateLoan(object);
 
         final var maximumBookingPeriod = this.configurationService.getMaximumBookingPeriod();
         object.setInitialDate(LocalDateTime.now());
