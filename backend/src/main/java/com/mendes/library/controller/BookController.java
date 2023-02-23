@@ -10,6 +10,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +34,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
     public List<BookDTO> findAllBooks() {
         return bookService.findAllBooks()
@@ -41,12 +43,14 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public BookDTO findById(@PathVariable Long id) {
         Book object = bookService.findById(id);
         return bookService.convertEntityToDto(object);
     }
 
+    @PreAuthorize("hasAnyAuthority('BOOK_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public BookDTO insertBook(@Valid @RequestBody BookDTO objectDTO) {
@@ -56,6 +60,7 @@ public class BookController {
         return bookService.convertEntityToDto(object);
     }
 
+    @PreAuthorize("hasAnyAuthority('BOOK_UPDATE', 'ADMIN')")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO updateBook(@Valid @RequestBody BookDTO objectDTO, @PathVariable Long id) {
@@ -65,6 +70,8 @@ public class BookController {
         return bookService.convertEntityToDto(object);
     }
 
+
+    @PreAuthorize("hasAnyAuthority('BOOK_DELETE', 'ADMIN')")
     @PostMapping(value = "/{id}/book-cover/", consumes = "multipart/form-data")
     public void updateBookCover(@PathVariable("id") Long bookId,
                                 @RequestParam("image") MultipartFile multipartFile) throws IOException, URISyntaxException {
@@ -77,13 +84,14 @@ public class BookController {
         IOUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
     }
-
+    
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping(value = "/qr-code/{id}", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getBookQRCode(@PathVariable Long id) throws IOException, WriterException {
         var width = 400;

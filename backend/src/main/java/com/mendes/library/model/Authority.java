@@ -10,8 +10,6 @@ import java.util.Set;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "authority")
 public class Authority {
 
@@ -23,8 +21,4 @@ public class Authority {
 
     @ManyToMany(mappedBy = "authorities")
     private Set<Role> roles;
-
-    public Authority(String name) {
-
-    }
 }

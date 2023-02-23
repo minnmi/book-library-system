@@ -8,7 +8,8 @@ import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +22,11 @@ public class UserService {
 
     private final ModelMapper modelMapper;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<User> findAllUser() {
@@ -45,7 +44,7 @@ public class UserService {
 
     public User insertUser(User object) {
         object.setId(null);
-        object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
+        object.setPassword(object.getPassword());
         return userRepository.save(object);
     }
 
@@ -72,6 +71,21 @@ public class UserService {
             throw new IllegalArgumentException("User can't be null");
         }
         this.userRepository.deleteById(id);
+    }
+
+
+    public Optional<User> loggedUser(String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        if (currentPrincipalName.isEmpty()) {
+            throw new ObjectNotFoundException("Logged User Not Found!");
+        }
+        try {
+            Optional<User> user = userRepository.findByUsername(username);
+            return user;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

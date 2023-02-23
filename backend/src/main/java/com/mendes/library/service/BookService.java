@@ -132,12 +132,12 @@ public class BookService {
     private void toUpdateBook(Book newObject, Book object) {
         newObject.setName(object.getName());
         newObject.setIsbn(object.getIsbn());
-        if (Objects.isNull(newObject.getAuthors())) {
-            newObject.setAuthors(object.getAuthors());
-        } else {
-            newObject.getAuthors().clear();
-            newObject.getAuthors().addAll(object.getAuthors());
-        }
+//        if (Objects.isNull(newObject.getAuthors())) {
+//            newObject.setAuthors(object.getAuthors());
+//        } else {
+//            newObject.getAuthors().clear();
+//            newObject.getAuthors().addAll(object.getAuthors());
+//        }
         newObject.setPublisher(object.getPublisher());
         newObject.setLiteratureCategory(object.getLiteratureCategory());
     }
