@@ -1,5 +1,6 @@
 package com.mendes.library.service;
 
+import com.mendes.library.config.security.user.CustomUserDetail;
 import com.mendes.library.model.DTO.UserDTO.UserDTO;
 import com.mendes.library.model.DTO.UserDTO.UserUpdateDTO;
 import com.mendes.library.model.User;
@@ -8,8 +9,8 @@ import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,19 +74,13 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    public User getLoggedUser() {
+        CustomUserDetail userDetail = (CustomUserDetail)SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
 
-    public Optional<User> loggedUser(String username) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        if (currentPrincipalName.isEmpty()) {
-            throw new ObjectNotFoundException("Logged User Not Found!");
-        }
-        try {
-            Optional<User> user = userRepository.findByUsername(username);
-            return user;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return this.findById(userDetail.getId());
     }
 
     /**

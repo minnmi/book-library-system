@@ -9,20 +9,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CustomUserDetail implements UserDetails {
-
+    private Long id;
     private String password;
     private String username;
 
 
     private Set<SimpleGrantedAuthority> authorities;
 
-    public CustomUserDetail(String username, String password) {
+    public CustomUserDetail(Long id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public CustomUserDetail(String username, String password, Set<String> authorities) {
-        this(username, password);
+    public CustomUserDetail(Long id, String username, String password, Set<String> authorities) {
+        this(id, username, password);
         this.authorities = authorities.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
@@ -31,6 +32,10 @@ public class CustomUserDetail implements UserDetails {
     @Override
     public Collection<SimpleGrantedAuthority> getAuthorities() {
         return this.authorities;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

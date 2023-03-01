@@ -6,12 +6,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-    CustomUserDetailService userDetailService;
+    private final UserDetailsService userDetailService;
 
-    public CustomAuthenticationProvider(CustomUserDetailService customUserDetailService) {
+    public CustomAuthenticationProvider(UserDetailsService customUserDetailService) {
         this.userDetailService = customUserDetailService;
     }
 
@@ -20,11 +20,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String email = (String)auth.getName();
         String password = (String)auth.getCredentials();
         UserDetails userDetails = this.userDetailService.loadUserByUsername(email);
-
         if (password.equals(userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(
+                    userDetails,
                     userDetails.getUsername(),
-                    userDetails.getPassword(),
                     userDetails.getAuthorities());
         } else {
             throw new BadCredentialsException("Wrong password.");

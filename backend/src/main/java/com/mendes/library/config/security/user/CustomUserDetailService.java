@@ -7,6 +7,7 @@ import com.mendes.library.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -16,27 +17,29 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-
     public CustomUserDetailService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOpt = Optional.ofNullable(userRepository.findByUsername(username).orElseThrow(() -> {
-            return new UsernameNotFoundException("Username: " + username + "not found");
-        }));
-//        List<User> userd = userRepository.findAll();
-//        Optional<User> userOpt = this.userRepository.findByEmail(email);
+        Optional<User> userOpt = userRepository.findByUsername(username);
 
         if (userOpt.isEmpty())
             throw new UsernameNotFoundException(username);
 
         User user = userOpt.get();
-        return new CustomUserDetail(user.getEmail(), user.getPassword(), user.getRoles().stream()
-                .flatMap(u -> u.getAuthorities().stream()).map(Authority::getName).collect(Collectors.toSet()));
-    }
 
+        return new CustomUserDetail(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getRoles()
+                        .parallelStream()
+                        .flatMap(u -> u.getAuthorities().parallelStream())
+                        .map(Authority::getName)
+                        .collect(Collectors.toSet()));
+    }
 
 }

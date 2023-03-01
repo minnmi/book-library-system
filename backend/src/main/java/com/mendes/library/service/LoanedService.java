@@ -27,6 +27,7 @@ public class LoanedService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
     private final ConfigurationService configurationService;
 
     private final BookService bookService;
@@ -90,6 +91,23 @@ public class LoanedService {
 
         if (numLoanedByUser < maximumNumberBooksUser)
             throw new BusinessException("O usuário já alugou a quantidade máxima de livros permitida");
+    }
+
+    private boolean canLoanBook(Long bookId) throws Exception {
+        Book book = this.bookService.findById(bookId);
+        int numCopies = book.getQuantity(); // num de cópias do livro
+        int numLoaned = getQuantityLoaned(book); // num de alugueis deste livro
+
+        var currentUser = this.userService.getLoggedUser();
+        int numLoanedByUser = loanedRepository.getQuantityLoanedByUser(currentUser); // num de alugueis des te usuários
+
+        if (loanedRepository.checkAlreadyLoan(currentUser, book))
+            return false;
+
+        final var maximumNumberBooksUser = this.configurationService.getMaximumNumberBooksUser();
+        final var proportionBooksStock = this.configurationService.getProportionBooksStock();
+        var expr = ((numCopies - numLoaned) > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
+        return expr;
     }
 
     public Loaned insertLoaned(Loaned object) throws Exception {
