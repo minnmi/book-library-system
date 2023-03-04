@@ -1,5 +1,6 @@
 package com.mendes.library.service;
 
+import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
 import com.mendes.library.model.DTO.BookingRequest;
 import com.mendes.library.model.DTO.BookingResponse;
@@ -7,22 +8,30 @@ import com.mendes.library.model.User;
 import com.mendes.library.repository.BookingRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class BookingService {
+    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper) {
+    private final BookService bookService;
+
+    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, BookService bookService) {
         this.bookingRepository = bookingRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.bookService = bookService;
     }
 
     public Page<Booking> findAllBooks(Pageable pageable) {
@@ -55,10 +64,22 @@ public class BookingService {
 
     }
 
+    public Booking insertBook(Long bookId) {
+        logger.info("Searching for book id: {}", bookId);
+        Book book = this.bookService.findById(bookId);
 
-    public Booking insertBook(Booking booking) {
+        logger.info("Getting user logged");
         User user = this.userService.getLoggedUser();
-        booking.setUser(user);
+
+        logger.info("Creating booking");
+        var booking = Booking.builder()
+                .user(user)
+                .book(book)
+                .priority(1)
+                .currentDate(LocalDateTime.now())
+                .build();
+
+        logger.info("Saving booking");
         return this.bookingRepository.save(booking);
     }
 
