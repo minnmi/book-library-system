@@ -5,6 +5,11 @@ import com.mendes.library.model.Loaned;
 import com.mendes.library.service.LoanedService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +34,13 @@ public class LoanedController {
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public List<LoanedDTO> findAllLoans() {
-        return loanedService.findAllLoanedBooks()
+    public Page<LoanedDTO> findAllLoans(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        var page = loanedService.findAllLoanedBooks(pageable);
+        var content = page.getContent()
                 .stream()
                 .map(object -> loanedService.convertEntityToDto(object)).toList();
+
+        return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
 
     }
 

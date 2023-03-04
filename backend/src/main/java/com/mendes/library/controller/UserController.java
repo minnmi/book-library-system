@@ -5,14 +5,16 @@ import com.mendes.library.model.User;
 import com.mendes.library.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -32,12 +34,15 @@ public class UserController {
 
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public List<UserDTO> findAllUsers() {
-        return this.userService
-                .findAllUser()
+    public Page<UserDTO> findAllUsers(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        var page = this.userService.findAllUser(pageable);
+
+        var content = page.getContent()
                 .stream()
                 .map(userService::convertEntityToDto)
                 .toList();
+
+        return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
 
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")

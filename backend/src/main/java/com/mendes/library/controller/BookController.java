@@ -8,6 +8,11 @@ import com.mendes.library.service.QRCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,11 +41,13 @@ public class BookController {
 
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public List<BookDTO> findAllBooks() {
-        return bookService.findAllBooks()
-                .stream()
+    public Page<BookDTO> findAllBooks(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        var page = bookService.findAllBooks(pageable);
+        var content = page.getContent().stream()
                 .map(object -> bookService.convertEntityToDto(object))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
 
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")

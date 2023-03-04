@@ -6,9 +6,10 @@ import com.mendes.library.repository.PublisherRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,8 @@ public class PublisherService {
         this.modelMapper = modelMapper;
     }
 
-    public List<Publisher> findAllPublishers() {
-        return publisherRepository.findAll();
+    public Page<Publisher> findAllPublishers(Pageable pageable) {
+        return publisherRepository.findAll(pageable);
     }
 
     public Publisher findById(Long id) {

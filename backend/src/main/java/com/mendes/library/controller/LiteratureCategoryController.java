@@ -5,12 +5,16 @@ import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.service.LiteratureCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,11 +30,14 @@ public class LiteratureCategoryController {
     }
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public List<LiteratureCategoryDTO> findAllLiteratureCategories() {
-        return literatureCategoryService.findAllLiteratureCategories()
+    public Page<LiteratureCategoryDTO> findAllLiteratureCategories(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        var page = literatureCategoryService.findAllLiteratureCategories(pageable);
+        var content = page.getContent()
                 .stream()
                 .map(object -> literatureCategoryService.convertEntityToDto(object))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
 
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_VIEW', 'ADMIN')")

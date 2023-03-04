@@ -10,6 +10,8 @@ import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,8 +46,8 @@ public class LoanedService {
         this.configurationService = configurationService;
     }
 
-    public List<Loaned> findAllLoanedBooks() {
-        return loanedRepository.findAll();
+    public Page<Loaned> findAllLoanedBooks(Pageable pageable) {
+        return loanedRepository.findAll(pageable);
     }
 
     public Loaned findById(Long id) {

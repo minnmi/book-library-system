@@ -5,12 +5,16 @@ import com.mendes.library.model.Publisher;
 import com.mendes.library.service.PublisherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,11 +31,15 @@ public class PublisherController {
 
     @PreAuthorize("hasAnyAuthority('PUBLISHER_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public List<PublisherDTO> findAllPublishers() {
-        return publisherService.findAllPublishers()
+    public Page<PublisherDTO> findAllPublishers(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        var page = publisherService.findAllPublishers(pageable);
+
+        var content = page.getContent()
                 .stream()
                 .map(object -> publisherService.convertEntityToDto(object))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
 
     @PreAuthorize("hasAnyAuthority('PUBLISHER_VIEW', 'ADMIN')")
