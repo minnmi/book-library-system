@@ -55,13 +55,29 @@ public class BookingService {
     }
 
     public void removeBookingByBookIdAndUserId(Long bookId, Long userId) {
+        logger.info("Find booking by user id {} and book id {}", userId, bookId);
         var bookingOpt = this.findBookingByBookIdAndUserId(bookId, userId);
-        if (bookingOpt.isPresent())
+
+        if (bookingOpt.isPresent()) {
+            logger.info("Deleting booking id: {}", bookingOpt.get().getId());
             this.bookingRepository.deleteById(bookingOpt.get().getId());
+            logger.info("Booking deleted");
+        } else {
+            logger.info("No booking found");
+        }
     }
 
     public void removeOldBooking() {
+        var before = LocalDateTime.now().minusDays(7);
 
+        logger.info("Fetching all booking before {}", before);
+        var oldBooking = this.bookingRepository.findAllBefore(before);
+
+        logger.info("{} booking found", oldBooking.size());
+
+        this.bookingRepository.deleteAll(oldBooking);
+
+        logger.info("booking removed");
     }
 
     public Booking insertBook(Long bookId) {
