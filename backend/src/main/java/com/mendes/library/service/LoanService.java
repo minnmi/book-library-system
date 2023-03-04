@@ -2,7 +2,7 @@ package com.mendes.library.service;
 
 import com.mendes.library.model.Book;
 import com.mendes.library.model.DTO.LoanedDTO.LoanedDTO;
-import com.mendes.library.model.Loaned;
+import com.mendes.library.model.Loan;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.repository.UserRepository;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LoanedService {
+public class LoanService {
     private final LoanedRepository loanedRepository;
 
     private final BookingService bookingService;
@@ -36,7 +36,7 @@ public class LoanedService {
 
 
     @Autowired
-    public LoanedService(LoanedRepository loanedRepository, BookingService bookingService, UserRepository userRepository, UserService userService, BookService bookService, ConfigurationService configurationService, ModelMapper modelMapper) {
+    public LoanService(LoanedRepository loanedRepository, BookingService bookingService, UserRepository userRepository, UserService userService, BookService bookService, ConfigurationService configurationService, ModelMapper modelMapper) {
         this.loanedRepository = loanedRepository;
         this.bookingService = bookingService;
         this.userRepository = userRepository;
@@ -46,25 +46,25 @@ public class LoanedService {
         this.configurationService = configurationService;
     }
 
-    public Page<Loaned> findAllLoanedBooks(Pageable pageable) {
+    public Page<Loan> findAllLoanedBooks(Pageable pageable) {
         return loanedRepository.findAll(pageable);
     }
 
-    public Loaned findById(Long id) {
-        Optional<Loaned> loaned = loanedRepository.findById(id);
+    public Loan findById(Long id) {
+        Optional<Loan> loaned = loanedRepository.findById(id);
         if (loaned.isPresent()) {
             return loaned.get();
         } else  {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + Loaned.class.getName());
+            throw new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName());
         }
     }
 
-    public List<Loaned> findLoansByUser(Long userId) {
+    public List<Loan> findLoansByUser(Long userId) {
         User object = userRepository.findById(userId).get();
         return loanedRepository.findLoanedsByUser(object.getId());
     }
 
-    public List<Loaned> findLoansByBook(Long bookId) {
+    public List<Loan> findLoansByBook(Long bookId) {
         Book object = bookService.findById(bookId);
         return loanedRepository.findLoanedsByBook(object.getId());
     }
@@ -102,16 +102,16 @@ public class LoanedService {
         return expr;
     }
 
-    public Loaned insertLoaned(Long bookId) throws Exception {
+    public Loan insertLoaned(Long bookId) throws Exception {
         var book = this.bookService.findById(bookId);
         var currentUser = this.userService.getLoggedUser();
 
         if (!canLoanBook(book, currentUser))
             throw new BusinessException("Error when loan a book");
 
-        final var maximumBookingPeriod = this.configurationService.getMaximumBookingPeriod();
+        final var maximumBookingPeriod = this.configurationService.getMaximumLoanPeriod();
 
-        var loan = Loaned.builder()
+        var loan = Loan.builder()
                 .book(book)
                 .initialDate(LocalDateTime.now())
                 .user(currentUser)
@@ -126,29 +126,29 @@ public class LoanedService {
         return loan;
     }
 
-    public List<Loaned> findLateLoansByUser(LocalDateTime localDateTime, Long userId) {
+    public List<Loan> findLateLoansByUser(LocalDateTime localDateTime, Long userId) {
         User user = userRepository.findById(userId).get();
         final var lateLoans = loanedRepository.findLateLoansByUser(localDateTime, userId);
         return lateLoans;
     }
 
-    public List<Loaned> findByInitialDate(LocalDateTime from, LocalDateTime to) {
+    public List<Loan> findByInitialDate(LocalDateTime from, LocalDateTime to) {
         return this.loanedRepository.findByInitialDate(from, to);
     }
 
-    public List<Loaned> findByFinalDate(LocalDateTime from, LocalDateTime to) {
+    public List<Loan> findByFinalDate(LocalDateTime from, LocalDateTime to) {
         return this.loanedRepository.findByFinalDate(from, to);
     }
 
-    public List<Loaned> findHistory(Long userId) {
+    public List<Loan> findHistory(Long userId) {
         return this.loanedRepository.findHistoryByUser(userId);
     }
 
-    public Loaned convertDtoToEntity(LoanedDTO objectDTO) {
-        return modelMapper.map(objectDTO, Loaned.class);
+    public Loan convertDtoToEntity(LoanedDTO objectDTO) {
+        return modelMapper.map(objectDTO, Loan.class);
     }
 
-    public LoanedDTO convertEntityToDto(Loaned object) {
+    public LoanedDTO convertEntityToDto(Loan object) {
         return modelMapper.map(object, LoanedDTO.class);
     }
 

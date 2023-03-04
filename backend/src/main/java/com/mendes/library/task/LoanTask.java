@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class LoanedTask {
+public class LoanTask {
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.DAYS)
     public void notifyReading() {
         // do it

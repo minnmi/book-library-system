@@ -7,14 +7,13 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Audited
 @Data
 @Builder
 @Table(name = "loaned")
-public class Loaned {
+public class Loan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
