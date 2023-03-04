@@ -105,20 +105,24 @@ public class LoanedController {
     @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
-    public LoanedDTO insertLoan(@Valid @RequestBody LoanedDTO objectDTO) throws Exception {
-        log.info(" inserting a new loan: {} ", objectDTO.getBook());
-        Loaned objectRequest = loanedService.convertDtoToEntity(objectDTO);
-        Loaned object = loanedService.insertLoaned(objectRequest);
+    public LoanedDTO insertLoan(@Valid @RequestBody Long bookId) throws Exception {
+//        log.info(" inserting a new loan: {} ", objectDTO.getBook());
+        Loaned object = loanedService.insertLoaned(bookId);
         return loanedService.convertEntityToDto(object);
     }
 
-    @PostMapping()
-    public LoanedDTO loanBook(Long bookId) {
-
+    @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
+    @PostMapping("/book/{bookId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public LoanedDTO loanBook(@PathVariable Long bookId) throws Exception {
+        var loan = loanedService.insertLoaned(bookId);
+        return loanedService.convertEntityToDto(loan);
     }
 
-    public LoanedDTO returnBook(Long loanId) {
-
+    @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
+    @PostMapping("{id}/return")
+    public LoanedDTO returnBook(Long id) {
+        return null;
     }
 
 }

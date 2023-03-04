@@ -3,6 +3,7 @@ package com.mendes.library.service;
 import com.mendes.library.model.Booking;
 import com.mendes.library.model.DTO.BookingRequest;
 import com.mendes.library.model.DTO.BookingResponse;
+import com.mendes.library.model.User;
 import com.mendes.library.repository.BookingRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -10,13 +11,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookingService {
     private final BookingRepository bookingRepository;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public BookingService(BookingRepository bookingRepository, ModelMapper modelMapper) {
+    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper) {
         this.bookingRepository = bookingRepository;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -32,8 +37,28 @@ public class BookingService {
         return bookingOpt.get();
     }
 
+    public Optional<Booking> findBookingByBookIdAndUserId(Long bookId, Long userId) {
+        return this.bookingRepository.findBookingByBookIdAndUserId(bookId, userId);
+    }
+
+    public int getBookingOrderByBookIdAndBookingId(Long bookId, Long BookingId) {
+        return this.bookingRepository.getBookingOrderByBookIdAndBookingId(bookId, BookingId);
+    }
+
+    public void removeBookingByBookIdAndUserId(Long bookId, Long userId) {
+        var bookingOpt = this.findBookingByBookIdAndUserId(bookId, userId);
+        if (bookingOpt.isPresent())
+            this.bookingRepository.deleteById(bookingOpt.get().getId());
+    }
+
+    public void removeOldBooking() {
+
+    }
+
 
     public Booking insertBook(Booking booking) {
+        User user = this.userService.getLoggedUser();
+        booking.setUser(user);
         return this.bookingRepository.save(booking);
     }
 

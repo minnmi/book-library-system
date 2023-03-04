@@ -3,6 +3,8 @@ package com.mendes.library.model.DTO.LoanedDTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mendes.library.model.Book;
+import com.mendes.library.model.DTO.BookDTO.BookDTO;
+import com.mendes.library.model.DTO.UserDTO.UserDTO;
 import com.mendes.library.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +27,8 @@ public class LoanedDTO implements Serializable {
     private LocalDateTime initialDate;
 
     private LocalDateTime finalDate;
-    private User user;
-    private Book book;
+    private UserDTO user;
+    private BookDTO book;
     private Integer returned;
 
     private LocalDateTime returnedDate;

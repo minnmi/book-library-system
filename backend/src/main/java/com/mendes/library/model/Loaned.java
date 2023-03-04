@@ -1,6 +1,7 @@
 package com.mendes.library.model;
 
 
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.envers.Audited;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 @Entity
 @Audited
 @Data
+@Builder
 @Table(name = "loaned")
 public class Loaned {
 
