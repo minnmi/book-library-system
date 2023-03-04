@@ -14,15 +14,18 @@ public class Configuration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
+    @Column(name = "maximum_number_books_user", nullable = false)
     @Min(value = 0)
     private int maximumNumberBooksUser;
 
-    @Column(nullable = false)
+    @Column(name = "maximum_loan_period", nullable = false)
     @Min(value = 0)
-    private int maximumBookingPeriod;
+    private int maximumLoanPeriod;
 
-    @Column(nullable = false)
+    @Column(name = "proportion_books_stock", nullable = false)
     @DecimalMin(value = "0.0")
     private float proportionBooksStock;
+
+    @Column(name = "booking_time_out", nullable = false)
+    public int bookingTimeOut;
 }

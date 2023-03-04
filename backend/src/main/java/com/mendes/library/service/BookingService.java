@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -24,13 +23,15 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final ConfigurationService configurationService;
 
     private final BookService bookService;
 
-    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, BookService bookService) {
+    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, BookService bookService) {
         this.bookingRepository = bookingRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.configurationService = configurationService;
         this.bookService = bookService;
     }
 
@@ -67,8 +68,9 @@ public class BookingService {
         }
     }
 
-    public void removeOldBooking() {
-        var before = LocalDateTime.now().minusDays(7);
+    public void removeOldBooking() throws Exception {
+        var maxDays = this.configurationService.getBookingTimeOut();
+        var before = LocalDateTime.now().minusDays(maxDays);
 
         logger.info("Fetching all booking before {}", before);
         var oldBooking = this.bookingRepository.findAllBefore(before);
