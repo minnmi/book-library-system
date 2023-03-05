@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/v1/bookings")
 public class BookingController {
     private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
@@ -45,9 +45,8 @@ public class BookingController {
     @PreAuthorize("hasAnyAuthority('BOOKING_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingResponse insertBooking(@Valid @RequestBody BookingRequest request) {
-        var booking = this.bookingService.convertDtoToEntity(request);
-        booking = this.bookingService.insertBook(booking);
+    public BookingResponse insertBooking(@Valid @RequestBody Long bookId) {
+        var booking = this.bookingService.insertBook(bookId);
         return this.bookingService.convertEntityToDto(booking);
     }
 

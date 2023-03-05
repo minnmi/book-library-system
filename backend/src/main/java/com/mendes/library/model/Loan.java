@@ -1,19 +1,19 @@
 package com.mendes.library.model;
 
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Audited
-@Data
+@Getter
+@Setter
+@Builder
 @Table(name = "loaned")
-public class Loaned {
-
+public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,5 +35,4 @@ public class Loaned {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
-
 }

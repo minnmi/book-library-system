@@ -28,12 +28,16 @@ public class ConfigurationService {
         return this.getConfiguration().getMaximumNumberBooksUser();
     }
 
-    public final int getMaximumBookingPeriod() throws Exception {
-        return this.getConfiguration().getMaximumBookingPeriod();
+    public final int getMaximumLoanPeriod() throws Exception {
+        return this.getConfiguration().getMaximumLoanPeriod();
     }
 
     public final float getProportionBooksStock() throws Exception {
         return this.getConfiguration().getProportionBooksStock();
+    }
+
+    public final int getBookingTimeOut() throws Exception {
+        return this.getConfiguration().getBookingTimeOut();
     }
 
 }

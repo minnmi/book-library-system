@@ -1,16 +1,12 @@
 package com.mendes.library.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Singular;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Data

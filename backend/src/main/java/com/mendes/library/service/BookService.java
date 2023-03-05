@@ -12,6 +12,8 @@ import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,8 +50,8 @@ public class BookService {
         this.storageService = storageService;
     }
 
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+    public Page<Book> findAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     public Book findById(Long id) {

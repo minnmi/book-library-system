@@ -5,25 +5,29 @@ import com.mendes.library.model.Book;
 import com.mendes.library.model.DTO.BookDTO.BookDTO;
 import com.mendes.library.service.BookService;
 import com.mendes.library.service.QRCodeService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/v1/books")
 @Slf4j
 public class BookController {
 
@@ -36,11 +40,13 @@ public class BookController {
 
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public List<BookDTO> findAllBooks() {
-        return bookService.findAllBooks()
-                .stream()
+    public Page<BookDTO> findAllBooks(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        var page = bookService.findAllBooks(pageable);
+        var content = page.getContent().stream()
                 .map(object -> bookService.convertEntityToDto(object))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
 
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
