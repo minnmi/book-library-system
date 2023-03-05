@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/publishers")
+@RequestMapping("/v1/publishers")
 @Slf4j
 public class PublisherController {
 

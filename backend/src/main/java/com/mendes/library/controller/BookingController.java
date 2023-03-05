@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/v1/bookings")
 public class BookingController {
     private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 

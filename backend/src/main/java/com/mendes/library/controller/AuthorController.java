@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/v1/authors")
 @Slf4j
 public class AuthorController {
 

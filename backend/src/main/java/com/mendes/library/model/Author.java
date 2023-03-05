@@ -1,9 +1,9 @@
 package com.mendes.library.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Entity

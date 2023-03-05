@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/literatureCategories")
+@RequestMapping("/v1/literatureCategories")
 @Slf4j
 public class LiteratureCategoryController {
 

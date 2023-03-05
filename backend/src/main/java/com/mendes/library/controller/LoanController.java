@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/loans")
+@RequestMapping("/v1/loans")
 @Slf4j
 public class LoanController {
 

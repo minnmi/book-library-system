@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 @Slf4j
 public class UserController {
 
