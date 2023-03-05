@@ -1,11 +1,10 @@
 package com.mendes.library.model;
 
-import lombok.*;
-import org.hibernate.envers.Audited;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.envers.NotAudited;
 
-import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity

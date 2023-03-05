@@ -1,18 +1,18 @@
 package com.mendes.library.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 
-@Table(name = "configuration")
-@Entity
 @Data
+@Entity
+@Table(name = "configuration")
 public class Configuration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "maximum_number_books_user", nullable = false)
     @Min(value = 0)
