@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 
 import {AuthorRoutingModule} from './author-routing.module';
 import {AuthorComponent} from './author.component';
-import {TableModule} from "@coreui/angular";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ButtonModule, TableModule} from "@coreui/angular";
+import {IconModule} from "@coreui/icons-angular";
 
 
 @NgModule({
@@ -13,9 +13,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     AuthorRoutingModule,
     TableModule,
+    ButtonModule,
+      IconModule
   ]
 })
 export class AuthorModule { }

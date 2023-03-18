@@ -7,6 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthorComponent implements OnInit {
 
+  public authors = [
+    {
+      id: 1,
+      name: 'Fulano',
+    },
+    {
+      id: 2,
+      name: 'Ciclano',
+    },
+    {
+      id: 3,
+      name: 'Beutrano',
+    }
+  ]
+
   constructor() { }
 
   ngOnInit(): void {
