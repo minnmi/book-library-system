@@ -27,8 +27,6 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
-
     @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
@@ -37,7 +35,7 @@ public class AuthorController {
     @PreAuthorize("hasAnyAuthority('AUTHOR_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
     public Page<AuthorResponse> findAllAuthors(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        logger.info("Consultando todos autores");
+        log.info("Consultando todos autores");
         var page = authorService.findAllAuthors(pageable);
         var content = page.getContent()
                 .stream()
@@ -51,7 +49,7 @@ public class AuthorController {
     @PreAuthorize("hasAnyAuthority('AUTHOR_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public AuthorResponse findById(@PathVariable Long id) {
-        logger.info("Consultando autor (ID = {})", id);
+        log.info("Consultando autor (ID = {})", id);
         Author author = authorService.findById(id);
         return authorService.convertEntityToDto(author);
     }
@@ -62,7 +60,7 @@ public class AuthorController {
     public AuthorResponse insertAuthor(@Valid @RequestBody AuthorRequest authorRequest) {
         log.info("Cadastrando novo autor (Nome = {})", authorRequest.getName());
         Author authorEntity = authorService.convertDtoToEntity(authorRequest);
-        Author author = authorService.insertAuthor(authorEntity);
+        var author = authorService.insertAuthor(authorEntity);
         log.info("Autor cadastrado com sucesso (ID = {})", author.getId());
         return authorService.convertEntityToDto(author);
     }
@@ -74,7 +72,7 @@ public class AuthorController {
     public AuthorResponse updateAuthor(@Valid @RequestBody AuthorRequest authorRequest, @PathVariable Long id) {
         log.info("Atualizando autor (ID = {})", id);
         Author authorEntity = authorService.convertDtoToEntity(authorRequest);
-        Author author = authorService.updateAuthor(id, authorEntity);
+        var author = authorService.updateAuthor(id, authorEntity);
         log.info("Autor atualizado com sucesso (ID = {})", id);
         return authorService.convertEntityToDto(author);
     }

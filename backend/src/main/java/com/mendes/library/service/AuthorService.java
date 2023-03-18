@@ -1,6 +1,7 @@
 package com.mendes.library.service;
 
 import com.mendes.library.model.Author;
+import com.mendes.library.model.DTO.AuthorDTO.AuthorRequest;
 import com.mendes.library.model.DTO.AuthorDTO.AuthorResponse;
 import com.mendes.library.repository.AuthorRepository;
 import com.mendes.library.repository.BookRepository;
@@ -77,11 +78,12 @@ public class AuthorService {
     }
 
 
-    public Author convertDtoToEntity(AuthorResponse authorResponse) {
-        return modelMapper.map(authorResponse, Author.class);
+    public Author convertDtoToEntity(AuthorRequest authorRequest) {
+        return modelMapper.map(authorRequest, Author.class);
     }
 
     public AuthorResponse convertEntityToDto(Author author) {
         return modelMapper.map(author, AuthorResponse.class);
     }
+
 }
