@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./publisher.component.scss']
 })
 export class PublisherComponent implements OnInit {
+    publishers: any = [];
 
   constructor() { }
 

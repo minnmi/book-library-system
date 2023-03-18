@@ -1,1 +1,39 @@
-<p>booking works!</p>
+<div class="business-header">
+    <div class="title">
+        <h1>Reservas</h1>
+    </div>
+    <div class="new">
+        <button cButton color="success">Novo</button>
+    </div>
+</div>
+<table cTable class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Usuário</th>
+        <th scope="col">Titulo</th>
+        <th scope="col">Data</th>
+        <th scope="col">Prioridade</th>
+        <th scope="col">Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let b of bookings">
+        <th scope="row">{{b.id}}</th>
+        <td>{{b.usuario}}</td>
+        <td>{{b.titulo}}</td>
+        <td>{{b.data}}</td>
+        <td>{{b.prioridade}}</td>
+        <td>
+            <div class="actions">
+                <div class="action">
+                    <button cButton color="primary"><svg cIcon name="cilPencil" size="xl" title="Paper Plane Icon"></svg></button>
+                </div>
+                <div class="action">
+                    <button cButton color="danger"><svg cIcon name="cilTrash" size="xl" title="Paper Plane Icon"></svg></button>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

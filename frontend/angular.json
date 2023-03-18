@@ -35,7 +35,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "src/scss/styles.scss",
+              "@coreui/coreui/dist/css/coreui.css",
+              "@coreui/icons/css/all.css"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
