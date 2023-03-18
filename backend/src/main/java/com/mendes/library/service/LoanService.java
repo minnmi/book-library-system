@@ -1,7 +1,8 @@
 package com.mendes.library.service;
 
 import com.mendes.library.model.Book;
-import com.mendes.library.model.DTO.LoanedDTO.LoanedDTO;
+import com.mendes.library.model.DTO.LoanedDTO.LoanRequest;
+import com.mendes.library.model.DTO.LoanedDTO.LoanResponse;
 import com.mendes.library.model.Loan;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.LoanedRepository;
@@ -51,22 +52,22 @@ public class LoanService {
     }
 
     public Loan findById(Long id) {
-        Optional<Loan> loaned = loanedRepository.findById(id);
-        if (loaned.isPresent()) {
-            return loaned.get();
+        Optional<Loan> optionalLoan = loanedRepository.findById(id);
+        if (optionalLoan.isPresent()) {
+            return optionalLoan.get();
         } else  {
             throw new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName());
         }
     }
 
     public List<Loan> findLoansByUser(Long userId) {
-        User object = userRepository.findById(userId).get();
-        return loanedRepository.findLoanedsByUser(object.getId());
+        User user = userRepository.findById(userId).get();
+        return loanedRepository.findLoanedsByUser(user.getId());
     }
 
     public List<Loan> findLoansByBook(Long bookId) {
-        Book object = bookService.findById(bookId);
-        return loanedRepository.findLoanedsByBook(object.getId());
+        Book book = bookService.findById(bookId);
+        return loanedRepository.findLoanedsByBook(book.getId());
     }
 
     private Integer getQuantityLoaned(Book book) {
@@ -74,11 +75,11 @@ public class LoanService {
     }
 
     public boolean hasBooking(Long userId, Long bookId, int numAvailable) {
-        var bookingOpt = this.bookingService.findBookingByBookIdAndUserId(bookId, userId);
-        if (bookingOpt.isEmpty())
+        var optionalBooking = this.bookingService.findBookingByBookIdAndUserId(bookId, userId);
+        if (optionalBooking.isEmpty())
             return false;
 
-        var booking = bookingOpt.get();
+        var booking = optionalBooking.get();
         var order = this.bookingService.getBookingOrderByBookIdAndBookingId(bookId, booking.getId());
         return order < numAvailable;
     }
@@ -144,12 +145,12 @@ public class LoanService {
         return this.loanedRepository.findHistoryByUser(userId);
     }
 
-    public Loan convertDtoToEntity(LoanedDTO objectDTO) {
-        return modelMapper.map(objectDTO, Loan.class);
+    public Loan convertDtoToEntity(LoanRequest loanRequest) {
+        return modelMapper.map(loanRequest, Loan.class);
     }
 
-    public LoanedDTO convertEntityToDto(Loan object) {
-        return modelMapper.map(object, LoanedDTO.class);
+    public LoanResponse convertEntityToDto(Loan loan) {
+        return modelMapper.map(loan, LoanResponse.class);
     }
 
 
