@@ -1,7 +1,7 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.BookingRequest;
-import com.mendes.library.model.DTO.BookingResponse;
+import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
+import com.mendes.library.model.DTO.BookindDTO.BookingResponse;
 import com.mendes.library.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
