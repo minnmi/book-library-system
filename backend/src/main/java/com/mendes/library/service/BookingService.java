@@ -40,11 +40,11 @@ public class BookingService {
     }
 
     public Booking findById(Long id) {
-        var bookingOpt = this.bookingRepository.findById(id);
-        if (bookingOpt.isEmpty())
+        var optionalBooking = this.bookingRepository.findById(id);
+        if (optionalBooking.isEmpty())
             throw new ObjectNotFoundException("");
 
-        return bookingOpt.get();
+        return optionalBooking.get();
     }
 
     public Optional<Booking> findBookingByBookIdAndUserId(Long bookId, Long userId) {
@@ -113,17 +113,17 @@ public class BookingService {
         this.bookingRepository.deleteById(id);
     }
 
-    private void toUpdateBooking(Booking updated, Booking current) {
-        current.setBook(updated.getBook());
-        current.setPriority(updated.getPriority());
+    private void toUpdateBooking(Booking booking, Booking currentBooking) {
+        currentBooking.setBook(booking.getBook());
+        currentBooking.setPriority(booking.getPriority());
     }
 
-    public Booking convertDtoToEntity(BookingRequest request) {
-        return modelMapper.map(request, Booking.class);
+    public Booking convertDtoToEntity(BookingRequest bookingRequest) {
+        return modelMapper.map(bookingRequest, Booking.class);
     }
 
-    public BookingResponse convertEntityToDto(Booking model) {
-        return modelMapper.map(model, BookingResponse.class);
+    public BookingResponse convertEntityToDto(Booking booking) {
+        return modelMapper.map(booking, BookingResponse.class);
     }
 
 }

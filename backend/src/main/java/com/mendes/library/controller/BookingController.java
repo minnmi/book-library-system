@@ -19,8 +19,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/v1/bookings")
 public class BookingController {
-    private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
-
     private final BookingService bookingService;
 
     public BookingController(BookingService bookingService) {
