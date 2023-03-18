@@ -17,11 +17,11 @@ public class ConfigurationService {
     }
 
     private Configuration getConfiguration() throws Exception {
-        Optional<Configuration> configurationOpt = this.configurationRepository.findById(1L);
-        if (configurationOpt.isEmpty())
+        Optional<Configuration> optionalConfiguration = this.configurationRepository.findById(1L);
+        if (optionalConfiguration.isEmpty())
             throw new Exception("No configuration provided");
 
-        return configurationOpt.get();
+        return optionalConfiguration.get();
     }
 
     public final int getMaximumNumberBooksUser() throws Exception {
