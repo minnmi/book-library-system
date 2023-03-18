@@ -1,18 +1,15 @@
 package com.mendes.library.model.DTO.UserDTO;
 
-import com.mendes.library.model.DTO.RolesDTO.RolesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserResponse {
 
     private Long id;
     private String name;
