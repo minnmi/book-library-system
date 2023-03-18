@@ -1,6 +1,7 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryDTO;
+import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryRequest;
+import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryResponse;
 import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.service.LiteratureCategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class LiteratureCategoryController {
     }
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public Page<LiteratureCategoryDTO> findAllLiteratureCategories(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<LiteratureCategoryResponse> findAllLiteratureCategories(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         var page = literatureCategoryService.findAllLiteratureCategories(pageable);
         var content = page.getContent()
                 .stream()
@@ -42,29 +43,29 @@ public class LiteratureCategoryController {
 
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
-    public LiteratureCategoryDTO findById(@PathVariable Long id) {
-        LiteratureCategory object = literatureCategoryService.findById(id);
-        return literatureCategoryService.convertEntityToDto(object);
+    public LiteratureCategoryResponse findById(@PathVariable Long id) {
+        LiteratureCategory literatureCategory = literatureCategoryService.findById(id);
+        return literatureCategoryService.convertEntityToDto(literatureCategory);
     }
 
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
-    public LiteratureCategoryDTO insertLiteratureCategory(@Valid @RequestBody LiteratureCategoryDTO objectDTO) {
-        log.info(" inserting a new literature cateogory: {} ", objectDTO.getCategoryName());
-        LiteratureCategory objectRequest = literatureCategoryService.convertDtoToEntity(objectDTO);
-        LiteratureCategory object = literatureCategoryService.insertLiteratureCategory(objectRequest);
-        return literatureCategoryService.convertEntityToDto(object);
+    public LiteratureCategoryResponse insertLiteratureCategory(@Valid @RequestBody LiteratureCategoryRequest literatureCategoryRequest) {
+        log.info(" inserting a new literature cateogory: {} ", literatureCategoryRequest.getCategoryName());
+        LiteratureCategory literatureCategoryEntity = literatureCategoryService.convertDtoToEntity(literatureCategoryRequest);
+        var literatureCategory = literatureCategoryService.insertLiteratureCategory(literatureCategoryEntity);
+        return literatureCategoryService.convertEntityToDto(literatureCategory);
     }
 
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_UPDATE', 'ADMIN')")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LiteratureCategoryDTO updateLiteratureCategory(@Valid @RequestBody LiteratureCategoryDTO objectDTO, @PathVariable Long id) {
+    public LiteratureCategoryResponse updateLiteratureCategory(@Valid @RequestBody LiteratureCategoryRequest literatureCategoryRequest, @PathVariable Long id) {
         log.info(" updating literature category of id: {} ", id);
-        LiteratureCategory objectRequest = literatureCategoryService.convertDtoToEntity(objectDTO);
-        LiteratureCategory object = literatureCategoryService.updateLiteratureCategory(id, objectRequest);
-        return literatureCategoryService.convertEntityToDto(object);
+        LiteratureCategory literatureCategoryEntity = literatureCategoryService.convertDtoToEntity(literatureCategoryRequest);
+        var literatureCategory = literatureCategoryService.updateLiteratureCategory(id, literatureCategoryEntity);
+        return literatureCategoryService.convertEntityToDto(literatureCategory);
     }
 
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_DELETE', 'ADMIN')")
