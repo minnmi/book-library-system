@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PublisherDTO {
+public class PublisherResponse {
 
     private Long id;
+    private String name;
 }
