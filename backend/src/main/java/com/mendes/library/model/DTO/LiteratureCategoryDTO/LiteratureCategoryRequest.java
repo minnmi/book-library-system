@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LiteratureCategoryDTO {
+public class LiteratureCategoryRequest {
 
-    private Long id;
+    private String categoryName;
+
 }
