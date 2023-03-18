@@ -1,7 +1,7 @@
 package com.mendes.library.model.DTO.BookDTO;
 
 
-import com.mendes.library.model.DTO.AuthorDTO.AuthorDTO;
+import com.mendes.library.model.DTO.AuthorDTO.AuthorResponse;
 import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryIdDTO;
 import com.mendes.library.model.DTO.PublisherDTO.PublisherIdDTO;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class BookDTO {
     private Long id;
     private String name;
     private String isbn;
-    private List<AuthorDTO> authors;
+    private List<AuthorResponse> authors;
     private PublisherIdDTO publisher;
     private Integer quantity;
     private LiteratureCategoryIdDTO categoryName;
