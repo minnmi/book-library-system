@@ -2,8 +2,8 @@ package com.mendes.library.service;
 
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
-import com.mendes.library.model.DTO.BookingRequest;
-import com.mendes.library.model.DTO.BookingResponse;
+import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
+import com.mendes.library.model.DTO.BookindDTO.BookingResponse;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.BookingRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;

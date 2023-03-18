@@ -13,4 +13,6 @@ import lombok.Setter;
 public class BookIdDTO {
 
     private Long id;
+
+    private String name;
 }

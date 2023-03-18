@@ -1,7 +1,7 @@
 package com.mendes.library.service;
 
 import com.mendes.library.model.Author;
-import com.mendes.library.model.DTO.AuthorDTO.AuthorDTO;
+import com.mendes.library.model.DTO.AuthorDTO.AuthorResponse;
 import com.mendes.library.repository.AuthorRepository;
 import com.mendes.library.repository.BookRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,26 +35,26 @@ public class AuthorService {
     }
 
     public Author findById(Long id) {
-        Optional<Author> author = authorRepository.findById(id);
-        if (author.isPresent()) {
-            return author.get();
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+        if (optionalAuthor.isPresent()) {
+            return optionalAuthor.get();
         } else {
             throw new ObjectNotFoundException("Object not found: " + id + " type " + Author.class.getName());
         }
     }
 
-    public Author insertAuthor(Author object) {
-        object.setId(null);
-        return authorRepository.save(object);
+    public Author insertAuthor(Author author) {
+        author.setId(null);
+        return authorRepository.save(author);
     }
 
-    public Author updateAuthor(Long id, Author object) {
+    public Author updateAuthor(Long id, Author author) {
         if (id == null) {
             throw new IllegalArgumentException("Author can't be null.");
         }
-        Author newObject = findById(id);
-        toUpdateAuthor(newObject, object);
-        return authorRepository.save(newObject);
+        Author currentAuthor = findById(id);
+        toUpdateAuthor(currentAuthor, author);
+        return authorRepository.save(currentAuthor);
     }
 
     public void deleteAuthor(Long id) {
@@ -69,26 +68,20 @@ public class AuthorService {
     /**
      * Update object with new informations
      *
-     * @param newObject
-     * @param object
+     * @param currentAuthor
+     * @param author
      */
 
-    private void toUpdateAuthor(Author newObject, Author object) {
-        newObject.setName(object.getName());
-        if (Objects.isNull(newObject.getBooks())) {
-            newObject.setBooks(object.getBooks());
-        } else {
-            newObject.getBooks().clear();
-            newObject.getBooks().addAll(object.getBooks());
-        }
+    private void toUpdateAuthor(Author currentAuthor, Author author) {
+        currentAuthor.setName(author.getName());
     }
 
 
-    public Author convertDtoToEntity(AuthorDTO objectDTO) {
-        return modelMapper.map(objectDTO, Author.class);
+    public Author convertDtoToEntity(AuthorResponse authorResponse) {
+        return modelMapper.map(authorResponse, Author.class);
     }
 
-    public AuthorDTO convertEntityToDto(Author object) {
-        return modelMapper.map(object, AuthorDTO.class);
+    public AuthorResponse convertEntityToDto(Author author) {
+        return modelMapper.map(author, AuthorResponse.class);
     }
 }
