@@ -1,8 +1,9 @@
 package com.mendes.library.service;
 
 import com.mendes.library.config.security.user.CustomUserDetail;
-import com.mendes.library.model.DTO.UserDTO.UserDTO;
-import com.mendes.library.model.DTO.UserDTO.UserUpdateDTO;
+import com.mendes.library.model.DTO.UserDTO.UserRequest;
+import com.mendes.library.model.DTO.UserDTO.UserResponse;
+import com.mendes.library.model.DTO.UserDTO.UserUpdate;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
 import com.mendes.library.service.exception.BusinessException;
@@ -35,28 +36,28 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get();
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
         } else {
             throw new ObjectNotFoundException("Object not found: " + id + " type " + User.class.getName());
         }
     }
 
-    public User insertUser(User object) {
-        object.setId(null);
-        object.setPassword(object.getPassword());
-        return userRepository.save(object);
+    public User insertUser(User user) {
+        user.setId(null);
+        user.setPassword(user.getPassword());
+        return userRepository.save(user);
     }
 
-    public User updateUser(Long id, User object) {
-        if (object == null || object.getId() == null) {
+    public User updateUser(Long id, User user) {
+        if (user == null || user.getId() == null) {
             throw new IllegalArgumentException("User can't be null.");
         }
-        User newObject = findById(id);
-        toUpdateUser(newObject, object);
-        verifyUpdateUser(newObject, object);
-        return userRepository.save(newObject);
+        User currentUser = findById(id);
+        toUpdateUser(currentUser, user);
+        verifyUpdateUser(currentUser, user);
+        return userRepository.save(currentUser);
     }
 
     public void verifyUpdateUser(User newUser, User oldUser) {
@@ -86,30 +87,30 @@ public class UserService {
     /**
      * Update object with new informations
      *
-     * @param newObject
-     * @param object
+     * @param currentUser
+     * @param user
      */
 
-    private void toUpdateUser(User newObject, User object) {
-        newObject.setName(object.getName());
-        newObject.setEmail(object.getEmail());
-        newObject.setPassword(object.getPassword());
+    private void toUpdateUser(User currentUser, User user) {
+        currentUser.setName(user.getName());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPassword(user.getPassword());
     }
 
-    public User convertDtoToEntity(UserDTO objectDTO) {
-        return modelMapper.map(objectDTO, User.class);
+    public User convertDtoToEntity(UserRequest userRequest) {
+        return modelMapper.map(userRequest, User.class);
     }
 
-    public UserDTO convertEntityToDto(User object) {
-        return modelMapper.map(object, UserDTO.class);
+    public UserResponse convertEntityToDto(User user) {
+        return modelMapper.map(user, UserResponse.class);
     }
 
-    public User convertUpdateDtoToEntity(UserUpdateDTO objectDTO) {
-        return modelMapper.map(objectDTO, User.class);
+    public User convertUpdateDtoToEntity(UserUpdate userUpdate) {
+        return modelMapper.map(userUpdate, User.class);
     }
 
-    public UserUpdateDTO convertEntityToUpdateDto(User object) {
-        return modelMapper.map(object, UserUpdateDTO.class);
+    public UserUpdate convertEntityToUpdateDto(User user) {
+        return modelMapper.map(user, UserUpdate.class);
     }
 
 }

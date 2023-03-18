@@ -1,6 +1,7 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.UserDTO.UserDTO;
+import com.mendes.library.model.DTO.UserDTO.UserRequest;
+import com.mendes.library.model.DTO.UserDTO.UserResponse;
 import com.mendes.library.model.User;
 import com.mendes.library.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,7 @@ import java.util.Objects;
 @RequestMapping("/v1/users")
 @Slf4j
 public class UserController {
-
     private final UserService userService;
-
-
 
     @Autowired
     public UserController(UserService userService) {
@@ -34,7 +32,7 @@ public class UserController {
 
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public Page<UserDTO> findAllUsers(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<UserResponse> findAllUsers(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         var page = this.userService.findAllUser(pageable);
 
         var content = page.getContent()
@@ -47,7 +45,7 @@ public class UserController {
 
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
-    public UserDTO findById(@PathVariable Long id) {
+    public UserResponse findById(@PathVariable Long id) {
         User user = userService.findById(id);
         return userService.convertEntityToDto(user);
     }
@@ -55,9 +53,9 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO insertUser(@Valid @RequestBody UserDTO objectDTO) {
-        User user = userService.convertDtoToEntity(objectDTO);
-        user = userService.insertUser(user);
+    public UserResponse insertUser(@Valid @RequestBody UserRequest userRequest) {
+        User userEntity = userService.convertDtoToEntity(userRequest);
+        var user = userService.insertUser(userEntity);
         return userService.convertEntityToDto(user);
     }
 
@@ -65,9 +63,9 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_UPDATE', 'ADMIN')")
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@Valid @RequestBody UserDTO objectDTO, @PathVariable Long id) {
-        User user = userService.convertDtoToEntity(objectDTO);
-        user = userService.updateUser(id, user);
+    public UserResponse updateUser(@Valid @RequestBody UserRequest userRequest, @PathVariable Long id) {
+        User userEntity = userService.convertDtoToEntity(userRequest);
+        var user = userService.updateUser(id, userEntity);
         return userService.convertEntityToDto(user);
     }
 
@@ -75,7 +73,6 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long id) {
-        if (!Objects.isNull(id))
             userService.deleteUser(id);
     }
 
