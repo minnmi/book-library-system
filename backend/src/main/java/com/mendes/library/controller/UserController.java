@@ -2,6 +2,8 @@ package com.mendes.library.controller;
 
 import com.mendes.library.model.DTO.UserDTO.UserRequest;
 import com.mendes.library.model.DTO.UserDTO.UserResponse;
+import com.mendes.library.model.DTO.UserDTO.UserRoles;
+import com.mendes.library.model.DTO.UserDTO.UserUpdateEmail;
 import com.mendes.library.model.User;
 import com.mendes.library.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +59,24 @@ public class UserController {
         User userEntity = userService.convertDtoToEntity(userRequest);
         var user = userService.insertUser(userEntity);
         return userService.convertEntityToDto(user);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/role")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserRoles insertUser(@Valid @RequestBody UserRoles userRoles) {
+        User userEntity = userService.convertUserRolesToEntity(userRoles);
+        var user = userService.insertRole(userEntity);
+        return userService.convertEntityToUserRoles(user);
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER_UPDATE', 'ADMIN')")
+    @PutMapping("/email/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserUpdateEmail updateUser(@Valid @RequestBody UserUpdateEmail userUpdateEmail, @PathVariable Long id) {
+        User userEntity = userService.convertUserUpdateEmailToEntity(userUpdateEmail);
+        var user = userService.emailUpdate(id, userEntity);
+        return userService.convertEntityToUserUpdateEmail(user);
     }
 
 

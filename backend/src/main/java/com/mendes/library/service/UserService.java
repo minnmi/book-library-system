@@ -1,20 +1,21 @@
 package com.mendes.library.service;
 
 import com.mendes.library.config.security.user.CustomUserDetail;
-import com.mendes.library.model.DTO.UserDTO.UserRequest;
-import com.mendes.library.model.DTO.UserDTO.UserResponse;
-import com.mendes.library.model.DTO.UserDTO.UserUpdate;
+import com.mendes.library.model.DTO.UserDTO.*;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
+import com.mendes.library.service.exception.AuthorizationException;
 import com.mendes.library.service.exception.BusinessException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -45,26 +46,25 @@ public class UserService {
     }
 
     public User insertUser(User user) {
+        verifyUser(user.getUsername(), user.getEmail());
         user.setId(null);
+        user.setName(user.getName());
+        user.setUsername(user.getUsername());
+        user.setEmail(user.getEmail());
         user.setPassword(user.getPassword());
         return userRepository.save(user);
     }
+
 
     public User updateUser(Long id, User user) {
         if (user == null || user.getId() == null) {
             throw new IllegalArgumentException("User can't be null.");
         }
-        User currentUser = findById(id);
-        toUpdateUser(currentUser, user);
-        verifyUpdateUser(currentUser, user);
-        return userRepository.save(currentUser);
-    }
 
-    public void verifyUpdateUser(User newUser, User oldUser) {
-        User emailVerify = userRepository.findByEmail(newUser.getEmail()).get();
-        if (emailVerify != null && emailVerify.getEmail() != oldUser.getEmail()) {
-            throw new BusinessException("Email already exist");
-        }
+        User currentUser = findById(id);
+        verifyUserUsername(currentUser, user);
+        toUpdateUser(currentUser, user);
+        return userRepository.save(currentUser);
     }
 
     public void deleteUser(Long id) {
@@ -73,6 +73,62 @@ public class UserService {
             throw new IllegalArgumentException("User can't be null");
         }
         this.userRepository.deleteById(id);
+    }
+
+    public User insertRole(User user) {
+        //TODO endpoint apenas com preauthorize de ADMIN
+        user.setRoles(user.getRoles());
+        return userRepository.save(user);
+    }
+
+    public User emailUpdate(Long id, User user) {
+        User currentUser = findById(id);
+        verifyUserEmail(currentUser, user);
+        user.setEmail(user.getEmail());
+        return userRepository.save(currentUser);
+    }
+
+//    public boolean updateUserPassword(User user, String newPassword, String confirmPassword, String oldPassword) {
+//
+//        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+//            throw new AuthorizationException("OldPassword invalid");
+//        }
+//
+//        if (!newPassword.equals(confirmPassword)) {
+//            throw new AuthorizationException("NewPassword and ConfirmPassword are different");
+//        }
+//
+//
+//        user.setPassword(passwordEncoder.encode(newPassword));
+//        userRepository.save(user);
+//        return true;
+//    }
+
+    private void verifyUserUsername(User newUser, User oldUser) {
+        User usernameVerify = userRepository.findByUsername(newUser.getUsername()).get();
+        if (!Objects.equals(usernameVerify.getUsername(), oldUser.getUsername())) {
+            throw new BusinessException("Username already exist");
+        }
+    }
+
+    private void verifyUserEmail(User newUser, User oldUser) {
+        User emailVerify = userRepository.findByEmail(newUser.getEmail()).get();
+        if (!Objects.equals(emailVerify.getEmail(), oldUser.getEmail())) {
+            throw new BusinessException("Email already exist");
+        }
+    }
+
+    private void verifyUser(String username, String email) {
+        Optional<User> usernameVerify = userRepository.findByUsername(username);
+        Optional<User> emailVerify = userRepository.findByEmail(email);
+        if (usernameVerify.isPresent()) {
+            throw new DataIntegrityViolationException("Username already exist");
+        }
+
+        if (emailVerify.isPresent()) {
+            throw new DataIntegrityViolationException("Email already exist");
+        }
+
     }
 
     public User getLoggedUser() {
@@ -93,8 +149,7 @@ public class UserService {
 
     private void toUpdateUser(User currentUser, User user) {
         currentUser.setName(user.getName());
-        currentUser.setEmail(user.getEmail());
-        currentUser.setPassword(user.getPassword());
+        currentUser.setUsername(user.getUsername());
     }
 
     public User convertDtoToEntity(UserRequest userRequest) {
@@ -105,12 +160,28 @@ public class UserService {
         return modelMapper.map(user, UserResponse.class);
     }
 
-    public User convertUpdateDtoToEntity(UserUpdate userUpdate) {
+    public User convertUserUpdateToEntity(UserUpdate userUpdate) {
         return modelMapper.map(userUpdate, User.class);
     }
 
-    public UserUpdate convertEntityToUpdateDto(User user) {
+    public UserUpdate convertEntityToUserUpdate(User user) {
         return modelMapper.map(user, UserUpdate.class);
+    }
+
+    public User convertUserUpdateEmailToEntity(UserUpdateEmail userUpdateEmail) {
+        return modelMapper.map(userUpdateEmail, User.class);
+    }
+
+    public UserUpdateEmail convertEntityToUserUpdateEmail(User user) {
+        return modelMapper.map(user, UserUpdateEmail.class);
+    }
+
+    public User convertUserRolesToEntity(UserRoles userRoles)  {
+        return modelMapper.map(userRoles, User.class);
+    }
+
+    public UserRoles convertEntityToUserRoles(User user) {
+        return modelMapper.map(user, UserRoles.class);
     }
 
 }
