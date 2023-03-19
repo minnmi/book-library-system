@@ -36,7 +36,6 @@ public class UserController {
     @GetMapping("/find/all")
     public Page<UserResponse> findAllUsers(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         var page = this.userService.findAllUser(pageable);
-
         var content = page.getContent()
                 .stream()
                 .map(userService::convertEntityToDto)
