@@ -8,15 +8,12 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserUpdate {
+public class UserUpdateEmail {
 
-    private Long id;
-
-    private String name;
-    @NotNull(message = "The username is required.")
-    private String username;
+    @NotNull(message = "The email is required.")
+    private String email;
 }

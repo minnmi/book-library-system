@@ -7,18 +7,20 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserRequest {
-    private String name;
-    @NotNull(message = "The username is required.")
-    private String username;
+public class UserResetPassword {
+
     @NotNull(message = "The email is required.")
     private String email;
-    @NotNull(message = "The password is required.")
-    private String password;
-    private boolean enabled;
+
+    @NotNull(message = "The New Password is required.")
+    private String newpassword;
+
+    @NotNull(message = "The Confirm Password is required.")
+    private String confirmpassword;
 
 }
