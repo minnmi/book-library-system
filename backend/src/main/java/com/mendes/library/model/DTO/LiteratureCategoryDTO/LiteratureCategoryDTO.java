@@ -12,4 +12,6 @@ import lombok.Setter;
 public class LiteratureCategoryDTO {
 
     private Long id;
+
+    private String name;
 }
