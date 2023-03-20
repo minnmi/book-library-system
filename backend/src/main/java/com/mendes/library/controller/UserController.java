@@ -63,7 +63,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/role")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserRoles insertUser(@Valid @RequestBody UserRoles userRoles) {
+    public UserRoles insertRole(@Valid @RequestBody UserRoles userRoles) {
         User userEntity = userService.convertUserRolesToEntity(userRoles);
         var user = userService.insertRole(userEntity);
         return userService.convertEntityToUserRoles(user);
@@ -72,7 +72,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_UPDATE', 'ADMIN')")
     @PutMapping("/email/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserUpdateEmail updateUser(@Valid @RequestBody UserUpdateEmail userUpdateEmail, @PathVariable Long id) {
+    public UserUpdateEmail updateUserEmail(@Valid @RequestBody UserUpdateEmail userUpdateEmail, @PathVariable Long id) {
         User userEntity = userService.convertUserUpdateEmailToEntity(userUpdateEmail);
         var user = userService.emailUpdate(id, userEntity);
         return userService.convertEntityToUserUpdateEmail(user);
