@@ -2,7 +2,6 @@ package com.mendes.library.config.email.controller;
 
 import com.mendes.library.config.email.EmailDetails;
 import com.mendes.library.config.email.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1")
 public class EmailController {
 
-    @Autowired
     private EmailService emailService;
+
+    public EmailController(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @PostMapping("/sendMail")
     public String sendMail(@RequestBody EmailDetails details)

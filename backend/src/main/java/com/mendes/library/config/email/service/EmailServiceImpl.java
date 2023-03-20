@@ -3,7 +3,6 @@ package com.mendes.library.config.email.service;
 import com.mendes.library.config.email.EmailDetails;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,13 +16,16 @@ import java.util.Objects;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
-    @Value("${mail.username}")
+//    @Value("${mail.username}")
 
 
     private String sender;
+
+    public EmailServiceImpl(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     @Override
     public String sendSimpleMail(EmailDetails details) {

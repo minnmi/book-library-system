@@ -14,4 +14,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserRoles {
     private Set<Role> roles;
+
+    private UserDTO user;
 }
