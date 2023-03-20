@@ -30,14 +30,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/authors/find/all",
+							"raw": "http://localhost:8080/v1/authors/find/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"authors",
 								"find",
 								"all"
@@ -55,17 +55,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/authors/find/2",
+							"raw": "http://localhost:8080/v1/authors/find/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"authors",
 								"find",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -81,7 +81,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Matheus\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Matheuszinho fofoonono\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -89,14 +89,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/authors/insert",
+							"raw": "http://localhost:8080/v1/authors/insert",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"authors",
 								"insert"
 							]
@@ -111,7 +111,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\r\n\r\n",
+							"raw": "{\r\n    \"name\": \"Conrado Silva Jorge Reis\"\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -119,17 +119,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/authors/update/10",
+							"raw": "http://localhost:8080/v1/authors/update/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"authors",
 								"update",
-								"10"
+								"1"
 							]
 						}
 					},
@@ -141,17 +141,17 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/authors/delete/6",
+							"raw": "http://localhost:8080/v1/authors/delete/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"authors",
 								"delete",
-								"6"
+								"5"
 							]
 						}
 					},
@@ -188,14 +188,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/books/find/all",
+							"raw": "http://localhost:8080/v1/books/find/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"books",
 								"find",
 								"all"
@@ -210,17 +210,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/authors/find/6",
+							"raw": "http://localhost:8080/v1/authors/find/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"authors",
 								"find",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -233,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"test_7723557c9fe7\",\r\n  \"isbn\": \"test_5240545469e1\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 2,\r\n      \"name\": \"test_bf361fcebb6d\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1\r\n  },\r\n  \"quantity\": 28,\r\n  \"literatureCategory\": {\r\n    \"id\": 1\r\n  }\r\n}",
+							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Conrado Silva Jorge Reis\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,14 +241,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/books/insert",
+							"raw": "http://localhost:8080/v1/books/insert",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"books",
 								"insert"
 							]
@@ -263,7 +263,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \r\n  \"name\": \"novo livro teste\",\r\n  \"isbn\": \"466554\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 5\r\n  },\r\n  \"literatureCategory\": {\r\n    \"id\": 6\r\n  }\r\n}",
+							"raw": "{\r\n  \"name\": \"História da vida de terror\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Conrado Silva Jorge Reis\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -271,17 +271,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/books/update/8",
+							"raw": "http://localhost:8080/v1/books/update/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"books",
 								"update",
-								"8"
+								"3"
 							]
 						}
 					},
@@ -293,17 +293,149 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/books/delete/8",
+							"raw": "http://localhost:8080/v1/books/delete/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"books",
 								"delete",
-								"8"
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "FindAllBookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/bookings/find/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"bookings",
+								"find",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/bookings/find/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"bookings",
+								"find",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InsertBooking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/bookings/insert",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"bookings",
+								"insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateBooking",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"História da vida de terror\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Conrado Silva Jorge Reis\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/bookings/update/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"bookings",
+								"update",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBooking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/bookings/delete/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"bookings",
+								"delete",
+								"3"
 							]
 						}
 					},
@@ -320,14 +452,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/publishers/find/all",
+							"raw": "http://localhost:8080/v1/publishers/find/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"publishers",
 								"find",
 								"all"
@@ -342,17 +474,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/authors/find/8",
+							"raw": "http://localhost:8080/v1/publishers/find/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
-								"authors",
+								"v1",
+								"publishers",
 								"find",
-								"8"
+								"3"
 							]
 						}
 					},
@@ -365,7 +497,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Nova\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Era\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -373,14 +505,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/publishers/insert",
+							"raw": "http://localhost:8080/v1/publishers/insert",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"publishers",
 								"insert"
 							]
@@ -395,7 +527,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 6,\r\n    \"name\": \"Conrado Silva Jorge\",\r\n    \"books\": null\r\n}",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Gelo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -403,17 +535,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/authors/update/6",
+							"raw": "http://localhost:8080/v1/publishers/update/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
-								"authors",
+								"v1",
+								"publishers",
 								"update",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -424,18 +556,27 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/api/authors/delete/6",
+							"raw": "http://localhost:8080/v1/publishers/delete/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
-								"authors",
+								"v1",
+								"publishers",
 								"delete",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -452,14 +593,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/literatureCategories/find/all",
+							"raw": "http://localhost:8080/v1/literatureCategories/find/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"literatureCategories",
 								"find",
 								"all"
@@ -474,17 +615,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/literatureCategories/find/5",
+							"raw": "http://localhost:8080/v1/literatureCategories/find/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"literatureCategories",
 								"find",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -497,7 +638,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"categoryName\": \"Terror\"\r\n}",
+							"raw": "{\r\n  \"categoryName\": \"Romance\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -505,14 +646,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/literatureCategories/insert",
+							"raw": "http://localhost:8080/v1/literatureCategories/insert",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"literatureCategories",
 								"insert"
 							]
@@ -527,7 +668,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 6,\r\n    \"name\": \"Conrado Silva Jorge\",\r\n    \"books\": null\r\n}",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"categoryName\": \"Ficção\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -535,17 +676,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/literatureCategories/update/5",
+							"raw": "http://localhost:8080/v1/literatureCategories/update/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"literatureCategories",
 								"update",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -557,17 +698,17 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/literatureCategories/delete/6",
+							"raw": "http://localhost:8080/v1/literatureCategories/delete/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"literatureCategories",
 								"delete",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -584,14 +725,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/users/find/all",
+							"raw": "http://localhost:8080/v1/users/find/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"users",
 								"find",
 								"all"
@@ -606,55 +747,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/users/find/1",
+							"raw": "http://localhost:8080/v1/users/find/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"users",
 								"find",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "test@test.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"login"
+								"2"
 							]
 						}
 					},
@@ -670,7 +773,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"email\": \"mct@gmail.com\",\r\n  \"password\": \"teste\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"username\": \"mct\",\r\n  \"email\": \"mctteste@gmail.com\",\r\n  \"password\": \"123\",\r\n  \"enabled\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -678,16 +781,49 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/users/insert",
+							"raw": "http://localhost:8080/v1/users/insert",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"users",
 								"insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InsertRole",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roles\": {}\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/users/role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"role"
 							]
 						}
 					},
@@ -698,16 +834,60 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"username\": \"mct2\",\r\n  \"email\": \"mctteste@gmail.com\",\r\n  \"password\": \"123\",\r\n  \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/api/users/update/1",
+							"raw": "http://localhost:8080/v1/users/update/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"users",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateEmail",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"mct@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/users/email/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"email",
 								"update",
 								"1"
 							]
@@ -744,17 +924,17 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/users/delete/1",
+							"raw": "http://localhost:8080/v1/users/delete/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"users",
 								"delete",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -771,14 +951,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/loans/find/all",
+							"raw": "http://localhost:8080/v1/loans/find/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"find",
 								"all"
@@ -905,7 +1085,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"test_7723557c9fe7\",\r\n  \"isbn\": \"test_5240545469e1\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 2,\r\n      \"name\": \"test_bf361fcebb6d\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1\r\n  },\r\n  \"quantity\": 28,\r\n  \"literatureCategory\": {\r\n    \"id\": 1\r\n  }\r\n}",
+							"raw": "{\r\n  \"initialDate\": \"2023-02-21T20:26:42.051117800\",\r\n  \"finalDate\": \"2023-02-25T20:26:42.051117800\",\r\n  \"book\": {\r\n    \"id\": 15\r\n  },\r\n  \"returned\": 0,\r\n  \"returnedDate\": \"2023-02-25T20:26:42.051117800\"\r\n}\r\n\r\n\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -929,6 +1109,63 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
