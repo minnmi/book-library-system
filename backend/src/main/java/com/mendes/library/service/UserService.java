@@ -4,12 +4,10 @@ import com.mendes.library.config.security.user.CustomUserDetail;
 import com.mendes.library.model.DTO.UserDTO.*;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
-import com.mendes.library.service.exception.AuthorizationException;
-import com.mendes.library.service.exception.BusinessException;
+import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -107,14 +105,14 @@ public class UserService {
     private void verifyUserUsername(User newUser, User oldUser) {
         User usernameVerify = userRepository.findByUsername(newUser.getUsername()).get();
         if (!Objects.equals(usernameVerify.getUsername(), oldUser.getUsername())) {
-            throw new BusinessException("Username already exist");
+            throw new DataIntegrityViolationException("Username already exist");
         }
     }
 
     private void verifyUserEmail(User newUser, User oldUser) {
         User emailVerify = userRepository.findByEmail(newUser.getEmail()).get();
         if (!Objects.equals(emailVerify.getEmail(), oldUser.getEmail())) {
-            throw new BusinessException("Email already exist");
+            throw new DataIntegrityViolationException("Email already exist");
         }
     }
 
@@ -122,11 +120,11 @@ public class UserService {
         Optional<User> usernameVerify = userRepository.findByUsername(username);
         Optional<User> emailVerify = userRepository.findByEmail(email);
         if (usernameVerify.isPresent()) {
-            throw new DataIntegrityViolationException("Username already exist");
+            throw new org.springframework.dao.DataIntegrityViolationException("Username already exist");
         }
 
         if (emailVerify.isPresent()) {
-            throw new DataIntegrityViolationException("Email already exist");
+            throw new org.springframework.dao.DataIntegrityViolationException("Email already exist");
         }
 
     }

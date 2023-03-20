@@ -7,7 +7,7 @@ import com.mendes.library.model.Loan;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.repository.UserRepository;
-import com.mendes.library.service.exception.BusinessException;
+import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +108,7 @@ public class LoanService {
         var currentUser = this.userService.getLoggedUser();
 
         if (!canLoanBook(book, currentUser))
-            throw new BusinessException("Error when loan a book");
+            throw new DataIntegrityViolationException("Error when loan a book");
 
         final var maximumBookingPeriod = this.configurationService.getMaximumLoanPeriod();
 
