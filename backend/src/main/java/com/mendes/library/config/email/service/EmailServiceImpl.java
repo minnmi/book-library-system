@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
     private String sender;
 
     @Override
-    public String sendSimpleMessage(EmailDetails details) {
+    public String sendSimpleMail(EmailDetails details) {
         try {
 
 
@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public String sendMessageWithAttachment(EmailDetails details) {
+    public String sendMailWithAttachment(EmailDetails details) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
 

@@ -5,10 +5,10 @@ import com.mendes.library.config.email.EmailDetails;
 public interface EmailService {
 
 
-    String sendSimpleMessage(EmailDetails details);
+    String sendSimpleMail(EmailDetails details);
 
 
-    String sendMessageWithAttachment(EmailDetails details);
+    String sendMailWithAttachment(EmailDetails details);
 
 
 }

@@ -18,7 +18,7 @@ public class EmailController {
     @PostMapping("/sendMail")
     public String sendMail(@RequestBody EmailDetails details)
     {
-        return emailService.sendSimpleMessage(details);
+        return emailService.sendSimpleMail(details);
     }
 
 
@@ -26,7 +26,7 @@ public class EmailController {
     public String sendMailWithAttachment(
             @RequestBody EmailDetails details)
     {
-        return emailService.sendMessageWithAttachment(details);
+        return emailService.sendMailWithAttachment(details);
     }
 
 
