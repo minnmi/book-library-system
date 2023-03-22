@@ -233,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5,\r\n      \"name\": \"Matheusiznho\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5,\r\n      \"name\": \"Matheuszinho fofoonono\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"O'Reilly\"\r\n  },\r\n  \"quantity\": 101,\r\n  \"categoryName\": {\r\n    \"id\": 4,\r\n    \"name\": \"Terror\"\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +263,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"História da vida de terror\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Conrado Silva Jorge Reis\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5,\r\n      \"name\": \"Matheuszinho fofaono\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"O'Reilly\"\r\n  },\r\n  \"quantity\": 101,\r\n  \"categoryName\": {\r\n    \"id\": 4,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -527,7 +527,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Gelo\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Gelo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -638,7 +638,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"categoryName\": \"Romance\"\r\n}",
+							"raw": "{\r\n  \"categoryName\": \"Informática\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -668,7 +668,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"categoryName\": \"Ficção\"\r\n}",
+							"raw": "{\r\n  \"categoryName\": \"Ciências\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -836,7 +836,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"username\": \"mct2\",\r\n  \"email\": \"mctteste@gmail.com\",\r\n  \"password\": \"123\",\r\n  \"enabled\": true\r\n}",
+							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"username\": \"mct2\",\r\n  \"email\": \"mcttestee@gmail.com\",\r\n  \"password\": \"123\",\r\n  \"enabled\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -870,7 +870,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"mct@gmail.com\"\r\n}",
+							"raw": "{\r\n  \"email\": \"mct111@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1085,7 +1085,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"initialDate\": \"2023-02-21T20:26:42.051117800\",\r\n  \"finalDate\": \"2023-02-25T20:26:42.051117800\",\r\n  \"book\": {\r\n    \"id\": 15\r\n  },\r\n  \"returned\": 0,\r\n  \"returnedDate\": \"2023-02-25T20:26:42.051117800\"\r\n}\r\n\r\n\r\n\r\n\r\n",
+							"raw": "{\r\n  \"initialDate\": \"2023-02-21T20:26:42.051117800\",\r\n  \"finalDate\": \"2023-02-25T20:26:42.051117800\",\r\n  \"book\": {\r\n    \"id\": 1\r\n  },\r\n  \"returned\": 0,\r\n  \"returnedDate\": \"2023-02-25T20:26:42.051117800\"\r\n}\r\n\r\n\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
