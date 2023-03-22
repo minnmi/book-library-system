@@ -1,14 +1,15 @@
 package com.mendes.library.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @Audited
 @Table(name = "booking", uniqueConstraints = {
@@ -27,7 +28,7 @@ public class Booking {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    private LocalDateTime currentDate;
+    private LocalDate currentDate;
 
     private Integer priority;
 

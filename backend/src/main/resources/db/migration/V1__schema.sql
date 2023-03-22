@@ -62,7 +62,7 @@ CREATE TABLE `book`
 -- Indica que o usuário tem intenção de alugar um livro
 CREATE TABLE `booking`
 (
-    `id`           bigint    NOT NULL,
+    `id`           bigint    NOT NULL AUTO_INCREMENT,
     `user_id`      bigint    NOT NULL,
     `book_id`      bigint    NOT NULL,
     `current_date` timestamp NOT NULL DEFAULT current_timestamp(),

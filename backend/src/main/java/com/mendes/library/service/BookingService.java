@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -94,7 +95,7 @@ public class BookingService {
                 .user(user)
                 .book(book)
                 .priority(1)
-                .currentDate(LocalDateTime.now())
+                .currentDate(LocalDate.now())
                 .build();
 
         logger.info("Saving booking");

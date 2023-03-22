@@ -1,2 +1,2 @@
-alter table book add (book_cover varchar(255));
-alter table book_aud add (book_cover varchar(255));
+ALTER TABLE book ADD (book_cover VARCHAR(255));
+ALTER TABLE book_aud ADD (book_cover VARCHAR(255));
