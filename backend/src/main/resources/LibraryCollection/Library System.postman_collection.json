@@ -119,7 +119,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/authors/update/1",
+							"raw": "http://localhost:8080/v1/authors/update/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -129,7 +129,7 @@
 								"v1",
 								"authors",
 								"update",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -141,7 +141,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/authors/delete/5",
+							"raw": "http://localhost:8080/v1/authors/delete/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -151,7 +151,7 @@
 								"v1",
 								"authors",
 								"delete",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -210,7 +210,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/authors/find/1",
+							"raw": "http://localhost:8080/v1/books/find/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -218,9 +218,9 @@
 							"port": "8080",
 							"path": [
 								"v1",
-								"authors",
+								"books",
 								"find",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -233,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Conrado Silva Jorge Reis\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5,\r\n      \"name\": \"Matheusiznho\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -293,7 +293,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/books/delete/3",
+							"raw": "http://localhost:8080/v1/books/delete/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -303,7 +303,7 @@
 								"v1",
 								"books",
 								"delete",
-								"3"
+								"4"
 							]
 						}
 					},
@@ -342,7 +342,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/bookings/find/1",
+							"raw": "http://localhost:8080/v1/bookings/find/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -352,7 +352,7 @@
 								"v1",
 								"bookings",
 								"find",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -365,7 +365,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "2",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -395,7 +395,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"História da vida de terror\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Conrado Silva Jorge Reis\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"Era\"\r\n  },\r\n  \"quantity\": 10,\r\n  \"categoryName\": {\r\n    \"id\": 1,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
+							"raw": "{\r\n    \"user\": {\r\n        \"id\": 2,\r\n        \"name\": \"Admin\"\r\n    },\r\n    \"book\": {\r\n        \"id\": 2,\r\n        \"name\": \"Amor das estrelas\"\r\n    },\r\n    \"priority\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -403,7 +403,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/bookings/update/3",
+							"raw": "http://localhost:8080/v1/bookings/update/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -413,7 +413,7 @@
 								"v1",
 								"bookings",
 								"update",
-								"3"
+								""
 							]
 						}
 					},
