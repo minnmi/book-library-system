@@ -65,7 +65,7 @@ CREATE TABLE `booking`
     `id`           bigint    NOT NULL AUTO_INCREMENT,
     `user_id`      bigint    NOT NULL,
     `book_id`      bigint    NOT NULL,
-    `current_date` timestamp NOT NULL DEFAULT current_timestamp(),
+    `created_date` timestamp NOT NULL,
     `priority`     int(11) NOT NULL,
     PRIMARY KEY (`id`),
     KEY            `fk_user_booking` (`user_id`),
