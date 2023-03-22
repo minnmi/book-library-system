@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -28,7 +27,8 @@ public class Booking {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    private LocalDate currentDate;
+    @Column(name = "created_date")
+    private LocalDate createdDate;
 
     private Integer priority;
 

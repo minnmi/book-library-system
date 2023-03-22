@@ -18,7 +18,6 @@ public class BookingRequest {
 
     private UserDTO user;
     private BookDTO book;
-    private LocalDateTime currentDate;
     private Integer priority;
 
 

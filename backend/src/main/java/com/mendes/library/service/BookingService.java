@@ -95,7 +95,7 @@ public class BookingService {
                 .user(user)
                 .book(book)
                 .priority(1)
-                .currentDate(LocalDate.now())
+                .createdDate(LocalDate.now())
                 .build();
 
         logger.info("Saving booking");

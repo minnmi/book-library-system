@@ -18,6 +18,5 @@ public class BookingResponse {
     private Long id;
     private UserDTO user;
     private BookDTO book;
-    private LocalDateTime currentDate;
     private Integer priority;
 }
