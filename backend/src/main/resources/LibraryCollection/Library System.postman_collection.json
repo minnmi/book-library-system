@@ -263,7 +263,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5,\r\n      \"name\": \"Matheuszinho fofaono\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"O'Reilly\"\r\n  },\r\n  \"quantity\": 101,\r\n  \"categoryName\": {\r\n    \"id\": 4,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"name\": \"História da vida\",\r\n  \"isbn\": \"123456877\",\r\n  \"authors\": [\r\n    {\r\n      \"id\": 5,\r\n      \"name\": \"Matheuszinho fofoonono\"\r\n    }\r\n  ],\r\n  \"publisher\": {\r\n    \"id\": 1,\r\n    \"name\": \"O'Reilly\"\r\n  },\r\n  \"quantity\": 101,\r\n  \"categoryName\": {\r\n    \"id\": 4,\r\n    \"name\": \"Terror\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
