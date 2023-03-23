@@ -55,7 +55,7 @@ public class UserService {
 
 
     public User updateUser(Long id, User user) {
-        if (user == null || user.getId() == null) {
+        if (user == null) {
             throw new IllegalArgumentException("User can't be null.");
         }
 
@@ -102,9 +102,8 @@ public class UserService {
 //        return true;
 //    }
 
-    private void verifyUserUsername(User newUser, User oldUser) {
-        User usernameVerify = userRepository.findByUsername(newUser.getUsername()).get();
-        if (!Objects.equals(usernameVerify.getUsername(), oldUser.getUsername())) {
+    private void verifyUserUsername(User currentUser, User newUser) {
+        if (Objects.equals(currentUser.getUsername(), newUser.getUsername())) {
             throw new DataIntegrityViolationException("Username already exist");
         }
     }
