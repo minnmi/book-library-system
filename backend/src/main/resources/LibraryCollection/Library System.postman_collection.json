@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3a336b8e-842d-4eb1-a487-52be3ae86d6d",
+		"_postman_id": "68a40344-f909-4043-b013-11f5d9eb85d9",
 		"name": "Library System",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19988591"
+		"_exporter_id": "15264560"
 	},
 	"item": [
 		{
@@ -1128,7 +1128,7 @@
 						},
 						{
 							"key": "password",
-							"value": "123456",
+							"value": "password",
 							"type": "text"
 						}
 					]
