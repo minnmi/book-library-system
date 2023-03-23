@@ -45,7 +45,7 @@ public class LiteratureCategoryService {
     }
 
     public LiteratureCategory updateLiteratureCategory(Long id, LiteratureCategory literatureCategory) {
-        if (literatureCategory == null || literatureCategory.getId() == null) {
+        if (literatureCategory == null) {
             throw new IllegalArgumentException("Literature category can't be null");
         }
         LiteratureCategory currentLiteratureCategory = findById(id);
