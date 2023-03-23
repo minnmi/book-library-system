@@ -43,8 +43,9 @@ public class BookController {
     @GetMapping("/find/all")
     public Page<BookResponse> findAllBooks(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         var page = bookService.findAllBooks(pageable);
+
         var content = page.getContent().stream()
-                .map(book -> bookService.convertEntityToDto(book))
+                .map(bookService::convertEntityToDto)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(content, page.getPageable(), page.getTotalElements());

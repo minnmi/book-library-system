@@ -18,6 +18,8 @@ import org.springframework.security.config.annotation.web.configurers.LogoutConf
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -55,7 +57,7 @@ public class WebSecurityConfig  {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 .and()
                 .formLogin()
                     .successHandler(new CustomAuthenticationSuccessHandler())
@@ -65,6 +67,16 @@ public class WebSecurityConfig  {
                 .logout(LogoutConfigurer::permitAll);
 
         return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean

@@ -45,6 +45,7 @@ import {
 } from '@coreui/angular';
 
 import {IconModule, IconSetModule, IconSetService} from '@coreui/icons-angular';
+import {ToastNoAnimationModule, ToastrModule} from "ngx-toastr";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -86,6 +87,7 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
+      ToastrModule.forRoot()
   ],
   providers: [
     {

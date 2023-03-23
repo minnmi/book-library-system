@@ -3,9 +3,28 @@
     <h1>Autores</h1>
   </div>
   <div class="new">
-    <button cButton color="success">Novo</button>
+    <button cButton color="success" (click)="add()">Novo</button>
   </div>
 </div>
+
+<form cForm [formGroup]="form" (submit)="save($event)">
+<c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+  <c-modal-header>
+    <h5 cModalTitle>{{getModalTitle(updating)}}</h5>
+    <button (click)="add()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+      <label cLabel for="author-name">Nome</label>
+      <input cFormControl formControlName="name" id="author-name" placeholder="Machado de Assis" type="text"/>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="close()" cButton color="secondary" type="button">
+      Close
+    </button>
+    <button cButton color="primary" type="submit">Concluir</button>
+  </c-modal-footer>
+</c-modal>
+</form>
 <table cTable class="table">
   <thead>
   <tr>
@@ -15,7 +34,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let a of authors">
+  <tr *ngFor="let a of authors.content">
     <th scope="row">{{a.id}}</th>
     <td>{{a.name}}</td>
     <td>
