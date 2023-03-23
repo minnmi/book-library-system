@@ -45,7 +45,7 @@ public class PublisherService {
     }
 
     public Publisher updatePublisher(Long id, Publisher publisher) {
-        if (publisher == null || publisher.getId() == null) {
+        if (publisher == null) {
             throw new IllegalArgumentException("Publisher can't be null.");
         }
         Publisher currentPublisher = findById(id);
