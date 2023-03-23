@@ -134,12 +134,8 @@ public class BookService {
     private void toUpdateBook(Book currentBook, Book book) {
         currentBook.setName(book.getName());
         currentBook.setIsbn(book.getIsbn());
-//        if (Objects.isNull(newObject.getAuthors())) {
-//            newObject.setAuthors(object.getAuthors());
-//        } else {
-//            newObject.getAuthors().clear();
-//            newObject.getAuthors().addAll(object.getAuthors());
-//        }
+        currentBook.getAuthors().clear();
+        currentBook.getAuthors().addAll(book.getAuthors());
         currentBook.setPublisher(book.getPublisher());
         currentBook.setLiteratureCategory(book.getLiteratureCategory());
     }
