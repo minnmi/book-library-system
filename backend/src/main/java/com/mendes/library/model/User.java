@@ -1,15 +1,22 @@
 package com.mendes.library.model;
 
 import jakarta.persistence.*;
+import jakarta.websocket.server.ServerEndpoint;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Audited
 @Table(name = "user")
 public class User {
@@ -38,5 +45,11 @@ public class User {
                 inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Booking> bookings;
+
+    public User(Long id) {
+        this.id = id;
+    }
 
 }

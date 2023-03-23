@@ -103,10 +103,9 @@ public class BookingService {
 
 
     public Booking updateBooking(Long id, Booking booking) {
-        var current = this.findById(id);
+        Booking current = this.findById(id);
         this.toUpdateBooking(booking, current);
-        current = this.bookingRepository.save(current);
-        return current;
+        return this.bookingRepository.save(current);
     }
 
     public void deleteBooking(Long id) {
