@@ -4,6 +4,7 @@ import com.mendes.library.config.security.user.CustomUserDetail;
 import com.mendes.library.model.DTO.UserDTO.*;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.UserRepository;
+import com.mendes.library.service.exception.AuthorizationException;
 import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -23,11 +25,14 @@ public class UserService {
 
     private final ModelMapper modelMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Page<User> findAllUser(Pageable pageable) {
@@ -82,25 +87,25 @@ public class UserService {
     public User emailUpdate(Long id, User user) {
         User currentUser = findById(id);
         verifyUserEmail(currentUser, user);
-        user.setEmail(user.getEmail());
+        currentUser.setEmail(user.getEmail());
         return userRepository.save(currentUser);
     }
 
-//    public boolean updateUserPassword(User user, String newPassword, String confirmPassword, String oldPassword) {
-//
-//        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-//            throw new AuthorizationException("OldPassword invalid");
-//        }
-//
-//        if (!newPassword.equals(confirmPassword)) {
-//            throw new AuthorizationException("NewPassword and ConfirmPassword are different");
-//        }
-//
-//
-//        user.setPassword(passwordEncoder.encode(newPassword));
-//        userRepository.save(user);
-//        return true;
-//    }
+    public boolean updateUserPassword(User user, String newPassword, String confirmPassword, String oldPassword) {
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new AuthorizationException("OldPassword invalid");
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new AuthorizationException("NewPassword and ConfirmPassword are different");
+        }
+
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
 
     private void verifyUserUsername(User currentUser, User newUser) {
         if (Objects.equals(currentUser.getUsername(), newUser.getUsername())) {
@@ -109,8 +114,7 @@ public class UserService {
     }
 
     private void verifyUserEmail(User newUser, User oldUser) {
-        User emailVerify = userRepository.findByEmail(newUser.getEmail()).get();
-        if (!Objects.equals(emailVerify.getEmail(), oldUser.getEmail())) {
+        if (Objects.equals(newUser.getEmail(), oldUser.getEmail())) {
             throw new DataIntegrityViolationException("Email already exist");
         }
     }
@@ -118,6 +122,7 @@ public class UserService {
     private void verifyUser(String username, String email) {
         Optional<User> usernameVerify = userRepository.findByUsername(username);
         Optional<User> emailVerify = userRepository.findByEmail(email);
+
         if (usernameVerify.isPresent()) {
             throw new org.springframework.dao.DataIntegrityViolationException("Username already exist");
         }
