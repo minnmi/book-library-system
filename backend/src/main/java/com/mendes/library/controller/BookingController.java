@@ -3,8 +3,6 @@ package com.mendes.library.controller;
 import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
 import com.mendes.library.model.DTO.BookindDTO.BookingResponse;
 import com.mendes.library.service.BookingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +51,7 @@ public class BookingController {
     @ResponseStatus(HttpStatus.OK)
     public BookingResponse updateBooking(@Valid @RequestBody BookingRequest request, @PathVariable Long id) {
         var booking = this.bookingService.convertDtoToEntity(request);
-        booking = this.bookingService.updateBook(id, booking);
+        booking = this.bookingService.updateBooking(id, booking);
         return this.bookingService.convertEntityToDto(booking);
     }
 

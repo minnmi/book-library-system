@@ -91,19 +91,18 @@ public class BookingService {
         User user = this.userService.getLoggedUser();
 
         logger.info("Creating booking");
-        var booking = Booking.builder()
-                .user(user)
-                .book(book)
-                .priority(1)
-                .createdDate(LocalDate.now())
-                .build();
+        var booking = new Booking();
+        booking.setUser(user);
+        booking.setBook(book);
+        booking.setPriority(1);
+        booking.setCreatedDate(LocalDate.now());
 
         logger.info("Saving booking");
         return this.bookingRepository.save(booking);
     }
 
 
-    public Booking updateBook(Long id, Booking booking) {
+    public Booking updateBooking(Long id, Booking booking) {
         var current = this.findById(id);
         this.toUpdateBooking(booking, current);
         current = this.bookingRepository.save(current);
@@ -115,6 +114,7 @@ public class BookingService {
     }
 
     private void toUpdateBooking(Booking booking, Booking currentBooking) {
+        currentBooking.setUser(booking.getUser());
         currentBooking.setBook(booking.getBook());
         currentBooking.setPriority(booking.getPriority());
     }
