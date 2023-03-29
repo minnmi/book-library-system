@@ -55,12 +55,12 @@ public class LoanService {
         return loanedRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName()));
     }
 
-    public List<Loan> findLoansByUser(User user) {
-        return loanedRepository.findLoanedsByUser(user.getId());
+    public List<Loan> findLoansByUser(Long userId) {
+        return loanedRepository.findLoanedsByUser(userId);
     }
 
-    public List<Loan> findLoansByBook(Book book) {
-        return loanedRepository.findLoanedsByBook(book.getId());
+    public List<Loan> findLoansByBook(Long bookId) {
+        return loanedRepository.findLoanedsByBook(bookId);
     }
 
     private Integer getQuantityLoaned(Book book) {
