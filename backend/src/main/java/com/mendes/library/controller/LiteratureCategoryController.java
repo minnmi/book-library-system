@@ -35,8 +35,8 @@ public class LiteratureCategoryController {
         var page = literatureCategoryService.findAllLiteratureCategories(pageable);
         var content = page.getContent()
                 .stream()
-                .map(object -> literatureCategoryService.convertEntityToDto(object))
-                .collect(Collectors.toList());
+                .map(literatureCategoryService::convertEntityToDto)
+                .toList();
 
         return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
@@ -44,7 +44,7 @@ public class LiteratureCategoryController {
     @PreAuthorize("hasAnyAuthority('LITERATURE_CATEGORY_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public LiteratureCategoryResponse findById(@PathVariable Long id) {
-        LiteratureCategory literatureCategory = literatureCategoryService.findById(id);
+        var literatureCategory = literatureCategoryService.findById(id);
         return literatureCategoryService.convertEntityToDto(literatureCategory);
     }
 
@@ -53,7 +53,7 @@ public class LiteratureCategoryController {
     @ResponseStatus(HttpStatus.CREATED)
     public LiteratureCategoryResponse insertLiteratureCategory(@Valid @RequestBody LiteratureCategoryRequest literatureCategoryRequest) {
         log.info(" inserting a new literature cateogory: {} ", literatureCategoryRequest.getCategoryName());
-        LiteratureCategory literatureCategoryEntity = literatureCategoryService.convertDtoToEntity(literatureCategoryRequest);
+        var literatureCategoryEntity = literatureCategoryService.convertDtoToEntity(literatureCategoryRequest);
         var literatureCategory = literatureCategoryService.insertLiteratureCategory(literatureCategoryEntity);
         return literatureCategoryService.convertEntityToDto(literatureCategory);
     }
@@ -63,7 +63,7 @@ public class LiteratureCategoryController {
     @ResponseStatus(HttpStatus.OK)
     public LiteratureCategoryResponse updateLiteratureCategory(@Valid @RequestBody LiteratureCategoryRequest literatureCategoryRequest, @PathVariable Long id) {
         log.info(" updating literature category of id: {} ", id);
-        LiteratureCategory literatureCategoryEntity = literatureCategoryService.convertDtoToEntity(literatureCategoryRequest);
+        var literatureCategoryEntity = literatureCategoryService.convertDtoToEntity(literatureCategoryRequest);
         var literatureCategory = literatureCategoryService.updateLiteratureCategory(id, literatureCategoryEntity);
         return literatureCategoryService.convertEntityToDto(literatureCategory);
     }
@@ -72,6 +72,6 @@ public class LiteratureCategoryController {
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteLiteratureCategory(@PathVariable Long id) {
-        literatureCategoryService.deleteLiteratureCategory(id);
+        this.literatureCategoryService.deleteLiteratureCategory(id);
     }
 }
