@@ -52,21 +52,14 @@ public class LoanService {
     }
 
     public Loan findById(Long id) {
-        Optional<Loan> optionalLoan = loanedRepository.findById(id);
-        if (optionalLoan.isPresent()) {
-            return optionalLoan.get();
-        } else  {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName());
-        }
+        return loanedRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName()));
     }
 
-    public List<Loan> findLoansByUser(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public List<Loan> findLoansByUser(User user) {
         return loanedRepository.findLoanedsByUser(user.getId());
     }
 
-    public List<Loan> findLoansByBook(Long bookId) {
-        Book book = bookService.findById(bookId);
+    public List<Loan> findLoansByBook(Book book) {
         return loanedRepository.findLoanedsByBook(book.getId());
     }
 
@@ -99,8 +92,7 @@ public class LoanService {
         if (!this.hasBooking(currentUser.getId(), book.getId(),numAvailable))
             return false;
 
-        var expr = (numAvailable > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
-        return expr;
+        return (numAvailable > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
     }
 
     public Loan insertLoaned(Long bookId) throws Exception {
@@ -128,9 +120,8 @@ public class LoanService {
     }
 
     public List<Loan> findLateLoansByUser(LocalDateTime localDateTime, Long userId) {
-        User user = userRepository.findById(userId).get();
-        final var lateLoans = loanedRepository.findLateLoansByUser(localDateTime, userId);
-        return lateLoans;
+        var user = userRepository.findById(userId);
+        return loanedRepository.findLateLoansByUser(localDateTime, user);
     }
 
     public List<Loan> findByInitialDate(LocalDateTime from, LocalDateTime to) {
