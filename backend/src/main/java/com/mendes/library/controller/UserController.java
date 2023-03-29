@@ -47,7 +47,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public UserResponse findById(@PathVariable Long id) {
-        User user = userService.findById(id);
+        var user = userService.findById(id);
         return userService.convertEntityToDto(user);
     }
 
@@ -55,7 +55,7 @@ public class UserController {
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse insertUser(@Valid @RequestBody UserRequest userRequest) {
-        User userEntity = userService.convertDtoToEntity(userRequest);
+        var userEntity = userService.convertDtoToEntity(userRequest);
         var user = userService.insertUser(userEntity);
         return userService.convertEntityToDto(user);
     }
@@ -64,7 +64,7 @@ public class UserController {
     @PostMapping("/role")
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoles insertRole(@Valid @RequestBody UserRoles userRoles) {
-        User userEntity = userService.convertUserRolesToEntity(userRoles);
+        var userEntity = userService.convertUserRolesToEntity(userRoles);
         var user = userService.insertRole(userEntity);
         return userService.convertEntityToUserRoles(user);
     }
@@ -73,7 +73,7 @@ public class UserController {
     @PutMapping("/email/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserUpdateEmail updateUserEmail(@Valid @RequestBody UserUpdateEmail userUpdateEmail, @PathVariable Long id) {
-        User userEntity = userService.convertUserUpdateEmailToEntity(userUpdateEmail);
+        var userEntity = userService.convertUserUpdateEmailToEntity(userUpdateEmail);
         var user = userService.emailUpdate(id, userEntity);
         return userService.convertEntityToUserUpdateEmail(user);
     }
@@ -83,7 +83,7 @@ public class UserController {
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse updateUser(@Valid @RequestBody UserRequest userRequest, @PathVariable Long id) {
-        User userEntity = userService.convertDtoToEntity(userRequest);
+        var userEntity = userService.convertDtoToEntity(userRequest);
         var user = userService.updateUser(id, userEntity);
         return userService.convertEntityToDto(user);
     }
@@ -92,7 +92,7 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long id) {
-            userService.deleteUser(id);
+        this.userService.deleteUser(id);
     }
 
 
