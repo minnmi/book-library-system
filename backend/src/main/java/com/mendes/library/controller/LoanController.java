@@ -38,7 +38,7 @@ public class LoanController {
         var page = loanService.findAllLoanedBooks(pageable);
         var content = page.getContent()
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan)).toList();
+                .map(loanService::convertEntityToDto).toList();
 
         return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
 
@@ -47,7 +47,7 @@ public class LoanController {
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public LoanResponse findById(@PathVariable Long id) {
-        Loan loan = loanService.findById(id);
+        var loan = loanService.findById(id);
         return loanService.convertEntityToDto(loan);
     }
 
@@ -56,8 +56,8 @@ public class LoanController {
     public List<LoanResponse> findLoansByUser(@PathVariable Long userId) {
         return loanService.findLoansByUser(userId)
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan))
-                .collect(Collectors.toList());
+                .map(loanService::convertEntityToDto)
+                .toList();
     }
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
@@ -65,8 +65,8 @@ public class LoanController {
     public List<LoanResponse> findLoansByBook(@PathVariable Long bookId) {
         return loanService.findLoansByBook(bookId)
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan))
-                .collect(Collectors.toList());
+                .map(loanService::convertEntityToDto)
+                .toList();
     }
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
@@ -74,8 +74,8 @@ public class LoanController {
     public List<LoanResponse> findLateLoansByUser(@RequestBody LocalDateTime localDateTime, @PathVariable Long userId) {
         return loanService.findLateLoansByUser(localDateTime, userId)
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan))
-                .collect(Collectors.toList());
+                .map(loanService::convertEntityToDto)
+                .toList();
     }
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
@@ -84,8 +84,8 @@ public class LoanController {
                                                 @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
         return loanService.findByInitialDate(from, to)
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan))
-                .collect(Collectors.toList());
+                .map(loanService::convertEntityToDto)
+                .toList();
 
     }
 
@@ -96,8 +96,8 @@ public class LoanController {
                                               @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
         return loanService.findByFinalDate(from, to)
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan))
-                .collect(Collectors.toList());
+                .map(loanService::convertEntityToDto)
+                .toList();
 
     }
 
@@ -106,15 +106,15 @@ public class LoanController {
     public List<LoanResponse> findHistory(@PathVariable Long userId) {
         return loanService.findHistory(userId)
                 .stream()
-                .map(loan -> loanService.convertEntityToDto(loan))
-                .collect(Collectors.toList());
+                .map(loanService::convertEntityToDto)
+                .toList();
     }
 
     @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public LoanResponse insertLoan(@Valid @RequestBody Long bookId) throws Exception {
-        Loan loan = loanService.insertLoaned(bookId);
+        var loan = loanService.insertLoaned(bookId);
         return loanService.convertEntityToDto(loan);
     }
 
