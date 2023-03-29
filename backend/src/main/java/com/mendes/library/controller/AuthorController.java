@@ -39,8 +39,8 @@ public class AuthorController {
         var page = authorService.findAllAuthors(pageable);
         var content = page.getContent()
                 .stream()
-                .map(author -> authorService.convertEntityToDto(author))
-                .collect(Collectors.toList());
+                .map(authorService::convertEntityToDto)
+                .toList();
 
         return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
@@ -50,7 +50,7 @@ public class AuthorController {
     @GetMapping("/find/{id}")
     public AuthorResponse findById(@PathVariable Long id) {
         log.info("Consultando autor (ID = {})", id);
-        Author author = authorService.findById(id);
+        var author = authorService.findById(id);
         return authorService.convertEntityToDto(author);
     }
 
@@ -59,7 +59,7 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.CREATED)
     public AuthorResponse insertAuthor(@Valid @RequestBody AuthorRequest authorRequest) {
         log.info("Cadastrando novo autor (Nome = {})", authorRequest.getName());
-        Author authorEntity = authorService.convertDtoToEntity(authorRequest);
+        var authorEntity = authorService.convertDtoToEntity(authorRequest);
         var author = authorService.insertAuthor(authorEntity);
         log.info("Autor cadastrado com sucesso (ID = {})", author.getId());
         return authorService.convertEntityToDto(author);
@@ -71,7 +71,7 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.OK)
     public AuthorResponse updateAuthor(@Valid @RequestBody AuthorRequest authorRequest, @PathVariable Long id) {
         log.info("Atualizando autor (ID = {})", id);
-        Author authorEntity = authorService.convertDtoToEntity(authorRequest);
+        var authorEntity = authorService.convertDtoToEntity(authorRequest);
         var author = authorService.updateAuthor(id, authorEntity);
         log.info("Autor atualizado com sucesso (ID = {})", id);
         return authorService.convertEntityToDto(author);
