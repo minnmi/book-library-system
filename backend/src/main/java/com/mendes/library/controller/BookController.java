@@ -46,7 +46,7 @@ public class BookController {
 
         var content = page.getContent().stream()
                 .map(bookService::convertEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
 
         return new PageImpl<>(content, page.getPageable(), page.getTotalElements());
     }
@@ -54,7 +54,7 @@ public class BookController {
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public BookResponse findById(@PathVariable Long id) {
-        Book book = bookService.findById(id);
+        var book = bookService.findById(id);
         return bookService.convertEntityToDto(book);
     }
 
@@ -63,7 +63,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     public BookResponse insertBook(@Valid @RequestBody BookRequest bookRequest) {
         log.info(" inserting a new book: {} ", bookRequest.getName());
-        Book bookEntity = bookService.convertDtoToEntity(bookRequest);
+        var bookEntity = bookService.convertDtoToEntity(bookRequest);
         var book = bookService.insertBook(bookEntity);
         return bookService.convertEntityToDto(book);
     }
@@ -73,7 +73,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public BookResponse updateBook(@Valid @RequestBody BookRequest bookRequest, @PathVariable Long id) {
         log.info(" updating book of id: {} ", id);
-        Book bookEntity = bookService.convertDtoToEntity(bookRequest);
+        var bookEntity = bookService.convertDtoToEntity(bookRequest);
         var book = bookService.updateBook(id, bookEntity);
         return bookService.convertEntityToDto(book);
     }
@@ -96,7 +96,7 @@ public class BookController {
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+        this.bookService.deleteBook(id);
     }
 
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
