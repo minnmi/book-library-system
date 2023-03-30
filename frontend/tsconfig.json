@@ -1,11 +1,12 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
+  "skipLibCheck": true,
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
@@ -32,6 +33,6 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.spec.json" },
+    { "path": "./tsconfig.spec.json" }
   ]
 }

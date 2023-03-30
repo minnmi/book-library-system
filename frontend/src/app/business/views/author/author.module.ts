@@ -3,19 +3,32 @@ import {CommonModule} from '@angular/common';
 
 import {AuthorRoutingModule} from './author-routing.module';
 import {AuthorComponent} from './author.component';
-import {TableModule} from "@coreui/angular";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ButtonModule, FormModule, ModalModule, TableModule} from "@coreui/angular";
+import {IconModule} from "@coreui/icons-angular";
+import {AuthorService} from "./author.service";
+import {HttpClientModule} from "@angular/common/http";
+import { FormComponent } from './form/form.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [
-    AuthorComponent
+    AuthorComponent,
+    FormComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    AuthorRoutingModule,
-    TableModule,
+    imports: [
+        CommonModule,
+        AuthorRoutingModule,
+        TableModule,
+        ButtonModule,
+        IconModule,
+        HttpClientModule,
+        ModalModule,
+        FormModule,
+        ReactiveFormsModule
+    ],
+  providers: [
+      AuthorService
   ]
 })
 export class AuthorModule { }

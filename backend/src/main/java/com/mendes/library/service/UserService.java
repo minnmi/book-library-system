@@ -1,33 +1,42 @@
 package com.mendes.library.service;
 
 import com.mendes.library.config.security.user.CustomUserDetail;
-import com.mendes.library.model.DTO.UserDTO.UserDTO;
-import com.mendes.library.model.DTO.UserDTO.UserUpdateDTO;
+import com.mendes.library.model.DTO.UserDTO.*;
+import com.mendes.library.model.Role;
 import com.mendes.library.model.User;
+import com.mendes.library.repository.RoleRepository;
 import com.mendes.library.repository.UserRepository;
-import com.mendes.library.service.exception.BusinessException;
+import com.mendes.library.service.exception.AuthorizationException;
+import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder,
+                       RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     public Page<User> findAllUser(Pageable pageable) {
@@ -35,35 +44,33 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + User.class.getName());
-        }
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + User.class.getName()));
     }
 
-    public User insertUser(User object) {
-        object.setId(null);
-        object.setPassword(object.getPassword());
-        return userRepository.save(object);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + email + " type " + User.class.getName()));
     }
 
-    public User updateUser(Long id, User object) {
-        if (object == null || object.getId() == null) {
+    public User insertUser(User user) {
+        verifyUser(user.getUsername(), user.getEmail());
+        user.setId(null);
+        user.setName(user.getName());
+        user.setUsername(user.getUsername());
+        user.setEmail(user.getEmail());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+
+    public User updateUser(Long id, User user) {
+        if (user == null) {
             throw new IllegalArgumentException("User can't be null.");
         }
-        User newObject = findById(id);
-        toUpdateUser(newObject, object);
-        verifyUpdateUser(newObject, object);
-        return userRepository.save(newObject);
-    }
 
-    public void verifyUpdateUser(User newUser, User oldUser) {
-        User emailVerify = userRepository.findByEmail(newUser.getEmail()).get();
-        if (emailVerify != null && emailVerify.getEmail() != oldUser.getEmail()) {
-            throw new BusinessException("Email already exist");
-        }
+        User currentUser = findById(id);
+        verifyUserUsername(currentUser, user);
+        toUpdateUser(currentUser, user);
+        return userRepository.save(currentUser);
     }
 
     public void deleteUser(Long id) {
@@ -74,8 +81,61 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    public void addRoleToUser(User user, String roleName) {
+        Role role = roleRepository.findByName(roleName);
+        user.getRoles().add(role);
+        userRepository.save(user);
+    }
+
+    public User emailUpdate(Long id, User user) {
+        User currentUser = findById(id);
+        verifyUserEmail(currentUser, user);
+        currentUser.setEmail(user.getEmail());
+        return userRepository.save(currentUser);
+    }
+
+    public void updateUserPassword(User user, String newPassword, String confirmPassword, String oldPassword) {
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new AuthorizationException("OldPassword invalid");
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new AuthorizationException("NewPassword and ConfirmPassword are different");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    private void verifyUserUsername(User currentUser, User newUser) {
+        if (Objects.equals(currentUser.getUsername(), newUser.getUsername())) {
+            throw new DataIntegrityViolationException("Username already exist");
+        }
+    }
+
+    private void verifyUserEmail(User newUser, User oldUser) {
+        if (Objects.equals(newUser.getEmail(), oldUser.getEmail())) {
+            throw new DataIntegrityViolationException("Email already exist");
+        }
+    }
+
+    private void verifyUser(String username, String email) {
+        Optional<User> usernameVerify = userRepository.findByUsername(username);
+        Optional<User> emailVerify = userRepository.findByEmail(email);
+
+        if (usernameVerify.isPresent()) {
+            throw new org.springframework.dao.DataIntegrityViolationException("Username already exist");
+        }
+
+        if (emailVerify.isPresent()) {
+            throw new org.springframework.dao.DataIntegrityViolationException("Email already exist");
+        }
+
+    }
+
     public User getLoggedUser() {
-        CustomUserDetail userDetail = (CustomUserDetail)SecurityContextHolder
+        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
@@ -83,33 +143,43 @@ public class UserService {
         return this.findById(userDetail.getId());
     }
 
+    public List<UserLoansBooksDTO> findLoansByUserId(Long userId) {
+        return this.userRepository.findLoansByUserId(userId);
+    }
+
     /**
      * Update object with new informations
      *
-     * @param newObject
-     * @param object
+     * @param currentUser
+     * @param user
      */
 
-    private void toUpdateUser(User newObject, User object) {
-        newObject.setName(object.getName());
-        newObject.setEmail(object.getEmail());
-        newObject.setPassword(object.getPassword());
+    private void toUpdateUser(User currentUser, User user) {
+        currentUser.setName(user.getName());
+        currentUser.setUsername(user.getUsername());
     }
 
-    public User convertDtoToEntity(UserDTO objectDTO) {
-        return modelMapper.map(objectDTO, User.class);
+    public User convertDtoToEntity(UserRequest userRequest) {
+        return modelMapper.map(userRequest, User.class);
     }
 
-    public UserDTO convertEntityToDto(User object) {
-        return modelMapper.map(object, UserDTO.class);
+    public UserResponse convertEntityToDto(User user) {
+        return modelMapper.map(user, UserResponse.class);
     }
 
-    public User convertUpdateDtoToEntity(UserUpdateDTO objectDTO) {
-        return modelMapper.map(objectDTO, User.class);
+    public User convertUserUpdateEmailDTOToEntity(UserUpdateEmailDTO userUpdateEmailDTO) {
+        return modelMapper.map(userUpdateEmailDTO, User.class);
     }
 
-    public UserUpdateDTO convertEntityToUpdateDto(User object) {
-        return modelMapper.map(object, UserUpdateDTO.class);
+    public UserUpdateEmailDTO convertEntityToUserUpdateEmailDTO(User user) {
+        return modelMapper.map(user, UserUpdateEmailDTO.class);
     }
 
+    public User convertUserLoansBooksDTOToEntity(UserLoansBooksDTO userLoansBooksDTO) {
+        return modelMapper.map(userLoansBooksDTO, User.class);
+    }
+
+    public UserLoansBooksDTO convertEntityToUserLoansBooksDTO(User user) {
+        return modelMapper.map(user, UserLoansBooksDTO.class);
+    }
 }

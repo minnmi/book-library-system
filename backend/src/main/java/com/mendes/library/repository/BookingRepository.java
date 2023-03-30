@@ -15,9 +15,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findBookingByBookIdAndUserId(Long bookId, Long userId);
 
     @Query("select count(b.id) from Booking b " +
-            "where b.book.id = :bookId and b.currentDate >= (select bb.currentDate from Booking bb where bb.id = :bookingId)")
+            "where b.book.id = :bookId and b.createdDate >= (select bb.createdDate from Booking bb where bb.id = :bookingId)")
     int getBookingOrderByBookIdAndBookingId(Long bookId, Long bookingId);
 
-    @Query("select b from Booking b where b.currentDate < :datetime")
+    @Query("select b from Booking b where b.createdDate < :datetime")
     List<Booking> findAllBefore(LocalDateTime datetime);
 }

@@ -30,11 +30,15 @@ public class Book {
     private String bookCover;
 
     @NotAudited
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinTable(name = "book_authorship",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
+
+    @NotAudited
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    private List<Booking> bookings;
 
     @JoinColumn(name = "publisher_id")
     @ManyToOne(fetch = FetchType.LAZY)

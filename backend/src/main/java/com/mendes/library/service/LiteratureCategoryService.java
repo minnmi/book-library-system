@@ -1,6 +1,7 @@
 package com.mendes.library.service;
 
-import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryDTO;
+import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryRequest;
+import com.mendes.library.model.DTO.LiteratureCategoryDTO.LiteratureCategoryResponse;
 import com.mendes.library.model.LiteratureCategory;
 import com.mendes.library.repository.LiteratureCategoryRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
@@ -30,26 +31,26 @@ public class LiteratureCategoryService {
     }
 
     public LiteratureCategory findById(Long id) {
-        Optional<LiteratureCategory> literatureCategory = literatureCategoryRepository.findById(id);
-        if (literatureCategory.isPresent()) {
-            return literatureCategory.get();
+        Optional<LiteratureCategory> optionalLiteratureCategory = literatureCategoryRepository.findById(id);
+        if (optionalLiteratureCategory.isPresent()) {
+            return optionalLiteratureCategory.get();
         } else {
             throw new ObjectNotFoundException("Object not found: " + id + " type " + LiteratureCategory.class.getName());
         }
     }
 
-    public LiteratureCategory insertLiteratureCategory(LiteratureCategory object) {
-        object.setId(null);
-        return literatureCategoryRepository.save(object);
+    public LiteratureCategory insertLiteratureCategory(LiteratureCategory literatureCategory) {
+        literatureCategory.setId(null);
+        return literatureCategoryRepository.save(literatureCategory);
     }
 
-    public LiteratureCategory updateLiteratureCategory(Long id, LiteratureCategory object) {
-        if (object == null || object.getId() == null) {
+    public LiteratureCategory updateLiteratureCategory(Long id, LiteratureCategory literatureCategory) {
+        if (literatureCategory == null) {
             throw new IllegalArgumentException("Literature category can't be null");
         }
-        LiteratureCategory newObject = findById(id);
-        toUpdateLiteratureCategory(newObject, object);
-        return literatureCategoryRepository.save(newObject);
+        LiteratureCategory currentLiteratureCategory = findById(id);
+        toUpdateLiteratureCategory(currentLiteratureCategory, literatureCategory);
+        return literatureCategoryRepository.save(currentLiteratureCategory);
     }
 
     public void deleteLiteratureCategory(Long id) {
@@ -63,19 +64,19 @@ public class LiteratureCategoryService {
     /**
      * Update object with new informations
      *
-     * @param newObject
-     * @param object
+     * @param currentLiteratureCategory
+     * @param literatureCategory
      */
 
-    private void toUpdateLiteratureCategory(LiteratureCategory newObject, LiteratureCategory object) {
-        newObject.setCategoryName(object.getCategoryName());
+    private void toUpdateLiteratureCategory(LiteratureCategory currentLiteratureCategory, LiteratureCategory literatureCategory) {
+        currentLiteratureCategory.setCategoryName(literatureCategory.getCategoryName());
     }
 
-    public LiteratureCategory convertDtoToEntity(LiteratureCategoryDTO objectDTO) {
-        return modelMapper.map(objectDTO, LiteratureCategory.class);
+    public LiteratureCategory convertDtoToEntity(LiteratureCategoryRequest literatureCategoryRequest) {
+        return modelMapper.map(literatureCategoryRequest, LiteratureCategory.class);
     }
 
-    public LiteratureCategoryDTO convertEntityToDto(LiteratureCategory object) {
-        return modelMapper.map(object, LiteratureCategoryDTO.class);
+    public LiteratureCategoryResponse convertEntityToDto(LiteratureCategory literatureCategory) {
+        return modelMapper.map(literatureCategory, LiteratureCategoryResponse.class);
     }
 }

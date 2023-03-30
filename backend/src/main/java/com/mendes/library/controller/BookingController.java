@@ -1,10 +1,8 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.BookingRequest;
-import com.mendes.library.model.DTO.BookingResponse;
+import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
+import com.mendes.library.model.DTO.BookindDTO.BookingResponse;
 import com.mendes.library.service.BookingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +17,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/v1/bookings")
 public class BookingController {
-    private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
-
     private final BookingService bookingService;
 
     public BookingController(BookingService bookingService) {
@@ -46,7 +42,7 @@ public class BookingController {
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public BookingResponse insertBooking(@Valid @RequestBody Long bookId) {
-        var booking = this.bookingService.insertBook(bookId);
+        var booking = this.bookingService.insertBooking(bookId);
         return this.bookingService.convertEntityToDto(booking);
     }
 
@@ -55,7 +51,7 @@ public class BookingController {
     @ResponseStatus(HttpStatus.OK)
     public BookingResponse updateBooking(@Valid @RequestBody BookingRequest request, @PathVariable Long id) {
         var booking = this.bookingService.convertDtoToEntity(request);
-        booking = this.bookingService.updateBook(id, booking);
+        booking = this.bookingService.updateBooking(id, booking);
         return this.bookingService.convertEntityToDto(booking);
     }
 

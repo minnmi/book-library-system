@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,6 +15,8 @@ import lombok.Setter;
 public class UserUpdateDTO {
 
     private Long id;
+
     private String name;
-    private String email;
+    @NotNull(message = "The username is required.")
+    private String username;
 }

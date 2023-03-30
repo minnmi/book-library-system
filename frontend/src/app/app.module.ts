@@ -44,8 +44,8 @@ import {
   UtilitiesModule,
 } from '@coreui/angular';
 
-import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { PublisherComponent } from './business/views/publisher/publisher.component';
+import {IconModule, IconSetModule, IconSetService} from '@coreui/icons-angular';
+import {ToastNoAnimationModule, ToastrModule} from "ngx-toastr";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -58,7 +58,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, PublisherComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -71,6 +71,7 @@ const APP_CONTAINERS = [
     HeaderModule,
     SidebarModule,
     IconModule,
+    IconSetModule,
     PerfectScrollbarModule,
     NavModule,
     ButtonModule,
@@ -86,6 +87,7 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
+      ToastrModule.forRoot()
   ],
   providers: [
     {
@@ -97,7 +99,7 @@ const APP_CONTAINERS = [
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
     IconSetService,
-    Title
+    Title,
   ],
   bootstrap: [AppComponent],
 })

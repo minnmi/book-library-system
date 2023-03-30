@@ -12,5 +12,6 @@ import lombok.Setter;
 public class PublisherDTO {
 
     private Long id;
+
     private String name;
 }

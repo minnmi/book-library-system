@@ -1,11 +1,9 @@
 package com.mendes.library.model.DTO.AuthorDTO;
 
-import com.mendes.library.model.DTO.BookDTO.BookDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +12,7 @@ import java.util.List;
 public class AuthorDTO {
 
     private Long id;
+
     private String name;
+
 }

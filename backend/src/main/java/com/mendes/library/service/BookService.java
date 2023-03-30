@@ -3,7 +3,8 @@ package com.mendes.library.service;
 
 import com.mendes.library.model.Author;
 import com.mendes.library.model.Book;
-import com.mendes.library.model.DTO.BookDTO.BookDTO;
+import com.mendes.library.model.DTO.BookDTO.BookRequest;
+import com.mendes.library.model.DTO.BookDTO.BookResponse;
 import com.mendes.library.repository.AuthorRepository;
 import com.mendes.library.repository.BookRepository;
 import com.mendes.library.repository.LiteratureCategoryRepository;
@@ -22,7 +23,6 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -67,36 +67,36 @@ public class BookService {
         return bookRepository.findByIsbn(isbn);
     }
 
-    public Book insertBook(Book object) {
-        object.setId(null);
+    public Book insertBook(Book book) {
+        book.setId(null);
         List<Author> authors = new ArrayList<>();
-        for (Author authorIt : object.getAuthors()) {
+        for (Author authorIt : book.getAuthors()) {
             Long authorId = authorIt.getId();
             if (authorId == null) { // Se autor não existe, crie
                 Author author = this.authorRepository.save(authorIt);
                 authors.add(author);
             } else {// Senão, pegue do banco
-                Optional<Author> optAuthor = this.authorRepository.findById(authorId);
-                if (optAuthor.isPresent()) {
-                    authors.add(optAuthor.get());
+                Optional<Author> optionalAuthor = this.authorRepository.findById(authorId);
+                if (optionalAuthor.isPresent()) {
+                    authors.add(optionalAuthor.get());
                 } else {
-                    throw new ObjectNotFoundException("Object not found: " + optAuthor + " type " + Author.class.getName());
+                    throw new ObjectNotFoundException("Object not found: " + optionalAuthor + " type " + Author.class.getName());
                 }
             }
         }
-        object.getAuthors().clear();
-        object.getAuthors().addAll(authors);
-        return bookRepository.save(object);
+        book.getAuthors().clear();
+        book.getAuthors().addAll(authors);
+        return bookRepository.save(book);
     }
 
 
-    public Book updateBook(Long id, Book object) {
+    public Book updateBook(Long id, Book book) {
         if (id == null) {
             throw new IllegalArgumentException("Book can't be null.");
         }
-        Book newObject = findById(id);
-        toUpdateBook(newObject, object);
-        return bookRepository.save(newObject);
+        Book currentBook = findById(id);
+        toUpdateBook(currentBook, book);
+        return bookRepository.save(currentBook);
     }
 
     public void deleteBook(Long id) {
@@ -127,28 +127,24 @@ public class BookService {
     /**
      * Update object with new informations
      *
-     * @param newObject
-     * @param object
+     * @param currentBook
+     * @param book
      */
 
-    private void toUpdateBook(Book newObject, Book object) {
-        newObject.setName(object.getName());
-        newObject.setIsbn(object.getIsbn());
-//        if (Objects.isNull(newObject.getAuthors())) {
-//            newObject.setAuthors(object.getAuthors());
-//        } else {
-//            newObject.getAuthors().clear();
-//            newObject.getAuthors().addAll(object.getAuthors());
-//        }
-        newObject.setPublisher(object.getPublisher());
-        newObject.setLiteratureCategory(object.getLiteratureCategory());
+    private void toUpdateBook(Book currentBook, Book book) {
+        currentBook.setName(book.getName());
+        currentBook.setIsbn(book.getIsbn());
+        currentBook.getAuthors().clear();
+        currentBook.getAuthors().addAll(book.getAuthors());
+        currentBook.setPublisher(book.getPublisher());
+        currentBook.setLiteratureCategory(book.getLiteratureCategory());
     }
 
-    public Book convertDtoToEntity(BookDTO objectDTO) {
-        return modelMapper.map(objectDTO, Book.class);
+    public Book convertDtoToEntity(BookRequest bookRequest) {
+        return modelMapper.map(bookRequest, Book.class);
     }
 
-    public BookDTO convertEntityToDto(Book object) {
-        return modelMapper.map(object, BookDTO.class);
+    public BookResponse convertEntityToDto(Book book) {
+        return modelMapper.map(book, BookResponse.class);
     }
 }

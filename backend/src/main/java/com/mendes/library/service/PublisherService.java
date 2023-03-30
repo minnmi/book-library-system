@@ -1,6 +1,7 @@
 package com.mendes.library.service;
 
-import com.mendes.library.model.DTO.PublisherDTO.PublisherDTO;
+import com.mendes.library.model.DTO.PublisherDTO.PublisherRequest;
+import com.mendes.library.model.DTO.PublisherDTO.PublisherResponse;
 import com.mendes.library.model.Publisher;
 import com.mendes.library.repository.PublisherRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
@@ -30,26 +31,26 @@ public class PublisherService {
     }
 
     public Publisher findById(Long id) {
-        Optional<Publisher> publisher = publisherRepository.findById(id);
-        if (publisher.isPresent()) {
-            return publisher.get();
+        Optional<Publisher> optionalPublisher = publisherRepository.findById(id);
+        if (optionalPublisher.isPresent()) {
+            return optionalPublisher.get();
         } else {
             throw new ObjectNotFoundException("Object not found: " + id + " type " + Publisher.class.getName());
         }
     }
 
-    public Publisher insertPublisher(Publisher object) {
-        object.setId(null);
-        return publisherRepository.save(object);
+    public Publisher insertPublisher(Publisher publisher) {
+        publisher.setId(null);
+        return publisherRepository.save(publisher);
     }
 
-    public Publisher updatePublisher(Long id, Publisher object) {
-        if (object == null || object.getId() == null) {
+    public Publisher updatePublisher(Long id, Publisher publisher) {
+        if (publisher == null) {
             throw new IllegalArgumentException("Publisher can't be null.");
         }
-        Publisher newObject = findById(id);
-        toUpdatePublisher(newObject, object);
-        return publisherRepository.save(newObject);
+        Publisher currentPublisher = findById(id);
+        toUpdatePublisher(currentPublisher, publisher);
+        return publisherRepository.save(currentPublisher);
     }
 
     public void deletePublisher(Long id) {
@@ -63,19 +64,19 @@ public class PublisherService {
     /**
      * Update object with new informations
      *
-     * @param newObject
-     * @param object
+     * @param currentPublisher
+     * @param publisher
      */
 
-    private void toUpdatePublisher(Publisher newObject, Publisher object) {
-        newObject.setName(object.getName());
+    private void toUpdatePublisher(Publisher currentPublisher, Publisher publisher) {
+        currentPublisher.setName(publisher.getName());
     }
 
-    public Publisher convertDtoToEntity(PublisherDTO objectDTO) {
-        return modelMapper.map(objectDTO, Publisher.class);
+    public Publisher convertDtoToEntity(PublisherRequest publisherResquest) {
+        return modelMapper.map(publisherResquest, Publisher.class);
     }
 
-    public PublisherDTO convertEntityToDto(Publisher object) {
-        return modelMapper.map(object, PublisherDTO.class);
+    public PublisherResponse convertEntityToDto(Publisher publisher) {
+        return modelMapper.map(publisher, PublisherResponse.class);
     }
 }

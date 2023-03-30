@@ -47,7 +47,7 @@ CREATE TABLE `booking_aud` (
    `revtype` smallint,
    `user_id` bigint NOT NULL,
    `book_id`bigint NOT NULL,
-   `current_date` timestamp NOT NULL DEFAULT current_timestamp(),
+   `created_date` timestamp NOT NULL,
    `priority` int(11) NOT NULL,
    PRIMARY KEY (id, rev),
    CONSTRAINT fk_booking_revinfo FOREIGN KEY (rev) REFERENCES revinfo (rev)

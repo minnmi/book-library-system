@@ -2,10 +2,12 @@ package com.mendes.library.service;
 
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
-import com.mendes.library.model.DTO.BookingRequest;
-import com.mendes.library.model.DTO.BookingResponse;
+import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
+import com.mendes.library.model.DTO.BookindDTO.BookingResponse;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.BookingRepository;
+import com.mendes.library.repository.LoanedRepository;
+import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -24,14 +27,15 @@ public class BookingService {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final ConfigurationService configurationService;
-
+    private final LoanedRepository loanRepository;
     private final BookService bookService;
 
-    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, BookService bookService) {
+    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, LoanedRepository loanRepository, BookService bookService) {
         this.bookingRepository = bookingRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.configurationService = configurationService;
+        this.loanRepository = loanRepository;
         this.bookService = bookService;
     }
 
@@ -40,11 +44,11 @@ public class BookingService {
     }
 
     public Booking findById(Long id) {
-        var bookingOpt = this.bookingRepository.findById(id);
-        if (bookingOpt.isEmpty())
+        var optionalBooking = this.bookingRepository.findById(id);
+        if (optionalBooking.isEmpty())
             throw new ObjectNotFoundException("");
 
-        return bookingOpt.get();
+        return optionalBooking.get();
     }
 
     public Optional<Booking> findBookingByBookIdAndUserId(Long bookId, Long userId) {
@@ -82,7 +86,15 @@ public class BookingService {
         logger.info("booking removed");
     }
 
-    public Booking insertBook(Long bookId) {
+    public Booking insertBooking(Long bookId) {
+        var currentUser = this.userService.getLoggedUser();
+
+        if (this.bookingRepository.findBookingByBookIdAndUserId(bookId, currentUser.getId()).isPresent())
+            throw new DataIntegrityViolationException("Reserva já existe");
+
+        if (this.loanRepository.checkAlreadyLoan(currentUser.getId(), bookId))
+            throw new DataIntegrityViolationException("Livro já alugado");
+
         logger.info("Searching for book id: {}", bookId);
         Book book = this.bookService.findById(bookId);
 
@@ -90,40 +102,39 @@ public class BookingService {
         User user = this.userService.getLoggedUser();
 
         logger.info("Creating booking");
-        var booking = Booking.builder()
-                .user(user)
-                .book(book)
-                .priority(1)
-                .currentDate(LocalDateTime.now())
-                .build();
+        var booking = new Booking();
+        booking.setUser(user);
+        booking.setBook(book);
+        booking.setPriority(1);
+        booking.setCreatedDate(LocalDate.now());
 
         logger.info("Saving booking");
         return this.bookingRepository.save(booking);
     }
 
 
-    public Booking updateBook(Long id, Booking booking) {
-        var current = this.findById(id);
+    public Booking updateBooking(Long id, Booking booking) {
+        Booking current = this.findById(id);
         this.toUpdateBooking(booking, current);
-        current = this.bookingRepository.save(current);
-        return current;
+        return this.bookingRepository.save(current);
     }
 
     public void deleteBooking(Long id) {
         this.bookingRepository.deleteById(id);
     }
 
-    private void toUpdateBooking(Booking updated, Booking current) {
-        current.setBook(updated.getBook());
-        current.setPriority(updated.getPriority());
+    private void toUpdateBooking(Booking booking, Booking currentBooking) {
+        currentBooking.setUser(booking.getUser());
+        currentBooking.setBook(booking.getBook());
+        currentBooking.setPriority(booking.getPriority());
     }
 
-    public Booking convertDtoToEntity(BookingRequest request) {
-        return modelMapper.map(request, Booking.class);
+    public Booking convertDtoToEntity(BookingRequest bookingRequest) {
+        return modelMapper.map(bookingRequest, Booking.class);
     }
 
-    public BookingResponse convertEntityToDto(Booking model) {
-        return modelMapper.map(model, BookingResponse.class);
+    public BookingResponse convertEntityToDto(Booking booking) {
+        return modelMapper.map(booking, BookingResponse.class);
     }
 
 }

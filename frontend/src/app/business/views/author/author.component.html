@@ -1,29 +1,52 @@
+<div class="business-header">
+  <div class="title">
+    <h1>Autores</h1>
+  </div>
+  <div class="new">
+    <button cButton color="success" (click)="add()">Novo</button>
+  </div>
+</div>
+
+<form cForm [formGroup]="form" (submit)="save($event)">
+<c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+  <c-modal-header>
+    <h5 cModalTitle>{{getModalTitle(updating)}}</h5>
+    <button (click)="add()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+      <label cLabel for="author-name">Nome</label>
+      <input cFormControl formControlName="name" id="author-name" placeholder="Machado de Assis" type="text"/>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="close()" cButton color="secondary" type="button">
+      Close
+    </button>
+    <button cButton color="primary" type="submit">Concluir</button>
+  </c-modal-footer>
+</c-modal>
+</form>
 <table cTable class="table">
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Class</th>
-    <th scope="col">Heading</th>
-    <th scope="col">Heading</th>
+    <th scope="col">Nome</th>
+    <th scope="col" class="col-action">Ação</th>
   </tr>
   </thead>
   <tbody>
-  <tr>
-    <th scope="row">1</th>
-    <td>Mark</td>
-    <td>Otto</td>
-    <td>@mdo</td>
-  </tr>
-  <tr>
-    <th scope="row">2</th>
-    <td>Jacob</td>
-    <td>Thornton</td>
-    <td>@fat</td>
-  </tr>
-  <tr>
-    <th scope="row">3</th>
-    <td colSpan="2">Larry the Bird</td>
-    <td>@twitter</td>
+  <tr *ngFor="let a of authors.content">
+    <th scope="row">{{a.id}}</th>
+    <td>{{a.name}}</td>
+    <td>
+      <div class="actions">
+        <div class="action">
+          <button cButton color="primary"><svg cIcon name="cilPencil" size="xl" title="Paper Plane Icon"></svg></button>
+        </div>
+        <div class="action">
+          <button cButton color="danger"><svg cIcon name="cilTrash" size="xl" title="Paper Plane Icon"></svg></button>
+        </div>
+      </div>
+    </td>
   </tr>
   </tbody>
 </table>

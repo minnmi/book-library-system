@@ -23,35 +23,35 @@ const routes: Routes = [
       {
         path: 'author',
         loadChildren: () =>
-          import('./business/views/author/author-routing.module').then((m) => m.AuthorRoutingModule)
+          import('./business/views/author/author.module').then((m) => m.AuthorModule)
       }, {
         path: 'book',
         loadChildren: () =>
-          import('./business/views/book/book-routing.module').then((m) => m.BookRoutingModule)
+          import('./business/views/book/book.module').then((m) => m.BookModule)
       }, {
         path: 'booking',
         loadChildren: () =>
-          import('./business/views/booking/booking-routing.module').then((m) => m.BookingRoutingModule)
+          import('./business/views/booking/booking.module').then((m) => m.BookingModule)
       },{
         path: 'configuration',
         loadChildren: () =>
-          import('./business/views/configuration/configuration-routing.module').then((m) => m.ConfigurationRoutingModule)
+          import('./business/views/configuration/configuration.module').then((m) => m.ConfigurationModule)
       }, {
         path: 'literature-category',
         loadChildren: () =>
-          import('./business/views/literature-category/literature-category-routing.module').then((m) => m.LiteratureCategoryRoutingModule)
+          import('./business/views/literature-category/literature-category.module').then((m) => m.LiteratureCategoryModule)
       }, {
         path: 'loaned',
         loadChildren: () =>
-          import('./business/views/loaned/loaned-routing.module').then((m) => m.LoanedRoutingModule)
+          import('./business/views/loaned/loaned.module').then((m) => m.LoanedModule)
       }, {
         path: 'publisher',
         loadChildren: () =>
-          import('./business/views/publisher/publisher-routing.module').then((m) => m.PublisherRoutingModule)
+          import('./business/views/publisher/publisher.module').then((m) => m.PublisherModule)
       }, {
         path: 'user',
         loadChildren: () =>
-          import('./business/views/user/user-routing.module').then((m) => m.UserRoutingModule)
+          import('./business/views/user/user.module').then((m) => m.UserModule)
       }, {
         path: 'dashboard',
         loadChildren: () =>

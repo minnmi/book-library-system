@@ -1,33 +1,34 @@
 package com.mendes.library.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
 @Audited
-@Table(name = "booking", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "book_id"})
-})
+@Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     private Book book;
 
-    private LocalDateTime currentDate;
+    @Column(name = "created_date")
+    private LocalDate createdDate;
 
     private Integer priority;
 

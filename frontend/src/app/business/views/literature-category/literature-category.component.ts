@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./literature-category.component.scss']
 })
 export class LiteratureCategoryComponent implements OnInit {
+    literatureCategory: any = [];
 
   constructor() { }
 
