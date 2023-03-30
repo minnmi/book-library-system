@@ -36,6 +36,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
+    @NotAudited
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     private List<Booking> bookings;
 

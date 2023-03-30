@@ -3,6 +3,8 @@ package com.mendes.library.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
@@ -18,11 +20,11 @@ public class Booking {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @Column(name = "created_date")
