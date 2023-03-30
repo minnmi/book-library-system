@@ -1,17 +1,19 @@
 package com.mendes.library.model.DTO.UserDTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+@Getter
+@Setter
+public class UserUpdateEmailDTO {
 
-    private Long id;
-
-    private String name;
+    @NotNull(message = "The email is required.")
+    private String email;
 }

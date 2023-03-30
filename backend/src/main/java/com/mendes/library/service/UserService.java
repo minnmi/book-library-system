@@ -2,7 +2,9 @@ package com.mendes.library.service;
 
 import com.mendes.library.config.security.user.CustomUserDetail;
 import com.mendes.library.model.DTO.UserDTO.*;
+import com.mendes.library.model.Role;
 import com.mendes.library.model.User;
+import com.mendes.library.repository.RoleRepository;
 import com.mendes.library.repository.UserRepository;
 import com.mendes.library.service.exception.AuthorizationException;
 import com.mendes.library.service.exception.DataIntegrityViolationException;
@@ -15,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,17 +25,18 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final ModelMapper modelMapper;
-
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder,
+                       RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     public Page<User> findAllUser(Pageable pageable) {
@@ -40,12 +44,11 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            return optionalUser.get();
-        } else {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + User.class.getName());
-        }
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + User.class.getName()));
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + email + " type " + User.class.getName()));
     }
 
     public User insertUser(User user) {
@@ -54,7 +57,7 @@ public class UserService {
         user.setName(user.getName());
         user.setUsername(user.getUsername());
         user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -78,10 +81,10 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    public User insertRole(User user) {
-        //TODO endpoint apenas com preauthorize de ADMIN
-        user.setRoles(user.getRoles());
-        return userRepository.save(user);
+    public void addRoleToUser(User user, String roleName) {
+        Role role = roleRepository.findByName(roleName);
+        user.getRoles().add(role);
+        userRepository.save(user);
     }
 
     public User emailUpdate(Long id, User user) {
@@ -91,7 +94,7 @@ public class UserService {
         return userRepository.save(currentUser);
     }
 
-    public boolean updateUserPassword(User user, String newPassword, String confirmPassword, String oldPassword) {
+    public void updateUserPassword(User user, String newPassword, String confirmPassword, String oldPassword) {
 
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new AuthorizationException("OldPassword invalid");
@@ -101,10 +104,8 @@ public class UserService {
             throw new AuthorizationException("NewPassword and ConfirmPassword are different");
         }
 
-
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
-        return true;
     }
 
     private void verifyUserUsername(User currentUser, User newUser) {
@@ -134,12 +135,16 @@ public class UserService {
     }
 
     public User getLoggedUser() {
-        CustomUserDetail userDetail = (CustomUserDetail)SecurityContextHolder
+        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
 
         return this.findById(userDetail.getId());
+    }
+
+    public List<UserLoansBooksDTO> findLoansByUserId(Long userId) {
+        return this.userRepository.findLoansByUserId(userId);
     }
 
     /**
@@ -162,28 +167,19 @@ public class UserService {
         return modelMapper.map(user, UserResponse.class);
     }
 
-    public User convertUserUpdateToEntity(UserUpdate userUpdate) {
-        return modelMapper.map(userUpdate, User.class);
+    public User convertUserUpdateEmailDTOToEntity(UserUpdateEmailDTO userUpdateEmailDTO) {
+        return modelMapper.map(userUpdateEmailDTO, User.class);
     }
 
-    public UserUpdate convertEntityToUserUpdate(User user) {
-        return modelMapper.map(user, UserUpdate.class);
+    public UserUpdateEmailDTO convertEntityToUserUpdateEmailDTO(User user) {
+        return modelMapper.map(user, UserUpdateEmailDTO.class);
     }
 
-    public User convertUserUpdateEmailToEntity(UserUpdateEmail userUpdateEmail) {
-        return modelMapper.map(userUpdateEmail, User.class);
+    public User convertUserLoansBooksDTOToEntity(UserLoansBooksDTO userLoansBooksDTO) {
+        return modelMapper.map(userLoansBooksDTO, User.class);
     }
 
-    public UserUpdateEmail convertEntityToUserUpdateEmail(User user) {
-        return modelMapper.map(user, UserUpdateEmail.class);
+    public UserLoansBooksDTO convertEntityToUserLoansBooksDTO(User user) {
+        return modelMapper.map(user, UserLoansBooksDTO.class);
     }
-
-    public User convertUserRolesToEntity(UserRoles userRoles)  {
-        return modelMapper.map(userRoles, User.class);
-    }
-
-    public UserRoles convertEntityToUserRoles(User user) {
-        return modelMapper.map(user, UserRoles.class);
-    }
-
 }

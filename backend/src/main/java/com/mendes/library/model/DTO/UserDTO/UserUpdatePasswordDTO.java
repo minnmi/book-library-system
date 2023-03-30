@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserUpdatePassword {
+public class UserUpdatePasswordDTO {
 
     @NotNull(message = "The email is required.")
     private String email;

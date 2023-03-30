@@ -1,10 +1,8 @@
 package com.mendes.library.controller;
 
-import com.mendes.library.model.DTO.UserDTO.UserRequest;
-import com.mendes.library.model.DTO.UserDTO.UserResponse;
-import com.mendes.library.model.DTO.UserDTO.UserRoles;
-import com.mendes.library.model.DTO.UserDTO.UserUpdateEmail;
+import com.mendes.library.model.DTO.UserDTO.*;
 import com.mendes.library.model.User;
+import com.mendes.library.repository.UserRepository;
 import com.mendes.library.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +16,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
 @Slf4j
 public class UserController {
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          UserRepository userRepository) {
         this.userService = userService;
 
+        this.userRepository = userRepository;
     }
 
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
@@ -47,9 +48,19 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find/{id}")
     public UserResponse findById(@PathVariable Long id) {
-        var user = userService.findById(id);
+        var user = this.userService.findById(id);
         return userService.convertEntityToDto(user);
     }
+
+    @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
+    @GetMapping("/find-loans/user/{id}")
+    public List<UserLoansBooksDTO> findLoansByUserId(@PathVariable Long id) {
+        return this.userService.findLoansByUserId(id)
+                .stream()
+                .map(userService::convertEntityToUserLoansBooksDTO)
+                .toList();
+    }
+
 
     @PreAuthorize("hasAnyAuthority('USER_INSERT', 'ADMIN')")
     @PostMapping("/insert")
@@ -60,22 +71,21 @@ public class UserController {
         return userService.convertEntityToDto(user);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER_INSERT', 'ADMIN')")
     @PostMapping("/role")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserRoles insertRole(@Valid @RequestBody UserRoles userRoles) {
-        var userEntity = userService.convertUserRolesToEntity(userRoles);
-        var user = userService.insertRole(userEntity);
-        return userService.convertEntityToUserRoles(user);
+    public void addRoleToUser(@RequestParam("userId") Long userId, @RequestParam("roleName") String roleName) {
+        var user = this.userService.findById(userId);
+        this.userService.addRoleToUser(user, roleName);
     }
 
     @PreAuthorize("hasAnyAuthority('USER_UPDATE', 'ADMIN')")
     @PutMapping("/email/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserUpdateEmail updateUserEmail(@Valid @RequestBody UserUpdateEmail userUpdateEmail, @PathVariable Long id) {
-        var userEntity = userService.convertUserUpdateEmailToEntity(userUpdateEmail);
+    public UserUpdateEmailDTO updateUserEmail(@Valid @RequestBody UserUpdateEmailDTO userUpdateEmailDTO, @PathVariable Long id) {
+        var userEntity = userService.convertUserUpdateEmailDTOToEntity(userUpdateEmailDTO);
         var user = userService.emailUpdate(id, userEntity);
-        return userService.convertEntityToUserUpdateEmail(user);
+        return userService.convertEntityToUserUpdateEmailDTO(user);
     }
 
 
@@ -86,6 +96,15 @@ public class UserController {
         var userEntity = userService.convertDtoToEntity(userRequest);
         var user = userService.updateUser(id, userEntity);
         return userService.convertEntityToDto(user);
+    }
+
+    @PostMapping("/update-password")
+    public void updatePassword(@Valid @RequestBody UserUpdatePasswordDTO userUpdatePasswordDTO) {
+        var user = userService.findByEmail(userUpdatePasswordDTO.getEmail());
+        this.userService.updateUserPassword(user,
+                userUpdatePasswordDTO.getNewpassword(),
+                userUpdatePasswordDTO.getConfirmpassword(),
+                userUpdatePasswordDTO.getOldpassword());
     }
 
     @PreAuthorize("hasAnyAuthority('USER_DELETE', 'ADMIN')")

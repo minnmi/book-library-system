@@ -1,22 +1,20 @@
 package com.mendes.library.model.DTO.UserDTO;
 
-
+import com.mendes.library.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdate {
+public class UserRolesDTO {
 
-    private Long id;
+    private Set<Role> roles;
 
-    private String name;
-    @NotNull(message = "The username is required.")
-    private String username;
+    private UserDTO user;
 }
