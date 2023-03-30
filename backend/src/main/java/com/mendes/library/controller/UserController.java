@@ -55,10 +55,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_VIEW', 'ADMIN')")
     @GetMapping("/find-loans/user/{id}")
     public List<UserLoansBooksDTO> findLoansByUserId(@PathVariable Long id) {
-        return this.userService.findLoansByUserId(id)
-                .stream()
-                .map(userService::convertEntityToUserLoansBooksDTO)
-                .toList();
+        return this.userService.findLoansByUserId(id);
     }
 
 

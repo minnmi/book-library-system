@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional(readOnly = true)
     Optional<User> findByUsername(String username);
 
-    @Query("select new com.mendes.library.model.DTO.UserDTO.UserLoansBooksDTO(u.id, u.name, b.id, b.name, l.id, l.initialDate, l.finalDate, l.returned, l.returnedDate)  " +
+    @Query("select new com.mendes.library.model.DTO.UserDTO.UserLoansBooksDTO(u.id, u.name, b.id, b.name, l.initialDate, l.finalDate, l.returned, l.returnedDate)  " +
             "from User u " +
             "inner join Loan l " +
             "on u.id = l.user.id " +
