@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1")
 public class EmailController {
 
-    private EmailService emailService;
+    private final EmailService emailService;
 
     public EmailController(EmailService emailService) {
         this.emailService = emailService;
