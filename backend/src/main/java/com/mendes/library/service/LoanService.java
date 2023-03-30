@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LoanService {
@@ -56,11 +55,11 @@ public class LoanService {
     }
 
     public List<Loan> findLoansByUser(Long userId) {
-        return loanedRepository.findLoanedsByUser(userId);
+        return loanedRepository.findLoanByUserId(userId);
     }
 
     public List<Loan> findLoansByBook(Long bookId) {
-        return loanedRepository.findLoanedsByBook(bookId);
+        return loanedRepository.findLoanByBook(bookId);
     }
 
     private Integer getQuantityLoaned(Book book) {
@@ -104,13 +103,12 @@ public class LoanService {
 
         final var maximumBookingPeriod = this.configurationService.getMaximumLoanPeriod();
 
-        var loan = Loan.builder()
-                .book(book)
-                .initialDate(LocalDateTime.now())
-                .user(currentUser)
-                .finalDate(LocalDateTime.now().plusDays(maximumBookingPeriod))
-                .returned(0)
-                .build();
+        var loan = new Loan();
+        loan.setBook(book);
+        loan.setInitialDate(LocalDateTime.now());
+        loan.setUser(currentUser);
+        loan.setFinalDate(LocalDateTime.now().plusDays(maximumBookingPeriod));
+        loan.setReturned(0);
 
         loan = this.loanedRepository.save(loan);
 
@@ -144,6 +142,12 @@ public class LoanService {
         return modelMapper.map(loan, LoanResponse.class);
     }
 
-
+    public Loan returnBook(Long loanId) {
+        var loan = this.findById(loanId);
+        loan.setReturned(1);
+        loan.setReturnedDate(LocalDateTime.now());
+        this.loanedRepository.save(loan);
+        return loan;
+    }
 
 }

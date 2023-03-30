@@ -19,12 +19,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class LoanRequest implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private LocalDateTime initialDate;
+
     private LocalDateTime finalDate;
+
     private UserDTO user;
+
     @NotNull(message = "The book is required.")
     private BookDTO book;
+
     private Integer returned;
+
     private LocalDateTime returnedDate;
 
 }

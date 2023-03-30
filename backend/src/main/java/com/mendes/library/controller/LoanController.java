@@ -52,7 +52,7 @@ public class LoanController {
     }
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
-    @GetMapping("/find/{userId}")
+    @GetMapping("/find/user/{userId}")
     public List<LoanResponse> findLoansByUser(@PathVariable Long userId) {
         return loanService.findLoansByUser(userId)
                 .stream()
@@ -80,8 +80,8 @@ public class LoanController {
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/initial-date")
-    public List<LoanResponse> findByInitialDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime from,
-                                                @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
+    public List<LoanResponse> findByInitialDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+                                                @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
         return loanService.findByInitialDate(from, to)
                 .stream()
                 .map(loanService::convertEntityToDto)
@@ -92,8 +92,8 @@ public class LoanController {
 
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/final-date")
-    public List<LoanResponse> findByFinalDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime from,
-                                              @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime to) {
+    public List<LoanResponse> findByFinalDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+                                              @RequestParam("finalDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
         return loanService.findByFinalDate(from, to)
                 .stream()
                 .map(loanService::convertEntityToDto)
@@ -119,9 +119,9 @@ public class LoanController {
     }
 
     @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
-    @PostMapping("{id}/return")
+    @PostMapping("/{id}/return")
     public LoanResponse returnBook(@PathVariable Long id) {
-        return null;
+        return this.loanService.convertEntityToDto(loanService.returnBook(id));
     }
 
 }

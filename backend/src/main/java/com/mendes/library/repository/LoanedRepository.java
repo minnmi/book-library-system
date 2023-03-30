@@ -15,9 +15,9 @@ import java.util.Optional;
 public interface LoanedRepository extends JpaRepository<Loan, Long> {
 
 
-    List<Loan> findLoanedsByUser(Long id);
+    List<Loan> findLoanByUserId(Long id);
 
-    List<Loan> findLoanedsByBook(Long id);
+    List<Loan> findLoanByBook(Long id);
 
     @Query("SELECT count(l.id) FROM Loan l WHERE l.book = :book AND l.returned = 0")
     int getQuantityLoaned(Book book);
@@ -39,4 +39,5 @@ public interface LoanedRepository extends JpaRepository<Loan, Long> {
 
     @Query("SELECT CASE WHEN count(l.id) > 0 THEN true ELSE false END FROM Loan l WHERE l.user.id = :userId AND l.book.id = :bookId AND l.returned = 0")
     boolean checkAlreadyLoan(Long userId, Long bookId);
+
 }

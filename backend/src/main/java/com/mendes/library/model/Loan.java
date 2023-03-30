@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Audited
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
 @Table(name = "loaned")
 public class Loan {
     @Id
@@ -35,4 +35,6 @@ public class Loan {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+
+    public Loan() {}
 }

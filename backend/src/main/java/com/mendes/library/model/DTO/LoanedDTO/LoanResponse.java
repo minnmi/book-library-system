@@ -2,6 +2,7 @@ package com.mendes.library.model.DTO.LoanedDTO;
 
 
 import com.mendes.library.model.DTO.BookDTO.BookResponse;
+import com.mendes.library.model.DTO.UserDTO.UserDTO;
 import com.mendes.library.model.DTO.UserDTO.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class LoanResponse implements Serializable {
     private Long id;
     private LocalDateTime initialDate;
     private LocalDateTime finalDate;
-    private UserResponse user;
+    private UserDTO user;
     private BookResponse book;
     private Integer returned;
     private LocalDateTime returnedDate;
