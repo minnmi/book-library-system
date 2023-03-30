@@ -11,9 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Audited
-@Table(name = "booking", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "book_id"})
-})
+@Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

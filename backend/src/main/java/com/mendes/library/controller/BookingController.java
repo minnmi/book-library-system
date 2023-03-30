@@ -42,7 +42,7 @@ public class BookingController {
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
     public BookingResponse insertBooking(@Valid @RequestBody Long bookId) {
-        var booking = this.bookingService.insertBook(bookId);
+        var booking = this.bookingService.insertBooking(bookId);
         return this.bookingService.convertEntityToDto(booking);
     }
 

@@ -6,6 +6,8 @@ import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
 import com.mendes.library.model.DTO.BookindDTO.BookingResponse;
 import com.mendes.library.model.User;
 import com.mendes.library.repository.BookingRepository;
+import com.mendes.library.repository.LoanedRepository;
+import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -25,14 +27,15 @@ public class BookingService {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final ConfigurationService configurationService;
-
+    private final LoanedRepository loanRepository;
     private final BookService bookService;
 
-    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, BookService bookService) {
+    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, LoanedRepository loanRepository, BookService bookService) {
         this.bookingRepository = bookingRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.configurationService = configurationService;
+        this.loanRepository = loanRepository;
         this.bookService = bookService;
     }
 
@@ -83,7 +86,15 @@ public class BookingService {
         logger.info("booking removed");
     }
 
-    public Booking insertBook(Long bookId) {
+    public Booking insertBooking(Long bookId) {
+        var currentUser = this.userService.getLoggedUser();
+
+        if (this.bookingRepository.findBookingByBookIdAndUserId(bookId, currentUser.getId()).isPresent())
+            throw new DataIntegrityViolationException("Reserva já existe");
+
+        if (this.loanRepository.checkAlreadyLoan(currentUser.getId(), bookId))
+            throw new DataIntegrityViolationException("Livro já alugado");
+
         logger.info("Searching for book id: {}", bookId);
         Book book = this.bookService.findById(bookId);
 
