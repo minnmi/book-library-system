@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "68a40344-f909-4043-b013-11f5d9eb85d9",
+		"_postman_id": "65b75223-b5cb-46e5-a2ba-7a3b17ebeb2b",
 		"name": "Library System",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "15264560"
+		"_exporter_id": "19988591"
 	},
 	"item": [
 		{
@@ -81,7 +81,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Matheuszinho fofoonono\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Eduardo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -342,7 +342,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/bookings/find/2",
+							"raw": "http://localhost:8080/v1/bookings/find/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -352,7 +352,7 @@
 								"v1",
 								"bookings",
 								"find",
-								"2"
+								"3"
 							]
 						}
 					},
@@ -403,7 +403,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/bookings/update/1",
+							"raw": "http://localhost:8080/v1/bookings/update/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -413,7 +413,7 @@
 								"v1",
 								"bookings",
 								"update",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -425,7 +425,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/bookings/delete/3",
+							"raw": "http://localhost:8080/v1/bookings/delete/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -435,7 +435,7 @@
 								"v1",
 								"bookings",
 								"delete",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -742,6 +742,29 @@
 					"response": []
 				},
 				{
+					"name": "FindLoansByUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/users/find-loans/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"find-loans",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "FindById",
 					"request": {
 						"method": "GET",
@@ -773,7 +796,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"username\": \"mct\",\r\n  \"email\": \"mctteste@gmail.com\",\r\n  \"password\": \"123\",\r\n  \"enabled\": true\r\n}",
+							"raw": "{\r\n  \"name\": \"Matheus\",\r\n  \"username\": \"mct123\",\r\n  \"email\": \"mctteste22@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"enabled\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -797,24 +820,12 @@
 					"response": []
 				},
 				{
-					"name": "InsertRole",
+					"name": "AddRoleToUser",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"roles\": {}\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/v1/users/role",
+							"raw": "http://localhost:8080/v1/users/role?userId=7&roleName=USER",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -824,6 +835,46 @@
 								"v1",
 								"users",
 								"role"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "7"
+								},
+								{
+									"key": "roleName",
+									"value": "USER"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"user_lib@lib.com\",\r\n  \"oldpassword\": \"password\",\r\n  \"newpassword\": \"1234567\",\r\n  \"confirmpassword\": \"1234567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/users/update-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"update-password"
 							]
 						}
 					},
@@ -896,29 +947,6 @@
 					"response": []
 				},
 				{
-					"name": "UpdateUserPassword",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/users/update/password/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"users",
-								"update",
-								"password",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "DeleteUser",
 					"request": {
 						"method": "DELETE",
@@ -973,17 +1001,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/loans/find/6",
+							"raw": "http://localhost:8080/v1/loans/find/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"find",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -995,18 +1023,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/loans/find/late-loans/{userId}",
+							"raw": "http://localhost:8080/v1/loans/find/user/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"find",
-								"late-loans",
-								"{userId}"
+								"user",
+								"1"
 							]
 						}
 					},
@@ -1014,21 +1042,38 @@
 				},
 				{
 					"name": "FindByInitialDate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
-							"raw": "http://localhost:8080/api/loans/find/initial-date",
+							"raw": "http://localhost:8080/v1/loans/find/initial-date?initialDate=2000-10-31T01:30:00.000-05:00&finalDate=2030-10-31T01:30:00.000-05:00",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"find",
 								"initial-date"
+							],
+							"query": [
+								{
+									"key": "initialDate",
+									"value": "2000-10-31T01:30:00.000-05:00"
+								},
+								{
+									"key": "finalDate",
+									"value": "2030-10-31T01:30:00.000-05:00"
+								}
 							]
 						}
 					},
@@ -1040,17 +1085,27 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/loans/find/final-date",
+							"raw": "http://localhost:8080/v1/loans/find/final-date?initialDate=2000-10-31T01:30:00.000-05:00&finalDate=2030-10-31T01:30:00.000-05:00",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"find",
 								"final-date"
+							],
+							"query": [
+								{
+									"key": "initialDate",
+									"value": "2000-10-31T01:30:00.000-05:00"
+								},
+								{
+									"key": "finalDate",
+									"value": "2030-10-31T01:30:00.000-05:00"
+								}
 							]
 						}
 					},
@@ -1062,14 +1117,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/loans/find-history/1",
+							"raw": "http://localhost:8080/v1/loans/find-history/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"find-history",
 								"1"
@@ -1085,7 +1140,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"initialDate\": \"2023-02-21T20:26:42.051117800\",\r\n  \"finalDate\": \"2023-02-25T20:26:42.051117800\",\r\n  \"book\": {\r\n    \"id\": 1\r\n  },\r\n  \"returned\": 0,\r\n  \"returnedDate\": \"2023-02-25T20:26:42.051117800\"\r\n}\r\n\r\n\r\n\r\n\r\n",
+							"raw": "2",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1093,16 +1148,38 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/loans/insert",
+							"raw": "http://localhost:8080/v1/loans/insert",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"api",
+								"v1",
 								"loans",
 								"insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Return",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/loans/4/return",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"loans",
+								"4",
+								"return"
 							]
 						}
 					},
@@ -1153,14 +1230,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/logout",
+					"raw": "http://localhost:8080/logout",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
 						"logout"
 					]
 				}
