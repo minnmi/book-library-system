@@ -3,6 +3,7 @@ package com.mendes.library.service;
 import com.mendes.library.model.Author;
 import com.mendes.library.model.DTO.AuthorDTO.AuthorRequest;
 import com.mendes.library.model.DTO.AuthorDTO.AuthorResponse;
+import com.mendes.library.model.User;
 import com.mendes.library.repository.AuthorRepository;
 import com.mendes.library.repository.BookRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
@@ -36,12 +37,7 @@ public class AuthorService {
     }
 
     public Author findById(Long id) {
-        Optional<Author> optionalAuthor = authorRepository.findById(id);
-        if (optionalAuthor.isPresent()) {
-            return optionalAuthor.get();
-        } else {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + Author.class.getName());
-        }
+        return authorRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Author.class.getName()));
     }
 
     public Author insertAuthor(Author author) {
@@ -57,6 +53,9 @@ public class AuthorService {
         toUpdateAuthor(currentAuthor, author);
         return authorRepository.save(currentAuthor);
     }
+    private void toUpdateAuthor(Author currentAuthor, Author author) {
+        currentAuthor.setName(author.getName());
+    }
 
     public void deleteAuthor(Long id) {
         findById(id);
@@ -65,18 +64,6 @@ public class AuthorService {
         }
         this.authorRepository.deleteById(id);
     }
-
-    /**
-     * Update object with new informations
-     *
-     * @param currentAuthor
-     * @param author
-     */
-
-    private void toUpdateAuthor(Author currentAuthor, Author author) {
-        currentAuthor.setName(author.getName());
-    }
-
 
     public Author convertDtoToEntity(AuthorRequest authorRequest) {
         return modelMapper.map(authorRequest, Author.class);
