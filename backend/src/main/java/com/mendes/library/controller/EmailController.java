@@ -1,7 +1,7 @@
-package com.mendes.library.config.email.controller;
+package com.mendes.library.controller;
 
 import com.mendes.library.config.email.EmailDetails;
-import com.mendes.library.config.email.service.EmailService;
+import com.mendes.library.service.EmailService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

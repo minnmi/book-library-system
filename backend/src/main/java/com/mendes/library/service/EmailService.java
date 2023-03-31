@@ -1,4 +1,4 @@
-package com.mendes.library.config.email.service;
+package com.mendes.library.service;
 
 import com.mendes.library.config.email.EmailDetails;
 
