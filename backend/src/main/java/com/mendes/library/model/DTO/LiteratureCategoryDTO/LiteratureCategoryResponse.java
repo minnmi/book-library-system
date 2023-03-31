@@ -13,6 +13,7 @@ import lombok.Setter;
 public class LiteratureCategoryResponse {
 
     private Long id;
+
     private String categoryName;
 
 }

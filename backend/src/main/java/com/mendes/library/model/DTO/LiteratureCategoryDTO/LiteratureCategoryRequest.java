@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LiteratureCategoryRequest {
+
     @NotNull(message = "The category name is required.")
     private String categoryName;
 
