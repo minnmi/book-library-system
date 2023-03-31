@@ -1,9 +1,9 @@
-package com.mendes.library.config.email.service;
+package com.mendes.library.service;
 
 import com.mendes.library.config.email.EmailDetails;
+import com.mendes.library.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
