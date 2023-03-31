@@ -55,18 +55,15 @@ public class BookService {
     }
 
     public Book findById(Long id) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (book.isPresent()) {
-            return book.get();
-        } else {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + Book.class.getName());
-        }
+        return bookRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Book.class.getName()));
     }
-
-    public Optional<Book> getBookByIsbn(String isbn) {
+    public Optional<Book> findBookByIsbn(String isbn) {
         return bookRepository.findByIsbn(isbn);
     }
-
+    public InputStream getBookCover(Long bookId) throws IOException {
+        Book book = this.findById(bookId);
+        return this.storageService.readFile(book.getBookCover());
+    }
     public Book insertBook(Book book) {
         book.setId(null);
         List<Author> authors = new ArrayList<>();
@@ -89,7 +86,6 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-
     public Book updateBook(Long id, Book book) {
         if (id == null) {
             throw new IllegalArgumentException("Book can't be null.");
@@ -99,15 +95,15 @@ public class BookService {
         return bookRepository.save(currentBook);
     }
 
-    public void deleteBook(Long id) {
-        findById(id);
-        if (id == null) {
-            throw new IllegalArgumentException("Book can't be null.");
-        }
-        this.bookRepository.deleteById(id);
+    private void toUpdateBook(Book currentBook, Book book) {
+        currentBook.setName(book.getName());
+        currentBook.setIsbn(book.getIsbn());
+        currentBook.getAuthors().clear();
+        currentBook.getAuthors().addAll(book.getAuthors());
+        currentBook.setPublisher(book.getPublisher());
+        currentBook.setQuantity(book.getQuantity());
+        currentBook.setLiteratureCategory(book.getLiteratureCategory());
     }
-
-
     public void updateBookCover(Long bookId, MultipartFile file) throws IOException, URISyntaxException {
         Book book = this.findById(bookId);
 
@@ -120,30 +116,17 @@ public class BookService {
         this.bookRepository.save(book);
     }
 
-    public InputStream getBookCover(Long bookId) throws IOException {
-        Book book = this.findById(bookId);
-        return this.storageService.readFile(book.getBookCover());
-    }
-    /**
-     * Update object with new informations
-     *
-     * @param currentBook
-     * @param book
-     */
-
-    private void toUpdateBook(Book currentBook, Book book) {
-        currentBook.setName(book.getName());
-        currentBook.setIsbn(book.getIsbn());
-        currentBook.getAuthors().clear();
-        currentBook.getAuthors().addAll(book.getAuthors());
-        currentBook.setPublisher(book.getPublisher());
-        currentBook.setLiteratureCategory(book.getLiteratureCategory());
+    public void deleteBook(Long id) {
+        findById(id);
+        if (id == null) {
+            throw new IllegalArgumentException("Book can't be null.");
+        }
+        this.bookRepository.deleteById(id);
     }
 
     public Book convertDtoToEntity(BookRequest bookRequest) {
         return modelMapper.map(bookRequest, Book.class);
     }
-
     public BookResponse convertEntityToDto(Book book) {
         return modelMapper.map(book, BookResponse.class);
     }

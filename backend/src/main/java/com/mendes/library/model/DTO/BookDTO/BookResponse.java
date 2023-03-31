@@ -18,11 +18,17 @@ import java.util.List;
 public class BookResponse {
 
     private Long id;
+
     private String name;
+
     private String isbn;
+
     private List<AuthorResponse> authors;
+
     private PublisherDTO publisher;
+
     private Integer quantity;
+
     private LiteratureCategoryDTO categoryName;
 
 }
