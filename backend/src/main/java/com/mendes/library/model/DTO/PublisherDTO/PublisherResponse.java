@@ -12,5 +12,6 @@ import lombok.Setter;
 public class PublisherResponse {
 
     private Long id;
+
     private String name;
 }
