@@ -31,12 +31,7 @@ public class PublisherService {
     }
 
     public Publisher findById(Long id) {
-        Optional<Publisher> optionalPublisher = publisherRepository.findById(id);
-        if (optionalPublisher.isPresent()) {
-            return optionalPublisher.get();
-        } else {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + Publisher.class.getName());
-        }
+        return publisherRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Publisher.class.getName()));
     }
 
     public Publisher insertPublisher(Publisher publisher) {
@@ -53,23 +48,16 @@ public class PublisherService {
         return publisherRepository.save(currentPublisher);
     }
 
+    private void toUpdatePublisher(Publisher currentPublisher, Publisher publisher) {
+        currentPublisher.setName(publisher.getName());
+    }
+
     public void deletePublisher(Long id) {
         findById(id);
         if (id == null) {
             throw new IllegalArgumentException("Publisher can't be null");
         }
         this.publisherRepository.deleteById(id);
-    }
-
-    /**
-     * Update object with new informations
-     *
-     * @param currentPublisher
-     * @param publisher
-     */
-
-    private void toUpdatePublisher(Publisher currentPublisher, Publisher publisher) {
-        currentPublisher.setName(publisher.getName());
     }
 
     public Publisher convertDtoToEntity(PublisherRequest publisherResquest) {
