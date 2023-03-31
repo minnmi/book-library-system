@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoanRequest implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private LocalDateTime initialDate;
