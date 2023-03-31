@@ -17,7 +17,9 @@ import java.time.LocalDateTime;
 public class BookingRequest {
 
     private UserDTO user;
+
     private BookDTO book;
+
     private Integer priority;
 
 
