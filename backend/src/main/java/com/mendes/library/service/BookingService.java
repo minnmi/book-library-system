@@ -44,11 +44,7 @@ public class BookingService {
     }
 
     public Booking findById(Long id) {
-        var optionalBooking = this.bookingRepository.findById(id);
-        if (optionalBooking.isEmpty())
-            throw new ObjectNotFoundException("");
-
-        return optionalBooking.get();
+        return bookingRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Booking.class.getName()));
     }
 
     public Optional<Booking> findBookingByBookIdAndUserId(Long bookId, Long userId) {
@@ -57,6 +53,42 @@ public class BookingService {
 
     public int getBookingOrderByBookIdAndBookingId(Long bookId, Long BookingId) {
         return this.bookingRepository.getBookingOrderByBookIdAndBookingId(bookId, BookingId);
+    }
+
+    public Booking insertBooking(Long bookId) {
+        var currentUser = this.userService.getLoggedUser();
+
+        if (this.bookingRepository.findBookingByBookIdAndUserId(bookId, currentUser.getId()).isPresent())
+            throw new DataIntegrityViolationException("Reserva já existe");
+
+        if (this.loanRepository.checkAlreadyLoan(currentUser.getId(), bookId))
+            throw new DataIntegrityViolationException("Livro já alugado");
+
+        logger.info("Searching for book id: {}", bookId);
+        Book book = this.bookService.findById(bookId);
+
+        logger.info("Getting user logged");
+        User user = this.userService.getLoggedUser();
+
+        logger.info("Creating booking");
+        var booking = new Booking();
+        booking.setUser(user);
+        booking.setBook(book);
+        booking.setPriority(1);
+        booking.setCreatedDate(LocalDate.now());
+
+        logger.info("Saving booking");
+        return this.bookingRepository.save(booking);
+    }
+    public Booking updateBooking(Long id, Booking booking) {
+        Booking current = this.findById(id);
+        this.toUpdateBooking(booking, current);
+        return this.bookingRepository.save(current);
+    }
+    private void toUpdateBooking(Booking booking, Booking currentBooking) {
+        currentBooking.setUser(booking.getUser());
+        currentBooking.setBook(booking.getBook());
+        currentBooking.setPriority(booking.getPriority());
     }
 
     public void removeBookingByBookIdAndUserId(Long bookId, Long userId) {
@@ -86,47 +118,12 @@ public class BookingService {
         logger.info("booking removed");
     }
 
-    public Booking insertBooking(Long bookId) {
-        var currentUser = this.userService.getLoggedUser();
-
-        if (this.bookingRepository.findBookingByBookIdAndUserId(bookId, currentUser.getId()).isPresent())
-            throw new DataIntegrityViolationException("Reserva já existe");
-
-        if (this.loanRepository.checkAlreadyLoan(currentUser.getId(), bookId))
-            throw new DataIntegrityViolationException("Livro já alugado");
-
-        logger.info("Searching for book id: {}", bookId);
-        Book book = this.bookService.findById(bookId);
-
-        logger.info("Getting user logged");
-        User user = this.userService.getLoggedUser();
-
-        logger.info("Creating booking");
-        var booking = new Booking();
-        booking.setUser(user);
-        booking.setBook(book);
-        booking.setPriority(1);
-        booking.setCreatedDate(LocalDate.now());
-
-        logger.info("Saving booking");
-        return this.bookingRepository.save(booking);
-    }
-
-
-    public Booking updateBooking(Long id, Booking booking) {
-        Booking current = this.findById(id);
-        this.toUpdateBooking(booking, current);
-        return this.bookingRepository.save(current);
-    }
-
     public void deleteBooking(Long id) {
+        findById(id);
+        if (id == null) {
+            throw new IllegalArgumentException("Booking can't be null");
+        }
         this.bookingRepository.deleteById(id);
-    }
-
-    private void toUpdateBooking(Booking booking, Booking currentBooking) {
-        currentBooking.setUser(booking.getUser());
-        currentBooking.setBook(booking.getBook());
-        currentBooking.setPriority(booking.getPriority());
     }
 
     public Booking convertDtoToEntity(BookingRequest bookingRequest) {
