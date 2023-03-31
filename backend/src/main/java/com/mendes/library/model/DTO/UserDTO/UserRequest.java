@@ -14,12 +14,16 @@ import javax.validation.constraints.NotNull;
 public class UserRequest {
 
     private String name;
+
     @NotNull(message = "The username is required.")
     private String username;
+
     @NotNull(message = "The email is required.")
     private String email;
+
     @NotNull(message = "The password is required.")
     private String password;
+
     private boolean enabled;
 
 }
