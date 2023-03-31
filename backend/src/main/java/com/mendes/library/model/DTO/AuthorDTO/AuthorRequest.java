@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthorRequest {
+
     @NotNull(message = "The author name is required.")
     private String name;
 }
