@@ -11,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class LiteratureCategoryService {
 
@@ -31,12 +29,7 @@ public class LiteratureCategoryService {
     }
 
     public LiteratureCategory findById(Long id) {
-        Optional<LiteratureCategory> optionalLiteratureCategory = literatureCategoryRepository.findById(id);
-        if (optionalLiteratureCategory.isPresent()) {
-            return optionalLiteratureCategory.get();
-        } else {
-            throw new ObjectNotFoundException("Object not found: " + id + " type " + LiteratureCategory.class.getName());
-        }
+        return literatureCategoryRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + LiteratureCategory.class.getName()));
     }
 
     public LiteratureCategory insertLiteratureCategory(LiteratureCategory literatureCategory) {
@@ -53,23 +46,16 @@ public class LiteratureCategoryService {
         return literatureCategoryRepository.save(currentLiteratureCategory);
     }
 
+    private void toUpdateLiteratureCategory(LiteratureCategory currentLiteratureCategory, LiteratureCategory literatureCategory) {
+        currentLiteratureCategory.setCategoryName(literatureCategory.getCategoryName());
+    }
+
     public void deleteLiteratureCategory(Long id) {
         findById(id);
         if (id == null) {
             throw new IllegalArgumentException("Literature category can't be null");
         }
         this.literatureCategoryRepository.deleteById(id);
-    }
-
-    /**
-     * Update object with new informations
-     *
-     * @param currentLiteratureCategory
-     * @param literatureCategory
-     */
-
-    private void toUpdateLiteratureCategory(LiteratureCategory currentLiteratureCategory, LiteratureCategory literatureCategory) {
-        currentLiteratureCategory.setCategoryName(literatureCategory.getCategoryName());
     }
 
     public LiteratureCategory convertDtoToEntity(LiteratureCategoryRequest literatureCategoryRequest) {
