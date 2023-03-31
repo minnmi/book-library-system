@@ -42,7 +42,9 @@ public class UserService {
     public Page<User> findAllUser(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
-
+    public List<UserLoansBooksDTO> findLoansByUserId(Long userId) {
+        return this.userRepository.findLoansByUserId(userId);
+    }
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + User.class.getName()));
     }
@@ -61,7 +63,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
     public User updateUser(Long id, User user) {
         if (user == null) {
             throw new IllegalArgumentException("User can't be null.");
@@ -73,12 +74,9 @@ public class UserService {
         return userRepository.save(currentUser);
     }
 
-    public void deleteUser(Long id) {
-        findById(id);
-        if (id == null) {
-            throw new IllegalArgumentException("User can't be null");
-        }
-        this.userRepository.deleteById(id);
+    private void toUpdateUser(User currentUser, User user) {
+        currentUser.setName(user.getName());
+        currentUser.setUsername(user.getUsername());
     }
 
     public void addRoleToUser(User user, String roleName) {
@@ -125,15 +123,14 @@ public class UserService {
         Optional<User> emailVerify = userRepository.findByEmail(email);
 
         if (usernameVerify.isPresent()) {
-            throw new org.springframework.dao.DataIntegrityViolationException("Username already exist");
+            throw new DataIntegrityViolationException("Username already exist");
         }
 
         if (emailVerify.isPresent()) {
-            throw new org.springframework.dao.DataIntegrityViolationException("Email already exist");
+            throw new DataIntegrityViolationException("Email already exist");
         }
 
     }
-
     public User getLoggedUser() {
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
                 .getContext()
@@ -143,21 +140,14 @@ public class UserService {
         return this.findById(userDetail.getId());
     }
 
-    public List<UserLoansBooksDTO> findLoansByUserId(Long userId) {
-        return this.userRepository.findLoansByUserId(userId);
+    public void deleteUser(Long id) {
+        findById(id);
+        if (id == null) {
+            throw new IllegalArgumentException("User can't be null");
+        }
+        this.userRepository.deleteById(id);
     }
 
-    /**
-     * Update object with new informations
-     *
-     * @param currentUser
-     * @param user
-     */
-
-    private void toUpdateUser(User currentUser, User user) {
-        currentUser.setName(user.getName());
-        currentUser.setUsername(user.getUsername());
-    }
 
     public User convertDtoToEntity(UserRequest userRequest) {
         return modelMapper.map(userRequest, User.class);
@@ -175,11 +165,4 @@ public class UserService {
         return modelMapper.map(user, UserUpdateEmailDTO.class);
     }
 
-    public User convertUserLoansBooksDTOToEntity(UserLoansBooksDTO userLoansBooksDTO) {
-        return modelMapper.map(userLoansBooksDTO, User.class);
-    }
-
-    public UserLoansBooksDTO convertEntityToUserLoansBooksDTO(User user) {
-        return modelMapper.map(user, UserLoansBooksDTO.class);
-    }
 }

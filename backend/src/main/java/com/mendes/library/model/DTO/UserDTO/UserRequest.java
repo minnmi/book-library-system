@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequest {
+
     private String name;
     @NotNull(message = "The username is required.")
     private String username;
