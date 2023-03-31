@@ -23,6 +23,10 @@ public class StorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(StorageService.class);
 
+    private String getFilePath(String filename) {
+        return String.format("%s/%s", this.basePath, filename);
+    }
+
     public String storeFile(MultipartFile multipartFile) throws IOException, URISyntaxException {
         logger.info("storing file");
         this.createFolder(this.basePath);
@@ -39,13 +43,21 @@ public class StorageService {
             throw new IOException("Could not save the image");
         }
     }
-
     public InputStream readFile(String filePath) throws  IOException {
         try {
             logger.info("reading file %s", filePath);
             return new FileInputStream(filePath);
         }  catch (IOException e) {
             logger.error("could not create file %s", filePath);
+            throw e;
+        }
+    }
+    private void createFolder(String path)  {
+        try {
+            logger.info("creating directory %s", path);
+            new File(path).mkdirs();
+        } catch (Exception e) {
+            logger.info("an error occured when creating directory %s: %s", path, e.getMessage());
             throw e;
         }
     }
@@ -56,20 +68,6 @@ public class StorageService {
             Files.delete(Path.of(filePath));
         } catch (IOException e) {
             logger.error("an error occured when deleting file %s: %s", filePath, e.getMessage());
-        }
-    }
-
-    private String getFilePath(String filename) {
-        return String.format("%s/%s", this.basePath, filename);
-    }
-
-    private void createFolder(String path)  {
-        try {
-            logger.info("creating directory %s", path);
-            new File(path).mkdirs();
-        } catch (Exception e) {
-            logger.info("an error occured when creating directory %s: %s", path, e.getMessage());
-            throw e;
         }
     }
 
