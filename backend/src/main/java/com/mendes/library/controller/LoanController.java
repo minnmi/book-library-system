@@ -89,7 +89,6 @@ public class LoanController {
 
     }
 
-
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/final-date")
     public List<LoanResponse> findByFinalDate(@RequestParam("initialDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,

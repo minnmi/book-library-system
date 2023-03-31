@@ -27,12 +27,12 @@ public class LoanService {
     private final UserRepository userRepository;
 
     private final UserService userService;
+
     private final ConfigurationService configurationService;
 
     private final BookService bookService;
 
     private final ModelMapper modelMapper;
-
 
 
     @Autowired
@@ -50,16 +50,33 @@ public class LoanService {
         return loanedRepository.findAll(pageable);
     }
 
-    public Loan findById(Long id) {
-        return loanedRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName()));
-    }
-
     public List<Loan> findLoansByUser(Long userId) {
         return loanedRepository.findLoanByUserId(userId);
     }
 
+    public List<Loan> findLateLoansByUser(LocalDateTime localDateTime, Long userId) {
+        var user = userRepository.findById(userId);
+        return loanedRepository.findLateLoansByUser(localDateTime, user);
+    }
+
+    public List<Loan> findByInitialDate(LocalDateTime from, LocalDateTime to) {
+        return this.loanedRepository.findByInitialDate(from, to);
+    }
+
+    public List<Loan> findByFinalDate(LocalDateTime from, LocalDateTime to) {
+        return this.loanedRepository.findByFinalDate(from, to);
+    }
+
+    public List<Loan> findHistory(Long userId) {
+        return this.loanedRepository.findHistoryByUser(userId);
+    }
+
     public List<Loan> findLoansByBook(Long bookId) {
         return loanedRepository.findLoanByBook(bookId);
+    }
+
+    public Loan findById(Long id) {
+        return loanedRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found: " + id + " type " + Loan.class.getName()));
     }
 
     private Integer getQuantityLoaned(Book book) {
@@ -117,21 +134,12 @@ public class LoanService {
         return loan;
     }
 
-    public List<Loan> findLateLoansByUser(LocalDateTime localDateTime, Long userId) {
-        var user = userRepository.findById(userId);
-        return loanedRepository.findLateLoansByUser(localDateTime, user);
-    }
-
-    public List<Loan> findByInitialDate(LocalDateTime from, LocalDateTime to) {
-        return this.loanedRepository.findByInitialDate(from, to);
-    }
-
-    public List<Loan> findByFinalDate(LocalDateTime from, LocalDateTime to) {
-        return this.loanedRepository.findByFinalDate(from, to);
-    }
-
-    public List<Loan> findHistory(Long userId) {
-        return this.loanedRepository.findHistoryByUser(userId);
+    public Loan returnBook(Long loanId) {
+        var loan = this.findById(loanId);
+        loan.setReturned(1);
+        loan.setReturnedDate(LocalDateTime.now());
+        this.loanedRepository.save(loan);
+        return loan;
     }
 
     public Loan convertDtoToEntity(LoanRequest loanRequest) {
@@ -140,14 +148,6 @@ public class LoanService {
 
     public LoanResponse convertEntityToDto(Loan loan) {
         return modelMapper.map(loan, LoanResponse.class);
-    }
-
-    public Loan returnBook(Long loanId) {
-        var loan = this.findById(loanId);
-        loan.setReturned(1);
-        loan.setReturnedDate(LocalDateTime.now());
-        this.loanedRepository.save(loan);
-        return loan;
     }
 
 }
