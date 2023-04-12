@@ -1,7 +1,6 @@
 package com.mendes.library.controller;
 
 import com.mendes.library.model.DTO.LoanedDTO.LoanResponse;
-import com.mendes.library.model.Loan;
 import com.mendes.library.service.LoanService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/loans")
@@ -72,7 +70,7 @@ public class LoanController {
     @PreAuthorize("hasAnyAuthority('LOANED_VIEW', 'ADMIN')")
     @GetMapping("/find/late-loans/{userId}")
     public List<LoanResponse> findLateLoansByUser(@RequestBody LocalDateTime localDateTime, @PathVariable Long userId) {
-        return loanService.findLateLoansByUser(localDateTime, userId)
+        return loanService.findLoansNotReturnedByUser(localDateTime, userId)
                 .stream()
                 .map(loanService::convertEntityToDto)
                 .toList();

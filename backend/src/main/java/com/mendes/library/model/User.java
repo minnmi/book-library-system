@@ -25,6 +25,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotAudited
+    @OneToOne(mappedBy = "user")
+    private LastEmailSent lastEmailSent;
+
     @Column(unique = true)
     private String name;
 

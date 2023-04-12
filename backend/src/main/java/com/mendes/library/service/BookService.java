@@ -1,6 +1,7 @@
 package com.mendes.library.service;
 
 
+import com.mendes.library.criteria.BookCriteria;
 import com.mendes.library.model.Author;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.DTO.BookDTO.BookRequest;
@@ -50,8 +51,8 @@ public class BookService {
         this.storageService = storageService;
     }
 
-    public Page<Book> findAllBooks(Pageable pageable) {
-        return bookRepository.findAll(pageable);
+    public Page<Book> findAllBooks(Pageable pageable, BookCriteria criteria) {
+        return bookRepository.search(pageable, criteria);
     }
 
     public Book findById(Long id) {
