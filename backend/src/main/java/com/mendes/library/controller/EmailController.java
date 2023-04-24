@@ -2,6 +2,7 @@ package com.mendes.library.controller;
 
 import com.mendes.library.config.email.EmailDetails;
 import com.mendes.library.service.EmailService;
+import jakarta.mail.MessagingException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,17 +19,16 @@ public class EmailController {
     }
 
     @PostMapping("/sendMail")
-    public String sendMail(@RequestBody EmailDetails details)
+    public void sendMail(@RequestBody EmailDetails details)
     {
-        return emailService.sendSimpleMail(details);
+        emailService.sendSimpleMail(details);
     }
 
 
     @PostMapping("/sendMailWithAttachment")
-    public String sendMailWithAttachment(
-            @RequestBody EmailDetails details)
-    {
-        return emailService.sendMailWithAttachment(details);
+    public void sendMailWithAttachment(
+            @RequestBody EmailDetails details) throws MessagingException {
+        emailService.sendMailWithAttachment(details);
     }
 
 
