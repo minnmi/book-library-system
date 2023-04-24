@@ -1,6 +1,7 @@
 package com.mendes.library.controller;
 
 import com.google.zxing.WriterException;
+import com.mendes.library.criteria.BookCriteria;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.DTO.BookDTO.BookRequest;
 import com.mendes.library.model.DTO.BookDTO.BookResponse;
@@ -41,8 +42,9 @@ public class BookController {
 
     @PreAuthorize("hasAnyAuthority('BOOK_VIEW', 'ADMIN')")
     @GetMapping("/find/all")
-    public Page<BookResponse> findAllBooks(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        var page = bookService.findAllBooks(pageable);
+    public Page<BookResponse> findAllBooks(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                           BookCriteria criteria) {
+        var page = bookService.findAllBooks(pageable, criteria);
 
         var content = page.getContent().stream()
                 .map(bookService::convertEntityToDto)

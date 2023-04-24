@@ -20,4 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("select b from Booking b where b.createdDate < :datetime")
     List<Booking> findAllBefore(LocalDateTime datetime);
+
+    @Query("select b from Booking  b where b.user.id = :userId")
+    List<Booking> findBookingByUserId(Long userId);
 }

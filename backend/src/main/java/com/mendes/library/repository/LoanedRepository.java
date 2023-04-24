@@ -40,4 +40,12 @@ public interface LoanedRepository extends JpaRepository<Loan, Long> {
     @Query("SELECT CASE WHEN count(l.id) > 0 THEN true ELSE false END FROM Loan l WHERE l.user.id = :userId AND l.book.id = :bookId AND l.returned = 0")
     boolean checkAlreadyLoan(Long userId, Long bookId);
 
+    @Query("SELECT l FROM Loan l where  l.user.id = :userId and l.returned = 0")
+    List<Loan> findLoanNotReturnedByUserId(Long userId);
+
+    @Query("select l from Loan l where l.returned = 0")
+    List<Loan> findLoansNotReturned();
+
+    @Query("select l from Loan l where l.returned = 0 and l.finalDate < :now")
+    List<Loan> findLateLoan(LocalDateTime now);
 }
