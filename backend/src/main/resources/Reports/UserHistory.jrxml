@@ -33,6 +33,7 @@ NmY7]]>
 			<![CDATA[]]>
 		</queryString>
 	</subDataset>
+	<parameter name="ImagesPath" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT library.user.name,
 	library.user.email,
@@ -101,7 +102,7 @@ FROM library.loaned
 			</textField>
 			<image hAlign="Center">
 				<reportElement x="10" y="10" width="69" height="65" uuid="94883631-a913-43e2-b182-ab8d77d0181e"/>
-				<imageExpression><![CDATA["C:/Users/mimi/Documents/book-library-system/backend/src/main/resources/Reports/Images/craiyon_121414_logo_with_books_and_a_apple-removebg-preview.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{ImagesPath}+"/craiyon_121414_logo_with_books_and_a_apple-removebg-preview.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="94" y="5" width="210" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
