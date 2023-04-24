@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,15 +28,15 @@ public class BookingService {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final ConfigurationService configurationService;
-    private final LoanedRepository loanRepository;
+    private final LoanService loanService;
     private final BookService bookService;
 
-    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, LoanedRepository loanRepository, BookService bookService) {
+    public BookingService(BookingRepository bookingRepository, UserService userService, ModelMapper modelMapper, ConfigurationService configurationService, LoanedRepository loanRepository, LoanService loanService, BookService bookService) {
         this.bookingRepository = bookingRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.configurationService = configurationService;
-        this.loanRepository = loanRepository;
+        this.loanService = loanService;
         this.bookService = bookService;
     }
 
@@ -61,7 +62,7 @@ public class BookingService {
         if (this.bookingRepository.findBookingByBookIdAndUserId(bookId, currentUser.getId()).isPresent())
             throw new DataIntegrityViolationException("Reserva já existe");
 
-        if (this.loanRepository.checkAlreadyLoan(currentUser.getId(), bookId))
+        if (this.loanService.checkAlreadyLoan(currentUser.getId(), bookId))
             throw new DataIntegrityViolationException("Livro já alugado");
 
         logger.info("Searching for book id: {}", bookId);
@@ -134,4 +135,20 @@ public class BookingService {
         return modelMapper.map(booking, BookingResponse.class);
     }
 
+    public List<Booking> getBookingByUser(Long userId) {
+        return this.bookingRepository.findBookingByUserId(userId);
+    }
+
+    public boolean isAvailable(Booking booking) {
+        try {
+            return this.loanService.canLoanBook(booking.getBook(), booking.getUser());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return false;
+        }
+    }
+
+    public List<Booking> getBookings() {
+        return this.bookingRepository.findAll();
+    }
 }

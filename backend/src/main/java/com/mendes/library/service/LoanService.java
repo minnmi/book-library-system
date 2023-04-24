@@ -1,10 +1,12 @@
 package com.mendes.library.service;
 
 import com.mendes.library.model.Book;
+import com.mendes.library.model.Booking;
 import com.mendes.library.model.DTO.LoanedDTO.LoanRequest;
 import com.mendes.library.model.DTO.LoanedDTO.LoanResponse;
 import com.mendes.library.model.Loan;
 import com.mendes.library.model.User;
+import com.mendes.library.repository.BookingRepository;
 import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.repository.UserRepository;
 import com.mendes.library.service.exception.DataIntegrityViolationException;
@@ -17,15 +19,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoanService {
     private final LoanedRepository loanedRepository;
 
-    private final BookingService bookingService;
-
+    private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
-
     private final UserService userService;
 
     private final ConfigurationService configurationService;
@@ -36,9 +37,9 @@ public class LoanService {
 
 
     @Autowired
-    public LoanService(LoanedRepository loanedRepository, BookingService bookingService, UserRepository userRepository, UserService userService, BookService bookService, ConfigurationService configurationService, ModelMapper modelMapper) {
+    public LoanService(LoanedRepository loanedRepository, BookingRepository bookingRepository, UserRepository userRepository, UserService userService, BookService bookService, ConfigurationService configurationService, ModelMapper modelMapper) {
         this.loanedRepository = loanedRepository;
-        this.bookingService = bookingService;
+        this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.bookService = bookService;
@@ -54,7 +55,7 @@ public class LoanService {
         return loanedRepository.findLoanByUserId(userId);
     }
 
-    public List<Loan> findLateLoansByUser(LocalDateTime localDateTime, Long userId) {
+    public List<Loan> findLoansNotReturnedByUser(LocalDateTime localDateTime, Long userId) {
         var user = userRepository.findById(userId);
         return loanedRepository.findLateLoansByUser(localDateTime, user);
     }
@@ -84,16 +85,16 @@ public class LoanService {
     }
 
     public boolean hasBooking(Long userId, Long bookId, int numAvailable) {
-        var optionalBooking = this.bookingService.findBookingByBookIdAndUserId(bookId, userId);
+        var optionalBooking = this.bookingRepository.findBookingByBookIdAndUserId(bookId, userId);
         if (optionalBooking.isEmpty())
             return false;
 
         var booking = optionalBooking.get();
-        var order = this.bookingService.getBookingOrderByBookIdAndBookingId(bookId, booking.getId());
+        var order = this.bookingRepository.getBookingOrderByBookIdAndBookingId(bookId, booking.getId());
         return order < numAvailable;
     }
 
-    private boolean canLoanBook(Book book, User currentUser) throws Exception {
+    public boolean canLoanBook(Book book, User currentUser) throws Exception {
         final var numCopies = book.getQuantity();
         final var numLoaned = getQuantityLoaned(book);
         final var numAvailable = numCopies - numLoaned;
@@ -102,13 +103,17 @@ public class LoanService {
 
         int numLoanedByUser = loanedRepository.getQuantityLoanedByUser(currentUser);
 
-        if (loanedRepository.checkAlreadyLoan(currentUser.getId(), book.getId()))
+        if (checkAlreadyLoan(currentUser.getId(), book.getId()))
             return false;
 
         if (!this.hasBooking(currentUser.getId(), book.getId(),numAvailable))
             return false;
 
         return (numAvailable > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
+    }
+
+    public boolean checkAlreadyLoan(Long userId, Long bookId) {
+        return loanedRepository.checkAlreadyLoan(userId, bookId);
     }
 
     public Loan insertLoaned(Long bookId) throws Exception {
@@ -129,7 +134,10 @@ public class LoanService {
 
         loan = this.loanedRepository.save(loan);
 
-        this.bookingService.removeBookingByBookIdAndUserId(book.getId(), currentUser.getId());
+        Optional<Booking> bookingOpt = this.bookingRepository.findBookingByBookIdAndUserId(book.getId(), currentUser.getId());
+        if (bookingOpt.isPresent()) {
+            this.bookingRepository.deleteById(bookingOpt.get().getId());
+        }
 
         return loan;
     }
@@ -150,4 +158,15 @@ public class LoanService {
         return modelMapper.map(loan, LoanResponse.class);
     }
 
+    public List<Loan> findLoansNotReturnedByUser(Long userId) {
+        return this.loanedRepository.findLoanNotReturnedByUserId(userId);
+    }
+
+    public List<Loan> findLoansNotReturned() {
+        return this.loanedRepository.findLoansNotReturned();
+    }
+
+    public List<Loan> findLateLoan() {
+        return this.loanedRepository.findLateLoan(LocalDateTime.now());
+    }
 }
