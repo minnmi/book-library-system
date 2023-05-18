@@ -32,7 +32,7 @@ public class LoanTask {
         this.lastEmailSentRepository = lastEmailSentRepository;
     }
 
-//    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void notifyReading() {
         List<Loan> loans = this.loanService.findLoansNotReturned();
         for (var loan: loans) {
@@ -53,7 +53,7 @@ public class LoanTask {
         }
     }
 
-//    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void notifyLoanedTimeOut() {
         List<Loan> loans = this.loanService.findLateLoan();
         for (var loan: loans) {

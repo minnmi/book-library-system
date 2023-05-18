@@ -1,5 +1,6 @@
 package com.mendes.library.service;
 
+import com.mendes.library.exception.ELoanAvailability;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
 import com.mendes.library.model.DTO.LoanedDTO.LoanRequest;
@@ -9,9 +10,10 @@ import com.mendes.library.model.User;
 import com.mendes.library.repository.BookingRepository;
 import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.repository.UserRepository;
-import com.mendes.library.service.exception.DataIntegrityViolationException;
 import com.mendes.library.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ import java.util.Optional;
 
 @Service
 public class LoanService {
+    private static final Logger logger = LoggerFactory.getLogger(LoanService.class);
     private final LoanedRepository loanedRepository;
 
     private final BookingRepository bookingRepository;
@@ -91,10 +94,10 @@ public class LoanService {
 
         var booking = optionalBooking.get();
         var order = this.bookingRepository.getBookingOrderByBookIdAndBookingId(bookId, booking.getId());
-        return order < numAvailable;
+        return order <= numAvailable;
     }
 
-    public boolean canLoanBook(Book book, User currentUser) throws Exception {
+    public ELoanAvailability canLoanBook(Book book, User currentUser) throws Exception {
         final var numCopies = book.getQuantity();
         final var numLoaned = getQuantityLoaned(book);
         final var numAvailable = numCopies - numLoaned;
@@ -104,12 +107,18 @@ public class LoanService {
         int numLoanedByUser = loanedRepository.getQuantityLoanedByUser(currentUser);
 
         if (checkAlreadyLoan(currentUser.getId(), book.getId()))
-            return false;
+            return ELoanAvailability.ALREADY_LOANED;
 
         if (!this.hasBooking(currentUser.getId(), book.getId(),numAvailable))
-            return false;
+            return ELoanAvailability.NO_BOOKING;
 
-        return (numAvailable > proportionBooksStock * numCopies) && (numLoanedByUser < maximumNumberBooksUser);
+        if (numAvailable <= Math.max(1, proportionBooksStock * numCopies))
+            return ELoanAvailability.NO_ENOUGH_COPIES;
+
+        if (numLoanedByUser > maximumNumberBooksUser)
+            return ELoanAvailability.LIMIT_ALREADY_REACHED;
+
+        return ELoanAvailability.OK;
     }
 
     public boolean checkAlreadyLoan(Long userId, Long bookId) {
@@ -120,8 +129,15 @@ public class LoanService {
         var book = this.bookService.findById(bookId);
         var currentUser = this.userService.getLoggedUser();
 
-        if (!canLoanBook(book, currentUser))
-            throw new DataIntegrityViolationException("Error when loan a book");
+        ELoanAvailability checkAvailability = canLoanBook(book, currentUser);
+        switch (checkAvailability) {
+            case ALREADY_LOANED: throw new Exception("Book already loaned");
+            case NO_BOOKING: throw new Exception("Book not booked");
+            case NO_ENOUGH_COPIES: throw new Exception("No copies available");
+            case LIMIT_ALREADY_REACHED: throw new Exception("Too many books reserved");
+            default:
+                logger.info("Book available");
+        }
 
         final var maximumBookingPeriod = this.configurationService.getMaximumLoanPeriod();
 

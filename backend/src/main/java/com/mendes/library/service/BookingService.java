@@ -1,5 +1,6 @@
 package com.mendes.library.service;
 
+import com.mendes.library.exception.ELoanAvailability;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
 import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
@@ -141,7 +142,7 @@ public class BookingService {
 
     public boolean isAvailable(Booking booking) {
         try {
-            return this.loanService.canLoanBook(booking.getBook(), booking.getUser());
+            return this.loanService.canLoanBook(booking.getBook(), booking.getUser()) == ELoanAvailability.OK;
         } catch (Exception e) {
             logger.error(e.getMessage());
             return false;

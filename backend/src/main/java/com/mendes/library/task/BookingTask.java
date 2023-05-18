@@ -32,7 +32,7 @@ public class BookingTask {
         this.lastEmailSentRepository = lastEmailSentRepository;
     }
 
-//    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void removeOldBooking() {
         try {
             this.bookingService.removeOldBooking();
@@ -41,7 +41,7 @@ public class BookingTask {
         }
     }
 
-//    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void notifyBookingAvailability() {
         List<Booking> bookings = this.bookingService.getBookings();
         for (var booking: bookings) {
