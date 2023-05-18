@@ -16,9 +16,9 @@ INSERT INTO author (id, name) VALUES (2, 'John Doe');
 INSERT INTO author (id, name) VALUES (3, 'Charles Dickens');
 
 
-INSERT INTO book (id, name, isbn, publisher_id, literature_category_id, quantity, book_cover) VALUES (1, "Harry Potter e a Pedra Filosofal", 24239434, 1, 1, 10, null);
-INSERT INTO book (id, name, isbn, publisher_id, literature_category_id, quantity, book_cover) VALUES (2, "Amor das estrelas", 22332554, 2, 2, 25, null);
-INSERT INTO book (id, name, isbn, publisher_id, literature_category_id, quantity, book_cover) VALUES (3, "Cinco Novelas", 45488484, 3, 3, 48, null);
+INSERT INTO book (id, name, isbn, publisher_id, literature_category_id, quantity, book_cover) VALUES (1, "Harry Potter e a Pedra Filosofal", 24239434, 1, 1, 2, null);
+INSERT INTO book (id, name, isbn, publisher_id, literature_category_id, quantity, book_cover) VALUES (2, "Amor das estrelas", 22332554, 2, 2, 2, null);
+INSERT INTO book (id, name, isbn, publisher_id, literature_category_id, quantity, book_cover) VALUES (3, "Cinco Novelas", 45488484, 3, 3, 2, null);
 
 
 INSERT INTO book_authorship (book_id, author_id) VALUES (1, 1);

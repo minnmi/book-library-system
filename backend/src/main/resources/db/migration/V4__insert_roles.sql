@@ -104,6 +104,10 @@ INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 26);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 27);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 28);
 
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 1);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 2);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 3);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 4);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 5);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 6);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 7);
