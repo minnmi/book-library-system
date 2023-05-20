@@ -111,7 +111,7 @@ public class BookingService {
         var before = LocalDateTime.now().minusDays(maxDays);
 
         logger.info("Fetching all booking before {}", before);
-        var oldBooking = this.bookingRepository.findAllBefore(before);
+        var oldBooking = this.bookingRepository.findAllBefore(before.toLocalDate());
 
         logger.info("{} booking found", oldBooking.size());
 
