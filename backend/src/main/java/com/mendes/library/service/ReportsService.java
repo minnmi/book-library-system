@@ -27,7 +27,7 @@ public class ReportsService {
 
     public void report(String pathToReport, String outputFilename) throws JRException, SQLException {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ImagesPath", "/home/matheusc/Documents/Codes/book-library-system/backend/src/main/resources/Reports/Images");
+        parameters.put("ImagesPath", "/home/matheusc/Documents/codes/book-library-system/backend/src/main/resources/Reports/Images");
         var url = getClass().getResource(pathToReport);
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(url);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource.getConnection());
