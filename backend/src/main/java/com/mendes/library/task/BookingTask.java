@@ -1,6 +1,8 @@
 package com.mendes.library.task;
 
 import com.mendes.library.config.email.EmailDetails;
+import com.mendes.library.controller.exception.LogicException;
+import com.mendes.library.controller.exception.ValidationError;
 import com.mendes.library.model.Booking;
 import com.mendes.library.model.LastEmailSent;
 import com.mendes.library.model.User;
@@ -32,7 +34,7 @@ public class BookingTask {
     }
 
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
-    public void removeOldBooking() throws Exception {
+    public void removeOldBooking() throws LogicException {
         this.bookingService.removeOldBooking();
     }
 

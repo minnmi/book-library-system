@@ -1,5 +1,7 @@
 package com.mendes.library.service;
 
+import com.mendes.library.controller.exception.LogicException;
+import com.mendes.library.controller.exception.ValidationError;
 import com.mendes.library.exception.ELoanAvailability;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
@@ -11,6 +13,7 @@ import com.mendes.library.repository.BookingRepository;
 import com.mendes.library.repository.LoanedRepository;
 import com.mendes.library.repository.UserRepository;
 import com.mendes.library.service.exception.ObjectNotFoundException;
+import jakarta.xml.bind.ValidationException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +100,7 @@ public class LoanService {
         return order <= numAvailable;
     }
 
-    public ELoanAvailability canLoanBook(Book book, User currentUser) throws Exception {
+    public ELoanAvailability canLoanBook(Book book, User currentUser) throws LogicException {
         final var numCopies = book.getQuantity();
         final var numLoaned = getQuantityLoaned(book);
         final var numAvailable = numCopies - numLoaned;
@@ -125,16 +128,16 @@ public class LoanService {
         return loanedRepository.checkAlreadyLoan(userId, bookId);
     }
 
-    public Loan insertLoaned(Long bookId) throws Exception {
+    public Loan insertLoaned(Long bookId) throws LogicException {
         var book = this.bookService.findById(bookId);
         var currentUser = this.userService.getLoggedUser();
 
         ELoanAvailability checkAvailability = canLoanBook(book, currentUser);
         switch (checkAvailability) {
-            case ALREADY_LOANED: throw new Exception("Book already loaned");
-            case NO_BOOKING: throw new Exception("Book not booked");
-            case NO_ENOUGH_COPIES: throw new Exception("No copies available");
-            case LIMIT_ALREADY_REACHED: throw new Exception("Too many books reserved");
+            case ALREADY_LOANED: throw new LogicException("Book already loaned");
+            case NO_BOOKING: throw new LogicException("Book not booked");
+            case NO_ENOUGH_COPIES: throw new LogicException("No copies available");
+            case LIMIT_ALREADY_REACHED: throw new LogicException("Too many books reserved");
             default:
                 logger.info("Book available");
         }

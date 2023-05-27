@@ -1,5 +1,7 @@
 package com.mendes.library.service;
 
+import com.mendes.library.controller.exception.LogicException;
+import com.mendes.library.controller.exception.ValidationError;
 import com.mendes.library.exception.ELoanAvailability;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
@@ -106,7 +108,7 @@ public class BookingService {
         }
     }
 
-    public void removeOldBooking() throws Exception {
+    public void removeOldBooking() throws LogicException {
         var maxDays = this.configurationService.getBookingTimeOut();
         var before = LocalDateTime.now().minusDays(maxDays);
 
@@ -143,7 +145,7 @@ public class BookingService {
     public boolean isAvailable(Booking booking) {
         try {
             return this.loanService.canLoanBook(booking.getBook(), booking.getUser()) == ELoanAvailability.OK;
-        } catch (Exception e) {
+        } catch (LogicException e) {
             logger.error(e.getMessage());
             return false;
         }
