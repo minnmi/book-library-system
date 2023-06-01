@@ -1,5 +1,6 @@
 package com.mendes.library.controller;
 
+import com.mendes.library.controller.exception.LogicException;
 import com.mendes.library.model.DTO.LoanedDTO.LoanResponse;
 import com.mendes.library.service.LoanService;
 import lombok.extern.slf4j.Slf4j;
@@ -110,7 +111,7 @@ public class LoanController {
     @PreAuthorize("hasAnyAuthority('LOANED_INSERT', 'ADMIN')")
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
-    public LoanResponse insertLoan(@Valid @RequestBody Long bookId) throws Exception {
+    public LoanResponse insertLoan(@Valid @RequestBody Long bookId) throws LogicException {
         var loan = loanService.insertLoaned(bookId);
         return loanService.convertEntityToDto(loan);
     }

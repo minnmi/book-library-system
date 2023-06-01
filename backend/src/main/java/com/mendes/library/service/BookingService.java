@@ -1,5 +1,8 @@
 package com.mendes.library.service;
 
+import com.mendes.library.controller.exception.LogicException;
+import com.mendes.library.controller.exception.ValidationError;
+import com.mendes.library.exception.ELoanAvailability;
 import com.mendes.library.model.Book;
 import com.mendes.library.model.Booking;
 import com.mendes.library.model.DTO.BookindDTO.BookingRequest;
@@ -105,12 +108,12 @@ public class BookingService {
         }
     }
 
-    public void removeOldBooking() throws Exception {
+    public void removeOldBooking() throws LogicException {
         var maxDays = this.configurationService.getBookingTimeOut();
         var before = LocalDateTime.now().minusDays(maxDays);
 
         logger.info("Fetching all booking before {}", before);
-        var oldBooking = this.bookingRepository.findAllBefore(before);
+        var oldBooking = this.bookingRepository.findAllBefore(before.toLocalDate());
 
         logger.info("{} booking found", oldBooking.size());
 
@@ -141,8 +144,8 @@ public class BookingService {
 
     public boolean isAvailable(Booking booking) {
         try {
-            return this.loanService.canLoanBook(booking.getBook(), booking.getUser());
-        } catch (Exception e) {
+            return this.loanService.canLoanBook(booking.getBook(), booking.getUser()) == ELoanAvailability.OK;
+        } catch (LogicException e) {
             logger.error(e.getMessage());
             return false;
         }

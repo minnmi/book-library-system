@@ -46,4 +46,12 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
     }
 
+    @ExceptionHandler(LogicException.class)
+    public ResponseEntity<StandardError> objectNotFound(LogicException e, HttpServletRequest request) {
+        String message = e.getMessage();
+        StandardError err = new StandardError(Instant.now(), HttpStatus.NOT_FOUND.value(),"Logic Exception" , message, request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
 }

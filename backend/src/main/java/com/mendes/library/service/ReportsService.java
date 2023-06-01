@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ReportsService {
@@ -24,23 +26,21 @@ public class ReportsService {
     }
 
     public void report(String pathToReport, String outputFilename) throws JRException, SQLException {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("ImagesPath", "/home/matheusc/Documents/codes/book-library-system/backend/src/main/resources/Reports/Images");
         var url = getClass().getResource(pathToReport);
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(url);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource.getConnection());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource.getConnection());
 
         SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
         reportConfig.setSizePageToContent(true);
         reportConfig.setForceLineBreakPolicy(false);
 
-        SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
-        exportConfig.setMetadataAuthor("Projeto TCC");
-        exportConfig.setEncrypted(true);
-
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputFilename));
         exporter.setConfiguration(reportConfig);
-        exporter.setConfiguration(exportConfig);
+        exporter.setConfiguration(new SimplePdfExporterConfiguration());
         exporter.exportReport();
     }
 }

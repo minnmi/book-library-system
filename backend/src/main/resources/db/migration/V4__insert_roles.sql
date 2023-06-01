@@ -67,7 +67,7 @@ INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_INSERT');
 INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_UPDATE');
 INSERT INTO `authority` (`name`) VALUES ('PUBLISHER_DELETE');
 
-INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (1, 'admin@lib.com', 'Admin', '{bcrypt}$2a$10$D/kdBoAuwGix14QtatA1Zuzykte3sSH1I6QnKLqJO2Aehmd7IpbDq', 'admin', 1);
+INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (1, 'matheuscandido2009@gmail.com', 'Admin', '{bcrypt}$2a$10$D/kdBoAuwGix14QtatA1Zuzykte3sSH1I6QnKLqJO2Aehmd7IpbDq', 'admin', 1);
 INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (2, 'lib_foo@lib.com', 'Alex', '{bcrypt}$2a$10$D/kdBoAuwGix14QtatA1Zuzykte3sSH1I6QnKLqJO2Aehmd7IpbDq', 'lib.alex', 1);
 INSERT INTO `user` (`id`, `email`, `name`, `password`, `username`, `enabled`) VALUES (3, 'user_lib@lib.com', 'John', '{bcrypt}$2a$10$D/kdBoAuwGix14QtatA1Zuzykte3sSH1I6QnKLqJO2Aehmd7IpbDq', 'lib.john', 1);
 
@@ -104,6 +104,10 @@ INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 26);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 27);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (1, 28);
 
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 1);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 2);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 3);
+INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 4);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 5);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 6);
 INSERT INTO `role_authority` (`role_id`, `authority_id`) VALUES (2, 7);

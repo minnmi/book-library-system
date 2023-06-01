@@ -10,12 +10,12 @@ import java.sql.SQLException;
 @SpringBootTest
 class ReportsServiceTest {
     @Autowired
-    private ReportsService repoortsService;
+    private ReportsService reportsService;
 
     @Test
     void testBookReport() throws JRException, SQLException {
         try {
-            repoortsService.report("Reports/BooksReport.jasper", "book-report.pdf");
+            reportsService.report("/Reports/BooksReport.jasper", "book-report.pdf");
         } catch (JRException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
@@ -26,7 +26,7 @@ class ReportsServiceTest {
     @Test
     void testUserHistoryReport() throws JRException, SQLException {
         try {
-            repoortsService.report("Reports/UserHistory.jasper", "user-history-report.pdf");
+            reportsService.report("/Reports/UserHistory.jasper", "user-history-report.pdf");
         } catch (JRException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
